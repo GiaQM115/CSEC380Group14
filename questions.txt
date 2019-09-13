@@ -1,6 +1,13 @@
 What is the URL of your GitHub project?
+  http://github.com/GiaQM115/CSEC380Group14/edit/master/questions.txt
+  
 How did you break up your project, and what are the security ramifications?
+
 How did you choose to break down your epic into various issues (tasks)?
+  We opted to split our epic by the activity breakdown provided in the project description file.
+
 How long did you assign each sprint to be?
+
 Did you deviate from the AGILE methodology at all? If yes, what is your reasoning for this?
+
 How do you ensure that after each issue/milestone that security has been verified? How would you identify such issues in an ideal environment?
