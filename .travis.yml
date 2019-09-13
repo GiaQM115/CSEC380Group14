@@ -1,3 +1,13 @@
 language: python
+python: 
+  - "2.7"
+  - "3.5"
 services:
   - docker
+before_install:
+  - docker build -t "webserver" .
+  - docker run -d -p 80:80 webserver
+ 
+ install:
+  - pip install -r requirements.txt
+ script: pytest
