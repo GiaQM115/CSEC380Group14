@@ -1,5 +1,5 @@
 What is the URL of your GitHub project?
-  http://github.com/GiaQM115/CSEC380Group14/edit/master/
+  http://github.com/GiaQM115/CSEC380Group14/
   
 How did you break up your project, and what are the security ramifications?
   
