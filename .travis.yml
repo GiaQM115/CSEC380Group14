@@ -9,6 +9,6 @@ before_install:
   - docker build -t "webserver" -f docker/Dockerfile docker
   - docker run -d -p 80:80 webserver 
 install:
-  - pip install -r requirements.txt
+  - pip install -r tests/requirements.txt
 script:
   - pytest tests
