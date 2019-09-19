@@ -4,14 +4,14 @@ version: '3.6'
 services:
   apache_server:
     build: ./apache_server
-    container_name: apache
+    container_name: apache_server
     networks:
       - project
     restart: always
 
   php_server:
     build: ./php_server
-    container_name: php
+    container_name: php_server
     networks:
       - project
     restart: always
