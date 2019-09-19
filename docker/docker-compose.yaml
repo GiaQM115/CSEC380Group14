@@ -1,0 +1,23 @@
+# General docker-compose file for the current system topology
+
+version: '3.6'
+services:
+  apache_server:
+    build: ./apache_server
+    container_name: apache
+    networks:
+      - project
+    restart: always
+
+  php_server:
+    build: ./php_server
+    container_name: php
+    networks:
+      - project
+    restart: always
+    depends_on:
+      - apache_server
+
+networks:
+  project:
+    name: project
