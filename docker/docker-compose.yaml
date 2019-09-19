@@ -1,6 +1,6 @@
 # General docker-compose file for the current system topology
 
-version: '3.5'
+version: '3'
 services:
   apache_server:
     build: ./apache_server
