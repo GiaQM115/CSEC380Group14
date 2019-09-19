@@ -1,16 +1,14 @@
 language: python
 python: 
   - "2.7"
-  - "3.5"
   - "3.6"
 services:
   - docker
 before_install:
-  - docker build -t "webserver" -f docker/Dockerfile docker
-  - docker run -d -p 80:80 webserver
+  - docker-compose -f docker/docker-compose.yml up -d --build
   - python --version
   - pip install -U pip
-  - pip install -U pytest 
+  - pip install -U pytest
 install:
   - pip install -r tests/requirements.txt
 script:
