@@ -3,7 +3,6 @@ What Web Application security mechanisms are involved in your topology? What sec
 	However, it is also ideal to secure passwords for user accounts by encrypting passwords stored in the account database.
 	It would also be ideal to add one or more caching servers along with a load balancer to help mitigate the possibility of denial of service.
 	In a real world scenario, it would be imperative that we also obtain a TLS certificate and set up HTTPS to secure communications between the client and server.
-	// I've got nothing else, but there might be more we could add here
 
 What testing framework did you choose and why?
-	// I don't know about this one. Gia implemented it
+	We chose PyTest because some of the group has experience working with it. We think the setup and teardown functions in PyTest will come in handy, especially as our broken code starts failing midtest. We used Travis-CI as directed in the project instructions to fire on each pull request. This will install any necessary dependencies, launch any necessary Docker containers, and run PyTest with all the tests in the tests directory.
