@@ -9,14 +9,15 @@ services:
       - project
     restart: always
 
-  php_server:
-    build: ./php_server
-    container_name: php_server
-    networks:
-      - project
-    restart: always
-    depends_on:
-      - apache_server
+#
+#  php_server:
+#    build: ./php_server
+#    container_name: php_server
+#    networks:
+#      - project
+#    restart: always
+#    depends_on:
+#      - apache_server
 
 networks:
   project:
