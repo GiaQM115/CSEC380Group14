@@ -16,4 +16,8 @@ Did you deviate from the AGILE methodology at all? If yes, what is your reasonin
   In doing this, we are able to assign "GitHub Issues" for each individual person.
 
 How do you ensure that after each issue/milestone that security has been verified? How would you identify such issues in an ideal environment?
-  One aspect of security verification is using GitHubs built in Security tools. // finish me
+  One aspect of security verification is using GitHubs built in Security tools.
+  After each issue is completed, our project is configured to automatically check for vulnerabilities using the built-in "GitHub Security".
+  In an ideal environment/scenario, we will write our code under the mindset that the user will always have malicious intent.
+  For example, we can assume that at some point the user will attempt to provide "bogus" input against our environment/code.
+  We can run scripts that will automatically check these cases. This will allow us to identify trivial security holes before they are published to the master branch.
