@@ -6,14 +6,15 @@ services:
 #    build: ./backend
 #    container_name: backend
 #    restart: always
-#    ports:
-#      - "3306:3306"
+#    expose:
+#      - 80
+#      - 3306
 
   frontend:
     build: ./frontend
     container_name: frontend
     restart: always
-    ports:
-      - "80:80"
+    expose:
+      - 80
 #    depends_on:
 #      - backend
