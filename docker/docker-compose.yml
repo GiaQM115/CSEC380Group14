@@ -1,6 +1,6 @@
 # General docker-compose file for the current system topology
 
-version: '2'
+version: '3'
 services:
 #  backend:
 #    build: ./backend
