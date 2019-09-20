@@ -1,18 +1,19 @@
 # General docker-compose file for the current system topology
 
-version: '3'
+version: '2'
 services:
-  apache_server:
-    build: ./apache_server
+#  backend:
+#    build: ./backend
+#    container_name: backend
+#    restart: always
+#    ports:
+#      - "3306:3306"
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
     restart: always
     ports:
       - "80:80"
-#
-#  php_server:
-#    build: ./php_server
-#    container_name: php_server
-#    networks:
-#      - project
-#    restart: always
 #    depends_on:
-#      - apache_server
+#      - backend
