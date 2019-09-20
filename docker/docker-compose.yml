@@ -14,7 +14,7 @@ services:
     build: ./frontend
     container_name: frontend
     restart: always
-    expose:
-      - 80
+    ports:
+      - "80:80"
 #    depends_on:
 #      - backend
