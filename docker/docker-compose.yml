@@ -2,19 +2,19 @@
 
 version: '3'
 services:
-#  backend:
-#    build: ./backend
-#    container_name: backend
-#    restart: always
-#    expose:
-#      - 80
-#      - 3306
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    expose:
+      - 8000
+      - 3306
 
   frontend:
     build: ./frontend
     container_name: frontend
     restart: always
     ports:
-      - "80:80"
-#    depends_on:
-#      - backend
+      - 80:80
+    depends_on:
+      - backend
