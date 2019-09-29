@@ -5,16 +5,15 @@ services:
   backend:
     build: ./backend
     container_name: backend
-    restart: always
     expose:
       - 8000
-      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=WhereTheH00dAt!
 
   frontend:
     build: ./frontend
     container_name: frontend
-    restart: always
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - backend

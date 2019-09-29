@@ -2,7 +2,7 @@
  * Execute this when the document is done loading
  */
 window.onload = function () {
-    alert("WELCOME");
+    alert("Welcome to BrickFlix!!!");
 };
 
 /**
