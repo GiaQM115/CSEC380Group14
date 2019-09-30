@@ -7,6 +7,8 @@ RUN pacman -S --noconfirm mysql php-fpm
 
 # Initialize MariaDB (MySQL)
 RUN mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+COPY initdb.sql /usr/initdb.sql
+RUN mysql -u root -p < ./initdb.sql
 
 # Initialize PHP-FPM
 COPY www.conf /etc/php/php-fpm.d/www.conf
