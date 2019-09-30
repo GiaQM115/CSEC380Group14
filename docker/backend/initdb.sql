@@ -10,10 +10,12 @@ CREATE TABLE account (
     CONSTRAINT pk_id PRIMARY KEY (id)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-CREATE TABLE account (
+CREATE TABLE video (
     id INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
     uploader_id INT(8) UNSIGNED NOT NULL,
-    upload_date INT(8) NOT NULL DEFAULT '1970-01-01',
+    upload_date DATE NOT NULL DEFAULT '1970-01-01',
     CONSTRAINT pk_id PRIMARY KEY (id),
     CONSTRAINT fk_uploader_id FOREIGN KEY (uploader_id) REFERENCES account(id)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+INSERT INTO account (login, password, email) VALUES ('ccs5486', '1MoarRoad2Cr0ss!', 'ccs5486@rit.edu');
