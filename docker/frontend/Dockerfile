@@ -10,10 +10,9 @@ COPY httpd.conf /etc/httpd/conf/httpd.conf
 
 # Initialize web content
 COPY index.html /srv/http/index.html
-COPY index.js /srv/http/index.js
-COPY main.css /srv/http/main.css
-COPY audio /srv/http/audio
-COPY video /srv/http/video
+COPY js /srv/http/js
+COPY css /srv/http/css
 COPY img /srv/http/img
+COPY video /srv/http/video
 
 CMD apachectl -D FOREGROUND
