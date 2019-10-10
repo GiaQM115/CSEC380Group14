@@ -15,6 +15,6 @@ COPY php-fpm.conf /etc/php/php-fpm.conf
 COPY php.ini /etc/php/php.ini
 
 # Initialize web content
-COPY login.php /srv/http/index.php
+COPY auth.php /srv/http/auth.php
 
-CMD mysqld_safe & sleep 1 && mysql -u root < /tmp/initdb.sql && php-fpm -O
+CMD mysqld_safe & sleep 1 && mysql -u root -p WhereTheH00dAt! < /tmp/initdb.sql && php-fpm -O
