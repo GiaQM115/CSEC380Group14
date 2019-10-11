@@ -12,7 +12,7 @@ function loginAttempt() {
     // we should just tell the user to get a new browswer but whatever
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
   }
-  xhttp.open("POST", "../backend/login.php", false);
+  xhttp.open("POST", "../../backend/login.php", false);
   xhttp.setRequestHeader("Content-type:", "application/x-www-form-urlencoded");
 	var uname = document.getElementById("usernameField").value;
 	var pword = document.getElementById("passwordField").value;
@@ -33,6 +33,7 @@ function loginAttempt() {
 function redirectUser() {
   if (this.readyState == 4 && this.status == 200) {
 		// successful authentication
+		location.replace("../home.html");
   } else if (this.readyState != 4){
 		//pass
 	} else {
