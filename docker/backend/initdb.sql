@@ -18,5 +18,3 @@ CREATE TABLE video (
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 GRANT ALL PRIVILEGES ON brickflix TO 'php'@'localhost' IDENTIFIED BY 'SuperSecretPassword';
-
-INSERT INTO account (login_id, pass_hash, email) VALUES ('ccs5486', SHA2('1MoarRoad2Cr0ss!', 256), 'ccs5486@rit.edu');
