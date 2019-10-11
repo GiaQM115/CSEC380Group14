@@ -21,7 +21,7 @@ function loginAttempt() {
 	len += "&password=".length;
 	len += pword.length;
 	xhttp.setRequestHeader("Content-Length", len);
-	console.log("Sending username="+uname+"&password="+pword+" with content length: "+len)
+	console.log("Sending username="+uname+"&password="+pword+" with content length: "+len);
   xhttp.send("username="+uname+"&password="+pword);
   xhttp.onreadystatechange = redirectUser();
 }
@@ -32,10 +32,10 @@ function loginAttempt() {
  * If not, reload the login page with "Login Failed"
  */
 function redirectUser() {
-  if (this.readyState == 4 && this.status == 302) {
+  if (this.readyState === 4 && this.status === 302) {
 		// successful authentication
 		location.replace("../home.html");
-  } else if (this.readyState != 4) {
+  } else if (this.readyState !== 4) {
 		//pass
 	} else {
 		// failed authentication
