@@ -7,8 +7,6 @@ services:
     container_name: backend
     expose:
       - 8000
-    environment:
-      - MYSQL_ROOT_PASSWORD=WhereTheH00dAt!
 
   frontend:
     build: ./frontend
