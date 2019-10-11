@@ -1,11 +1,11 @@
+
 // When the button is clicked (and the form is submitted), call the fuction loginAttempt()
-document.getElementById("loginButton").onclick = loginAttempt();
+document.getElementById("loginButton").onclick = loginAttempt;
 
 /**
  * Sends a login attempt to the backend
  */
 function loginAttempt() {
-	console.log("bla bla bla")
   if (window.XMLHttpRequest) {
     // for modern browsers
     var xhttp = new XMLHttpRequest();
@@ -13,12 +13,10 @@ function loginAttempt() {
     // we should just tell the user to get a new browswer but whatever
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  xhttp.open("POST", "../../backend/login.php", false);
+  xhttp.open("POST", "login.php", true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	var uname = document.getElementById("usernameField").textContent;
-	var pword = document.getElementById("passwordField").textContent;
-	console.log("Sending username="+uname+"&password="+pword+" with content length: ");
-  xhttp.send("username="+uname+"&password="+pword);
+	var uname = document.getElementById("usernameField").value;
+	var pword = document.getElementById("passwordField").value;
   xhttp.onreadystatechange = redirectUser();
 }
 
@@ -28,15 +26,11 @@ function loginAttempt() {
  * If not, reload the login page with "Login Failed"
  */
 function redirectUser() {
-  if (this.readyState === 4 && this.status === 302) {
-		// successful authentication
-		location.replace("../home.html");
-  } else if (this.readyState !== 4) {
-		//pass
+	var code = 200;
+	if (code == 200) {
+		location.replace("home.html")
 	} else {
-		// failed authentication
-		document.getElementById("loginPrompt").innerHTML = "Login Failed: "+this.responseText;
-		document.getElementById("usernameField").placeholder = "Enter Username";
-		document.getElementById("passwordField").placeholder = "Enter Password";
+		document.getElementById("loginPrompt").innerHTML = "Login Failed!"
 	}
 }
+
