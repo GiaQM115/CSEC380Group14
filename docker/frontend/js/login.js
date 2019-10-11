@@ -26,11 +26,13 @@ function loginAttempt() {
  * If not, reload the login page with "Login Failed"
  */
 function redirectUser() {
-	var code = 200;
+	var code = this.status;
 	if (code == 200) {
-		location.replace("home.html")
-	} else {
-		document.getElementById("loginPrompt").innerHTML = "Login Failed!"
+		location.replace("home.html");
+	} else if (code == 403) {
+		document.getElementById("loginPrompt").innerHTML = "Login Failed!";
+	} else if (code == 500) {
+		document.getElementById("loginPrompt").innerHTML = "Critical Backend Error!";
 	}
 }
 
