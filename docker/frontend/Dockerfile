@@ -13,7 +13,6 @@ COPY home.html /srv/http/home.html
 COPY login.html /srv/http/login.html
 COPY js /srv/http/js
 COPY css /srv/http/css
-COPY img /srv/http/img
 COPY video /srv/http/video
 
 CMD apachectl -D FOREGROUND
