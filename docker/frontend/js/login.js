@@ -5,23 +5,19 @@ document.getElementById("loginButton").onclick = loginAttempt();
  * Sends a login attempt to the backend
  */
 function loginAttempt() {
+	console.log("bla bla bla")
   if (window.XMLHttpRequest) {
     // for modern browsers
     var xhttp = new XMLHttpRequest();
   } else {
     // we should just tell the user to get a new browswer but whatever
-    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
   xhttp.open("POST", "../../backend/login.php", false);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	var uname = document.getElementById("usernameField").textContent;
 	var pword = document.getElementById("passwordField").textContent;
-	var len = "username=".length;
-	len += uname.length;
-	len += "&password=".length;
-	len += pword.length;
-	xhttp.setRequestHeader("Content-Length", len);
-	console.log("Sending username="+uname+"&password="+pword+" with content length: "+len);
+	console.log("Sending username="+uname+"&password="+pword+" with content length: ");
   xhttp.send("username="+uname+"&password="+pword);
   xhttp.onreadystatechange = redirectUser();
 }
