@@ -31,10 +31,10 @@ function loginAttempt() {
  * If not, reload the login page with "Login Failed"
  */
 function redirectUser() {
-  if (this.readyState == 4 && this.status == 200) {
+  if (this.readyState == 4 && this.status == 302) {
 		// successful authentication
 		location.replace("../home.html");
-  } else if (this.readyState != 4){
+  } else if (this.readyState != 4) {
 		//pass
 	} else {
 		// failed authentication
