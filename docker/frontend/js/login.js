@@ -13,14 +13,15 @@ function loginAttempt() {
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
   }
   xhttp.open("POST", "../../backend/login.php", false);
-  xhttp.setRequestHeader("Content-type:", "application/x-www-form-urlencoded");
-	var uname = document.getElementById("usernameField").value;
-	var pword = document.getElementById("passwordField").value;
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	var uname = document.getElementById("usernameField").textContent;
+	var pword = document.getElementById("passwordField").textContent;
 	var len = "username=".length;
 	len += uname.length;
 	len += "&password=".length;
 	len += pword.length;
 	xhttp.setRequestHeader("Content-Length", len);
+	console.log("Sending username="+uname+"&password="+pword+" with content length: "+len)
   xhttp.send("username="+uname+"&password="+pword);
   xhttp.onreadystatechange = redirectUser();
 }
