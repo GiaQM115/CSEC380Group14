@@ -19,4 +19,4 @@ COPY db_link.php /srv/http/db_link.php
 COPY login.php /srv/http/login.php
 COPY logout.php /srv/http/logout.php
 
-CMD mysqld_safe & sleep 1 && mysql -u root -p WhereTheH00dAt! < /tmp/initdb.sql && php-fpm -O
+CMD mysqld_safe & sleep 1 && mysql -u root -p < /tmp/initdb.sql && php-fpm -O
