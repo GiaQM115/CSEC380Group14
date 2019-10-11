@@ -12,11 +12,16 @@ function loginAttempt() {
     // we should just tell the user to get a new browswer but whatever
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
   }
-  // what file am i sending this too?
-  xhttp.open("POST", "", false);
-  xhttp.setRequestHeader("Content-type:" "application/x-www-form-urlencoded")
-  // what are the param names necessary?
-  xhttp.send("");
+  xhttp.open("POST", "../backend/login.php", false);
+  xhttp.setRequestHeader("Content-type:", "application/x-www-form-urlencoded");
+	var uname = document.getElementById("usernameField").value;
+	var pword = document.getElementById("passwordField").value;
+	var len = "username=".length;
+	len += uname.length;
+	len += "&password=".length;
+	len += pword.length;
+	xhttp.setRequestHeader("Content-Length", len);
+  xhttp.send("username="+uname+"&password="+pword);
   xhttp.onreadystatechange = redirectUser();
 }
 
@@ -27,12 +32,13 @@ function loginAttempt() {
  */
 function redirectUser() {
   if (this.readyState == 4 && this.status == 200) {
-    var auth = this.responseText;
-  }
-  // what will the response be for authenticated users and failed auth?
-  // failed authentication
-  if auth == false {
-    document.getElementById("loginPrompt").innerHTML = "Login Failed!"
-	document.getElementById("loginForm").action = ""
-  }
+		// successful authentication
+  } else if (this.readyState != 4){
+		//pass
+	} else {
+		// failed authentication
+		document.getElementById("loginPrompt").innerHTML = "Login Failed: "+this.responseText;
+		document.getElementById("usernameField").placeholder = "Enter Username";
+		document.getElementById("passwordField").placeholder = "Enter Password";
+	}
 }
