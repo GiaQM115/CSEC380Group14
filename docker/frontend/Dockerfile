@@ -9,8 +9,7 @@ RUN pacman -S --noconfirm apache
 COPY httpd.conf /etc/httpd/conf/httpd.conf
 
 # Initialize web content
-COPY home.html /srv/http/home.html
-COPY login.html /srv/http/login.html
+COPY *.html /srv/http/
 COPY js /srv/http/js
 COPY css /srv/http/css
 COPY video /srv/http/video

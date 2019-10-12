@@ -1,0 +1,13 @@
+1. Link to test cases: // provide
+
+2. To ensure that users cannot bypass authentication requirements, //finish
+
+3. // what the fuck is session fixation?
+
+4. Passwords in the database are stored as hashes to protect them in the case of a stolen database.
+
+5. To prevent password brute force, there is a login limit of 3 times before a user is locked out. // how long do we lock them out, or do we require a security question to be answered or something like that?
+
+6. // username enumeration??
+
+7. If the sessionID is predictable, a session could be easily stolen with something like a brute force attack. To prevent this, // how do we determine session IDs??

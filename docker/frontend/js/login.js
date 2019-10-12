@@ -17,23 +17,15 @@ function loginAttempt() {
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	var uname = document.getElementById("usernameField").value;
 	var pword = document.getElementById("passwordField").value;
-  xhttp.onreadystatechange = redirectUser();
-}
-
-/**
- * Based on the response from the server, redirect the user to appropraite page
- * If user is authenticated, redirect to the home page
- * If not, reload the login page with "Login Failed"
- */
-function redirectUser() {
-	var code = this.status;
-	console.log("Code"+code);
-	if (this.readyState == 4 && code == 200) {
-		location.replace("home.html");
-	} else if (this.readyState == 4 && code == 403) {
-		document.getElementById("loginPrompt").innerHTML = "Login Failed!";
-	} else if (this.readyState == 4 && code == 500) {
-		document.getElementById("loginPrompt").innerHTML = "Critical Backend Error!";
-	}
+  xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			location.replace("home.html");
+		} else if (this.readyState == 4 && this.status == 403) {
+			document.getElementById("loginPrompt").innerHTML = "Login Failed!";
+		} else if (this.readyState == 4 && this.status >= 500) {
+			location.replace("error.html");
+		}
+	};
+	xhttp.send("username="+uname+"&password="+pword);
 }
 
