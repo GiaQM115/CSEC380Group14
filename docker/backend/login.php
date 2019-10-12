@@ -2,35 +2,27 @@
 // Initialize the session
 session_start();
 
-// Check if the user is already logged in, if yes then redirect them to home page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+// Check if the user is already logged in
+if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true) {
     http_send_status(200);
     exit;
 }
 
-// Include db_link config file
+// Include db_link helper files
 require_once "db_link.php";
-
-// Define variables and initialize with empty values
-$username = $password = "";
-$username_err = $password_err = "";
+require "db_insert.php";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))) {
-        http_send_status(403);
-        exit;
-    } else{
-        $username = trim($_POST["username"]);
-    }
+    // Fetch parameters from the body
+    $username = trim($_POST["username"]);
+    $password = trim($_POST["password"]);
 
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))) {
+    // Check if username or password are empty
+    if(empty(trim($_POST["username"])) || empty(trim($_POST["password"]))) {
         http_send_status(403);
+        mysqli_close($link);
         exit;
-    } else{
-        $password = trim($_POST["password"]);
     }
 
     // Validate credentials
@@ -39,10 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if($stmt = mysqli_prepare($link, $sql)) {
         // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-        // Set parameters
-        $param_username = $username;
+        mysqli_stmt_bind_param($stmt, "s", $username);
 
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)) {
@@ -53,20 +42,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             if(mysqli_stmt_num_rows($stmt) == 1) {
                 // Bind result variables
                 mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+
                 if(mysqli_stmt_fetch($stmt)) {
                     if(password_verify($password, $hashed_password)) {
                         // Password is correct, so start a new session
                         session_start();
 
                         // Store data in session variables
-                        $_SESSION["loggedin"] = true;
+                        $_SESSION["logged_in"] = true;
                         $_SESSION["id"] = $id;
                         $_SESSION["username"] = $username;
 
                         http_send_status(200);
                     } else {
-                        // Display an error message if password is not valid
-                        $password_err = "The password you entered was not valid.";
+                        http_send_status(403);
                     }
                 }
             } else {
@@ -76,10 +65,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             http_send_status(500);
         }
 
-        // Close statement
         mysqli_stmt_close($stmt);
     }
 
-    // Close connection
     mysqli_close($link);
 }
