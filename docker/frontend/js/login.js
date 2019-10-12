@@ -27,11 +27,12 @@ function loginAttempt() {
  */
 function redirectUser() {
 	var code = this.status;
-	if (code == 200) {
+	console.log("Code"+code);
+	if (this.readyState == 4 && code == 200) {
 		location.replace("home.html");
-	} else if (code == 403) {
+	} else if (this.readyState == 4 && code == 403) {
 		document.getElementById("loginPrompt").innerHTML = "Login Failed!";
-	} else if (code == 500) {
+	} else if (this.readyState == 4 && code == 500) {
 		document.getElementById("loginPrompt").innerHTML = "Critical Backend Error!";
 	}
 }
