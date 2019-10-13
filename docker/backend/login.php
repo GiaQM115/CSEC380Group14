@@ -3,8 +3,8 @@
 session_start();
 
 // Check if the user is already logged in
-if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] === true) {
-    http_send_status(200);
+if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] == true) {
+    header("HTTP/1.1" . " 200 OK", true, 200);
     exit;
 }
 
@@ -19,8 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST["password"]);
 
     // Check if username or password are empty
-    if(empty(trim($_POST["username"])) || empty(trim($_POST["password"]))) {
-        http_send_status(403);
+    if(empty($username) || empty($password)) {
         mysqli_close($link);
         exit;
     }
@@ -53,16 +52,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["id"] = $id;
                         $_SESSION["username"] = $username;
 
-                        http_send_status(200);
+                        header("HTTP/1.1" . " 200 OK", true, 200);
                     } else {
-                        http_send_status(403);
+                        header("HTTP/1.1" . " 403 Forbidden", true, 403);
                     }
                 }
             } else {
-                http_send_status(403);
+                header("HTTP/1.1" . " 403 Forbidden", true, 403);
             }
         } else {
-            http_send_status(500);
+            header("HTTP/1.1" . " 500 Internal Server Error", true, 500);
         }
 
         mysqli_stmt_close($stmt);
