@@ -3,15 +3,15 @@
 version: '3'
 services:
   backend:
-    build: ./backend
-    container_name: backend
+    build: ./db
+    container_name: db
     expose:
-      - 80
+      - 3306
 
   frontend:
-    build: ./frontend
-    container_name: frontend
+    build: ./www
+    container_name: www
     ports:
       - "80:80"
     depends_on:
-      - backend
+      - db

@@ -3,7 +3,7 @@
 document.getElementById("loginButton").onclick = loginAttempt;
 
 /**
- * Sends a login attempt to the backend
+ * Sends a login attempt to the db
  */
 function loginAttempt() {
   if (window.XMLHttpRequest) {
