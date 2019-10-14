@@ -8,5 +8,5 @@ $_SESSION = array();
 // Destroy the session.
 session_destroy();
 
-http_send_status(200);
+header("HTTP/1.1" . " 200 OK", true, 200);
 exit;

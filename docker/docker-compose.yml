@@ -1,6 +1,6 @@
 version: '3'
 services:
-  backend:
+  db:
     build: ./db
     container_name: db
     expose:
@@ -11,7 +11,7 @@ services:
       - MYSQL_USER=php
       - MYSQL_PASSWORD=SuperSecretPassword
 
-  frontend:
+  www:
     build: ./www
     container_name: www
     ports:

@@ -4,7 +4,7 @@ session_start();
 
 // Check if the user is already logged in
 if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] == true) {
-    header("HTTP/1.1" . " 200 OK", true, 200);
+    http_response_code(200);
     exit;
 }
 
@@ -52,16 +52,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["id"] = $id;
                         $_SESSION["username"] = $username;
 
-                        header("HTTP/1.1" . " 200 OK", true, 200);
+                        http_response_code(200);
                     } else {
-                        header("HTTP/1.1" . " 403 Forbidden", true, 403);
+                        http_response_code(403);
                     }
                 }
             } else {
-                header("HTTP/1.1" . " 403 Forbidden", true, 403);
+                http_response_code(403);
             }
         } else {
-            header("HTTP/1.1" . " 500 Internal Server Error", true, 500);
+            http_response_code(500);
         }
 
         mysqli_stmt_close($stmt);

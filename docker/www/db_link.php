@@ -1,6 +1,6 @@
 <?php
 // Database credentials
-define('DB_SERVER', 'localhost');
+define('DB_SERVER', 'db');
 define('DB_USERNAME', 'php');
 define('DB_PASSWORD', 'SuperSecretPassword');
 define('DB_NAME', 'brickflix');
