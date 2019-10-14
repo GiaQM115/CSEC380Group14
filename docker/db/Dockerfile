@@ -1,5 +1,3 @@
 FROM mariadb:latest
 
-# TODO: implement Dockerfile
-
-CMD bash
+COPY initdb.sql /docker-entrypoint-initdb.d/

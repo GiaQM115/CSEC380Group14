@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS brickflix;
-CREATE DATABASE brickflix;
-USE brickflix;
-
 CREATE TABLE account (
     login_id VARCHAR(16) NOT NULL,
     pass_hash  VARCHAR(256) NOT NULL,
@@ -15,5 +11,3 @@ CREATE TABLE video (
     CONSTRAINT pk_id PRIMARY KEY (video_id),
     CONSTRAINT fk_uploader_id FOREIGN KEY (uploader_id) REFERENCES account(login_id)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-GRANT ALL PRIVILEGES ON brickflix TO 'php'@'localhost' IDENTIFIED BY 'SuperSecretPassword';

@@ -1,4 +1,3 @@
-
 // When the button is clicked (and the form is submitted), call the fuction loginAttempt()
 document.getElementById("loginButton").onclick = loginAttempt;
 
@@ -19,7 +18,7 @@ function loginAttempt() {
 	var pword = document.getElementById("passwordField").value;
   xhttp.onreadystatechange = function() {
 		if (this.readyState === 4 && this.status === 200) {
-			location.replace("/home.html");
+			location.replace("/index.html");
 		} else if (this.readyState === 4 && this.status === 403) {
 			document.getElementById("loginPrompt").innerHTML = "Login Failed!";
 		} else if (this.readyState === 4 && this.status >= 500) {
