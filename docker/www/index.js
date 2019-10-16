@@ -29,6 +29,9 @@ function loginAttempt() {
 		}
 	};
 
-	xhttp.send("username="+uname+"&password="+pword);
+	// saniize username and password
+	var uname_clean = uname.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/>/g, '&gt;');
+	var pword_clean = pword.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/>/g, '&gt;');
+	xhttp.send("username="+uname_clean+"&password="+pword_clean);
 }
 
