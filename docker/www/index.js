@@ -1,3 +1,9 @@
+// Always log out when the page loads
+window.onload = function () {
+	xhttp.open("POST", "/logout.php", true);
+	xhttp.send();
+};
+
 // When the button is clicked (and the form is submitted), call the fuction loginAttempt()
 document.getElementById("loginButton").onclick = loginAttempt;
 
