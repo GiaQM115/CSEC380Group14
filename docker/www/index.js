@@ -1,21 +1,21 @@
-// Always log out when the page loads
+// Check with the server to see if we aren't logged in
 window.onload = function () {
-    xhttp.open("POST", "/logout.php", true);
+    xhttp.open("GET", "/login.php", true);
     xhttp.send();
 };
 
-// When the button is clicked (and the form is submitted), call the fuction loginAttempt()
-document.getElementById("loginButton").onclick = loginAttempt;
+// When the button is clicked (and the form is submitted), call the fuction attemptLogin()
+document.getElementById("loginButton").onclick = attemptLogin;
 
 /**
- * Sends a login attempt to the php backend
+ * Sends a login attempt to the PHP backend
  */
-function loginAttempt() {
+function attemptLogin() {
     if (window.XMLHttpRequest) {
         // for modern browsers
         var xhttp = new XMLHttpRequest();
     } else {
-        // we should just tell the user to get a new browswer but whatever
+        // we should just tell the user to get a new browser, but whatever
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
@@ -26,16 +26,14 @@ function loginAttempt() {
     var pword = document.getElementById("passwordField").value;
 
     xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            location.replace("/home.html");
-        } else if (this.readyState === 4 && this.status === 403) {
+        if (this.readyState === 4 && this.status === 401) {
             document.getElementById("loginPrompt").innerHTML = "Login Failed!";
         } else if (this.readyState === 4 && this.status >= 500) {
-            location.replace("/error.html");
+            location.replace("/500.html");
         }
     };
 
-    // saniize username and password
+    // sanitize username and password
     var uname_clean = uname.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/>/g, '&gt;');
     var pword_clean = pword.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;').replace(/>/g, '&gt;');
     xhttp.send("username=" + uname_clean + "&password=" + pword_clean);

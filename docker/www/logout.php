@@ -13,7 +13,10 @@ session_destroy();
 // Attempt to log out
 try {
     $auth->logOut();
+    http_response_code(302);
+    header('Location: /index.html', true);
+    echo 'User is logged out';
 } catch (AuthError $e) {
+    http_response_code(500);
     die("Auth error");
 }
-exit;
