@@ -4,17 +4,17 @@ html, body {
     font-family: Roboto, sans-serif;
 }
 
-a:link, a:visited{
+a:link, a:visited {
     text-decoration: none;
     color: white;
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
     color: grey;
 }
 
-#siteLogo{
+#siteLogo {
     background-color: black;
     color: white;
     max-width: 200px;
@@ -23,12 +23,12 @@ a:hover{
     margin: auto;
 }
 
-#pageTitle{
+#pageTitle {
     color: white;
     text-align: center;
 }
 
-#logout{
+#logout {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -39,30 +39,30 @@ a:hover{
     padding: 6px;
 }
 
-#footer{
+#footer {
     position: center;
     color: black;
     text-align: right;
 }
 
-#loginForm{
+#loginForm {
     text-align: center;
     width: 500px;
     margin: auto;
 }
 
-#loginButton{
+#loginButton {
     background-color: black;
     border: none;
     color: white;
     padding: 10px;
 }
 
-input{
+input {
     padding: 10px;
 }
 
-label{
+label {
     display: block;
     margin-bottom: 10px;
 }
