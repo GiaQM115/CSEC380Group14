@@ -1,12 +1,19 @@
 <?php
-// Initialize the session
 session_start();
 
-// Unset all of the session variables
-$_SESSION = array();
+use Delight\Auth\AuthError;
 
-// Destroy the session.
+require_once __DIR__ . '/vendor/autoload.php';
+require_once 'db_link.php';
+
+// Unset all of the session variables and destroy the session
+$_SESSION = array();
 session_destroy();
 
-http_response_code(200);
+// Attempt to log out
+try {
+    $auth->logOut();
+} catch (AuthError $e) {
+    die("Auth error");
+}
 exit;
