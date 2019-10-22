@@ -8,7 +8,7 @@ require __DIR__ . '/../src/instance.php';
 // TODO
 
 // Serve this HTML if user IS logged in, otherwise redirect
-if(isset($_SESSION["logged_in"]) && $_SESSION["logged_in"] == true) {
+if($auth->isLoggedIn()) {
     include __DIR__ . '/home.html';
 } else {
     http_response_code(302);

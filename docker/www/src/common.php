@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 /**
  * Define the environment variables
  */
@@ -13,6 +11,6 @@ function favicon() {
 }
 
 function css() {
-    printf('<link rel="icon" href="%s">%s', MAIN_CSS_LOC, "\n");
-    printf('<link rel="icon" href="%s">%s', FONT_CSS_LOC, "\n");
+    printf('<link rel="stylesheet" href="%s">%s', MAIN_CSS_LOC, "\n");
+    printf('<link rel="stylesheet" href="%s">%s', FONT_CSS_LOC, "\n");
 }

@@ -13,7 +13,7 @@ function attemptLogin() {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xhttp.open("POST", "/login.php", true);
+    xhttp.open("POST", "/", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     var uname = document.getElementById("usernameField").value;
@@ -23,7 +23,7 @@ function attemptLogin() {
         if (this.readyState === 4 && this.status === 401) {
             document.getElementById("loginPrompt").innerHTML = "Login Failed!";
         } else if (this.readyState === 4 && this.status >= 500) {
-            location.replace("/500.html");
+            location.replace("/error/");
         }
     };
 

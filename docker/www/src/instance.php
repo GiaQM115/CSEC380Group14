@@ -2,12 +2,7 @@
 
 use Delight\Auth\Auth;
 use Delight\Auth\AuthError;
-use Delight\Auth\InvalidEmailException;
-use Delight\Auth\InvalidPasswordException;
-use Delight\Auth\InvalidSelectorTokenPairException;
-use Delight\Auth\TokenExpiredException;
-use Delight\Auth\TooManyRequestsException;
-use Delight\Auth\UserAlreadyExistsException;
+use Delight\Auth\AuthException;
 
 // Define DB variables
 define('DB_HOST', 'db');
@@ -26,28 +21,11 @@ if (!defined('TEST_USER_DEFINED')) {
         $userId = $auth->register('test@test.com', 'test', 'test', function ($selector, $token) use ($auth) {
             try {
                 $auth->confirmEmail($selector, $token);
-                echo 'Email address has been verified';
-            } catch (InvalidSelectorTokenPairException $e) {
-                die('Invalid token');
-            } catch (TokenExpiredException $e) {
-                die('Token expired');
-            } catch (UserAlreadyExistsException $e) {
-                die('Email address already exists');
-            } catch (TooManyRequestsException $e) {
-                die('Too many requests');
+            } catch (AuthException $e) {
             }
         });
-        echo 'We have signed up a new user with the ID ' . $userId;
-    } catch (InvalidEmailException $e) {
-        die('Invalid email address');
-    } catch (InvalidPasswordException $e) {
-        die('Invalid password');
-    } catch (UserAlreadyExistsException $e) {
-        die('User already exists');
-    } catch (TooManyRequestsException $e) {
-        die('Too many requests');
+    } catch (AuthException $e) {
     } catch (AuthError $e) {
-        die('Auth error');
     }
     define('TEST_USER_DEFINED', true);
 }
