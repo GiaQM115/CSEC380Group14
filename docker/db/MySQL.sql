@@ -7,10 +7,6 @@
 /*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-DROP DATABASE IF EXISTS brickflix;
-CREATE DATABASE brickflix;
-USE brickflix;
-
 CREATE TABLE IF NOT EXISTS `users`
 (
     `id`           int(10) unsigned                                            NOT NULL AUTO_INCREMENT,
@@ -82,6 +78,19 @@ CREATE TABLE IF NOT EXISTS `users_throttling`
     `expires_at`     int(10) unsigned                                           NOT NULL,
     PRIMARY KEY (`bucket`),
     KEY `expires_at` (`expires_at`)
+) ENGINE = MyISAM
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `videos`
+(
+    `hash_id`      binary(20)                                                  NOT NULL,
+    `title`        varchar(64)                                                 NOT NULL,
+    `filename`     varchar(96)                                                 NOT NULL,
+    `uploader_id`  int(10) unsigned                                            NOT NULL,
+    `upload_date`  date                                                        NOT NULL DEFAULT CURDATE(),
+    PRIMARY KEY (`hash_id`),
+    FOREIGN KEY (`uploader_id`) REFERENCES users()
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;

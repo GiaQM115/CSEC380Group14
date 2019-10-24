@@ -3,13 +3,21 @@
 <head>
     <title>BrickFlix</title>
     <meta charset="utf-8">
-    <?php favicon(); css(); ?>
+    <?php favicon_link(FAVICON_HREF); css_link(MAIN_CSS_HREF); css_link(FONT_CSS_HREF); ?>
 </head>
 <body>
 <div>
-    <h1>Uh Oh!</h1>
-    <p>It looks like an error occurred on our end. Maybe give us another shot?</p>
-    <a href="../login.html">Return to Login</a>
+    <div id="siteLogo">
+        <h1>BrickFlix</h1>
+    </div>
+    <div id="pageTitle">
+        <h2>Error</h2>
+    </div>
+    <div>
+        <h1>Uh Oh!</h1>
+        <p>It looks like an error occurred on our end. Maybe give us another shot?</p>
+        <a href="../login.html">Return to Login</a>
+    </div>
 </div>
 </body>
 </html>

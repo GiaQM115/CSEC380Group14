@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>BrickFlix</title>
+    <meta charset="utf-8">
+    <?php favicon_link(FAVICON_HREF); css_link(MAIN_CSS_HREF); css_link(FONT_CSS_HREF); ?>
+</head>
+<body>
+<div>
+    <div id="siteLogo">
+        <h1>BrickFlix</h1>
+    </div>
+    <div id="pageTitle">
+        <h2><?php title($title); ?></h2>
+    </div>
+    <div id="logout">
+        <a href="../login.html">Logout</a>
+    </div>
+    <div id="viewer">
+        <video controls height="480" width="720">
+            <?php video_source($src); ?>
+            Your browser does not support this video format. Dang.
+        </video>
+    </div>
+    <div id="similar">
+        <h2>Related videos</h2>
+        <img alt="db_schema" class="thumbnail" src="../../../documentation/db_schema.png">
+        <img alt="use_cases" class="thumbnail" src="../../../documentation/use_cases.png">
+        <img alt="network_topology" class="thumbnail" src="../../../documentation/network_topology.png">
+    </div>
+    <div id="footer">
+        <h3>&copy;2019 CSEC380Group14</h3>
+    </div>
+</div>
+</body>
+</html>

@@ -1,14 +1,13 @@
 <?php
 session_start();
 
-require __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/common.php';
-require __DIR__ . '/../src/instance.php';
+require_once __DIR__ . '/../src/auth_instance.php';
 
 // TODO
 
 // Serve this HTML if user IS logged in, otherwise redirect
-if($auth->isLoggedIn()) {
+if ($auth->isLoggedIn()) {
     include __DIR__ . '/home.html';
 } else {
     http_response_code(302);

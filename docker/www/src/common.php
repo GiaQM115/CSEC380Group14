@@ -1,16 +1,20 @@
 <?php
-/**
- * Define the environment variables
- */
-define('FAVICON_LOC', '/favicon.ico');
-define('MAIN_CSS_LOC', '/css/main.css');
-define('FONT_CSS_LOC', 'https://fonts.googleapis.com/css?family=Roboto');
 
-function favicon() {
-    printf('<link rel="icon" href="%s">%s', FAVICON_LOC, "\n");
+require_once __DIR__ . '/../vendor/autoload.php';
+
+// Define environment variables
+define('FAVICON_HREF', '/favicon.ico');
+define('MAIN_CSS_HREF', '/css/main.css');
+define('FONT_CSS_HREF', 'https://fonts.googleapis.com/css?family=Roboto');
+
+function favicon_link($href) {
+    printf('<link rel="icon" href="%s">%s', $href, "\n");
 }
 
-function css() {
-    printf('<link rel="stylesheet" href="%s">%s', MAIN_CSS_LOC, "\n");
-    printf('<link rel="stylesheet" href="%s">%s', FONT_CSS_LOC, "\n");
+function css_link($href) {
+    printf('<link rel="stylesheet" href="%s">%s', $href, "\n");
+}
+
+function js_script($src) {
+    printf('<script src="%s" type="text/javascript"></script>%s', $src, "\n");
 }
