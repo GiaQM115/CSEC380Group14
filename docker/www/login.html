@@ -14,14 +14,14 @@
         <h2>Welcome to BrickFlix. Please Log In.</h2>
     </div>
     <div id="loginForm">
-        <form id="brickFlixLogin">
+        <form action="index.php" id="brickFlixLogin" method="post" target="_self">
             <label>
-                <input id="usernameField" placeholder="username" required type="text">
+                <input name="username" placeholder="username" required type="text">
             </label>
             <label>
-                <input id="passwordField" placeholder="password" required type="password">
+                <input name="password" placeholder="password" required type="password">
             </label>
-            <button form="brickFlixLogin" id="loginButton" type="button">Login</button>
+            <button form="brickFlixLogin" id="loginButton" type="submit">Login</button>
         </form>
     </div>
     <div id="footer">

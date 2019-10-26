@@ -14,7 +14,3 @@ function favicon_link($href) {
 function css_link($href) {
     printf('<link rel="stylesheet" href="%s">%s', $href, "\n");
 }
-
-function js_script($src) {
-    printf('<script src="%s" type="text/javascript"></script>%s', $src, "\n");
-}

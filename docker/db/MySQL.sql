@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `videos`
     `uploader_id`  int(10) unsigned                                            NOT NULL,
     `upload_date`  date                                                        NOT NULL DEFAULT CURDATE(),
     PRIMARY KEY (`hash_id`),
-    FOREIGN KEY (`uploader_id`) REFERENCES users()
+    FOREIGN KEY (`uploader_id`) REFERENCES users(id)
 ) ENGINE = MyISAM
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
