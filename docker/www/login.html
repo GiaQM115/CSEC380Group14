@@ -3,29 +3,31 @@
 <head>
     <title>BrickFlix</title>
     <meta charset="utf-8">
-    <?php favicon_link(FAVICON_HREF); css_link(MAIN_CSS_HREF); css_link(FONT_CSS_HREF); ?>
+    <link href="favicon.ico" rel="icon">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
 <div>
-    <div id="siteLogo">
+    <div id="logoDiv">
         <h1>BrickFlix</h1>
     </div>
-    <div id="pageTitle">
-        <h2>Welcome to BrickFlix. Please Log In.</h2>
+    <div id="titleDiv">
+        <h2>Welcome to BrickFlix. Please log in.</h2>
     </div>
-    <div id="loginForm">
-        <form action="index.php" id="brickFlixLogin" method="post" target="_self">
+    <div id="login">
+        <form action="/" id="loginForm" method="post" target="_self">
             <label>
                 <input name="username" placeholder="username" required type="text">
             </label>
             <label>
                 <input name="password" placeholder="password" required type="password">
             </label>
-            <button form="brickFlixLogin" id="loginButton" type="submit">Login</button>
+            <button form="loginForm" id="loginButton" type="submit">Login</button>
         </form>
     </div>
-    <div id="footer">
-        <h3>&copy;2019 CSEC380Group14</h3>
+    <div id="footerDiv">
+        <h3>&copy;2019 CSEC-380 Group 14</h3>
     </div>
 </div>
 </body>

@@ -398,7 +398,7 @@ abstract class UserManager
 	}
 
 	/**
-	 * Triggers a forced logout in all sessions that belong to the specified user
+	 * Triggers a forced logoutDiv in all sessions that belong to the specified user
 	 *
 	 * @param int $userId the ID of the user to sign out
 	 * @throws AuthError if an internal problem occurred (do *not* catch)

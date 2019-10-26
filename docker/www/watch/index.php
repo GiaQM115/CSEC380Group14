@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../src/common.php';
 require_once __DIR__ . '/../src/auth_instance.php';
 
 // Fetch video metadata
@@ -11,11 +10,13 @@ $title = $fields[0];
 $src = $fields[1];
 $conn->close();
 
-function title($string) {
-    printf('%s%s', $string, "\n");
+function title($title)
+{
+    printf('%s%s', $title, "\n");
 }
 
-function video_source($src) {
+function video_source($src)
+{
     printf('<source src="%s" type="video/mp4">%s', $src, "\n");
 }
 

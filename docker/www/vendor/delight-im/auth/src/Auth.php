@@ -432,7 +432,7 @@ final class Auth extends UserManager
 		// determine the expiry date of any locally existing remember directive
 		$previousRememberDirectiveExpiry = $this->getRememberDirectiveExpiry();
 
-		// schedule a forced logout in all sessions
+		// schedule a forced logoutDiv in all sessions
 		$this->forceLogoutForUserById($this->getUserId());
 
 		// the following session field may not have been initialized for sessions that had already existed before the introduction of this feature
@@ -440,7 +440,7 @@ final class Auth extends UserManager
 			$_SESSION[self::SESSION_FIELD_FORCE_LOGOUT] = 0;
 		}
 
-		// ensure that we will simply skip or ignore the next forced logout (which we have just caused) in the current session
+		// ensure that we will simply skip or ignore the next forced logoutDiv (which we have just caused) in the current session
 		$_SESSION[self::SESSION_FIELD_FORCE_LOGOUT]++;
 
 		// re-generate the session ID to prevent session fixation attacks (requests a cookie to be written on the client)
@@ -468,9 +468,9 @@ final class Auth extends UserManager
 			throw new NotLoggedInException();
 		}
 
-		// schedule a forced logout in all sessions
+		// schedule a forced logoutDiv in all sessions
 		$this->forceLogoutForUserById($this->getUserId());
-		// and immediately apply the logout locally
+		// and immediately apply the logoutDiv locally
 		$this->logOut();
 	}
 

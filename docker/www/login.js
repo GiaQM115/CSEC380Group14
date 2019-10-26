@@ -1,8 +1,9 @@
-// When the button is clicked (and the form is submitted), call the fuction attemptLogin()
+// When the button is clicked, call the function attemptLogin()
 document.getElementById("loginButton").onclick = attemptLogin;
 
 /**
  * Sends a login attempt to the PHP backend
+ * @deprecated
  */
 function attemptLogin() {
     if (window.XMLHttpRequest) {

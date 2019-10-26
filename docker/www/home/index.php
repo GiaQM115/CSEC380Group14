@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../src/common.php';
 require_once __DIR__ . '/../src/auth_instance.php';
 
 // TODO
