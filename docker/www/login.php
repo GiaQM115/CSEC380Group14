@@ -1,5 +1,7 @@
 <?php
 
+require_once './src/insert_data.php';
+
 use Delight\Auth\AuthError;
 use Delight\Auth\AuthException;
 

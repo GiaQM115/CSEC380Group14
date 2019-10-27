@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/auth_instance.php';
+require_once './auth_instance.php';
 
 use Delight\Auth\AuthError;
 use Delight\Auth\AuthException;

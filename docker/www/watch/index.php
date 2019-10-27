@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../src/auth_instance.php';
+require_once '../src/auth_instance.php';
 
 // Fetch video metadata
 $conn = mysqli_connect(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
@@ -22,8 +22,8 @@ function video_source($src)
 
 // Serve this HTML if user IS logged in, otherwise redirect
 if ($auth->isLoggedIn()) {
-    include __DIR__ . '/watch.html';
+    include './watch.html';
 } else {
     http_response_code(302);
-    header('Location: /', true);
+    header('Location: /');
 }
