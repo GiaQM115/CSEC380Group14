@@ -23,6 +23,15 @@ a:hover {
     height: 150px;
 }
 
+.uploadDiv {
+	display: block;
+	float: left;
+	height: 100%;
+	width: 50%;
+	text-align: center;
+	padding-top: 10%;
+}
+
 #logoDiv {
     background-color: black;
     color: white;
@@ -94,4 +103,11 @@ label {
 img {
     max-height: 200px;
     max-width: 200px;
+}
+
+button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px;
 }
