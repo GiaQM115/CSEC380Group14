@@ -3,8 +3,8 @@
 <head>
     <title>BrickFlix</title>
     <meta charset="utf-8">
-    <link href="../favicon.ico" rel="icon">
-    <link href="../css/main.css" rel="stylesheet">
+    <link href="/favicon.ico" rel="icon">
+    <link href="/css/main.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
@@ -19,12 +19,19 @@
         <a href="/logout.php" id="logoutA">Logout</a>
     </div>
 		<div id="fromFileDiv" class="uploadDiv">
+			<!-- WAITING ON IMG UPLOAD -->
 			<img id="fromFile" src="" alt="Upload From File..." />
 			<br />
 			<button id="uploadFile">Upload From File</button>
 		</div>
 		<div id="fromUrlDiv" class="uploadDiv">
+			<!-- WAITING ON IMG UPLOAD -->
 			<img id="fromUrl" src="" alt="Upload From Url..." />
+			<br />
+			<!-- INDEX.PHP PLACEHOLDER: replace with php file that handles URL uploads -->
+			<form id="urlUploadForm" action="index.php">
+				<input id="urlUpload" placeholder="Upload From URL" type="text" />
+			</form>
 			<br />
 			<button id="uploadUrl">Upload From URL</button>
 		</div>
