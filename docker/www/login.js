@@ -1,10 +1,6 @@
-// When the button is clicked, call the function attemptLogin()
-document.getElementById("loginButton").onclick = attemptLogin;
 
-/**
- * Sends a login attempt to the PHP backend
- * @deprecated
- */
+// TODO: modify this function so that it only takes care of writing to the HTML if a failed login (i.e. a 401) is detected
+
 function attemptLogin() {
     if (window.XMLHttpRequest) {
         // for modern browsers

@@ -16,7 +16,9 @@
         <h2><?php title($title); ?></h2>
     </div>
     <div id="logoutDiv">
-        <a href="/logout.php" id="logoutA">Logout</a>
+        <form action="/watch/" id="logoutForm" method="post" target="_self">
+            <button form="logoutForm" id="logoutButton" type="submit">Logout</button>
+        </form>
     </div>
     <div id="viewerDiv">
         <video controls height="480" width="720">

@@ -16,7 +16,9 @@
         <h2>Home</h2>
     </div>
     <div id="logoutDiv">
-        <a href="/logout.php" id="logoutA">Logout</a>
+        <form action="/home/" id="logoutForm" method="post" target="_self">
+            <button form="logoutForm" id="logoutButton" type="submit">Logout</button>
+        </form>
     </div>
     <div id="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>

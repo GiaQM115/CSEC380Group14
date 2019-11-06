@@ -20,7 +20,7 @@ if ($auth->isLoggedIn()) {
     // TODO
 
     // Finally, include the HTML
-    include __DIR__ . '/home.html';
+    include __DIR__ . '/upload.html';
 } else {
     http_response_code(302);
     header('Location: /');

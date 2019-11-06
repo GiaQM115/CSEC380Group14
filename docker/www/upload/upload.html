@@ -16,7 +16,9 @@
         <h2>Upload Manager</h2>
     </div>
     <div id="logoutDiv">
-        <a href="/logout.php" id="logoutA">Logout</a>
+        <form action="/upload/" id="logoutForm" method="post" target="_self">
+            <button form="logoutForm" id="logoutButton" type="submit">Logout</button>
+        </form>
     </div>
 		<div id="fromFileDiv" class="uploadDiv">
 			<!-- WAITING ON IMG UPLOAD -->
