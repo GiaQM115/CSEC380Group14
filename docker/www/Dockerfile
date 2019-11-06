@@ -6,7 +6,11 @@ RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pdo_mysql
 
 # Initialize Apache-PHP
+COPY apache2.conf /etc/apache2/
+COPY brickflix.conf /etc/apache2/sites-available/
+RUN a2dissite 000-default && a2ensite brickflix
 
 # Initialize web content
 COPY ./ /var/www/html/
+RUN rm *.conf
 RUN chown -R www-data:www-data /var/www/html/
