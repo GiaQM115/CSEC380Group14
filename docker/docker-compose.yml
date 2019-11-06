@@ -1,20 +1,20 @@
-# General docker-compose file for the current system topology
-
 version: '3'
 services:
-#  backend:
-#    build: ./backend
-#    container_name: backend
-#    restart: always
-#    expose:
-#      - 80
-#      - 3306
+  db:
+    build: ./db
+    container_name: db
+    expose:
+      - 3306
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=brickflix
+      - MYSQL_USER=php
+      - MYSQL_PASSWORD=SuperSecretPassword
 
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    restart: always
+  www:
+    build: ./www
+    container_name: www
     ports:
       - "80:80"
-#    depends_on:
-#      - backend
+    depends_on:
+      - db
