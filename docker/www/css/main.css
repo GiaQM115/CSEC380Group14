@@ -1,0 +1,113 @@
+html, body {
+    height: 100%;
+    background-color: #8f8f8f;
+    font-family: Roboto, sans-serif;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: none;
+    color: grey;
+}
+
+.thumbnail {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 300px;
+    height: 150px;
+}
+
+.uploadDiv {
+	display: block;
+	float: left;
+	height: 100%;
+	width: 50%;
+	text-align: center;
+	padding-top: 10%;
+}
+
+#logoDiv {
+    background-color: black;
+    color: white;
+    max-width: 200px;
+    padding: 10px;
+    text-align: center;
+    margin: auto;
+}
+
+#titleDiv {
+    color: white;
+    text-align: center;
+}
+
+#logoutDiv {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: black;
+    color: white;
+    max-width: 100px;
+    text-align: center;
+    padding: 6px;
+}
+
+#footerDiv {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    color: black;
+    text-align: right;
+}
+
+#login {
+    text-align: center;
+    width: 500px;
+    margin: auto;
+}
+
+#loginButton {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px;
+}
+
+#viewerDiv {
+    position: relative;
+    float: left;
+    margin-right: 0;
+    margin-left: 15%;
+}
+
+#similarDiv {
+    position: relative;
+    float: right;
+    margin-right: 10%;
+}
+
+input {
+    padding: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+img {
+    max-height: 200px;
+    max-width: 200px;
+}
+
+button {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px;
+}
