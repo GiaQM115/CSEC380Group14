@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/src/db_conn.php';
+
 use Delight\Auth\AuthError;
 
 try {
