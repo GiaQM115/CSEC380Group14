@@ -2,7 +2,6 @@
 session_start();
 
 require_once __DIR__ . '/src/db_conn.php';
-require_once __DIR__ . '/src/insert_data.php';
 
 use Delight\Auth\AuthError;
 use Delight\Auth\AuthException;
