@@ -26,17 +26,17 @@
         <h2>Upload Manager</h2>
     </div>
     <div id="logoutDiv">
-        <form action="/upload/" id="logoutForm" method="post" target="_self">
+        <form action="/profile/" id="logoutForm" method="post" target="_self">
             <button form="logoutForm" id="logoutButton" type="submit">Logout</button>
         </form>
     </div>
 		<div id="fromFileDiv" class="uploadDiv">
-			<img id="fromFile" src="upload/file_upload.png" alt="Upload From File..." />
+			<img id="fromFile" src="/file_upload.png" alt="Upload From File..." />
 			<br />
 			<button id="uploadFile">Upload From File</button>
 		</div>
 		<div id="fromUrlDiv" class="uploadDiv">
-			<img id="fromUrl" src="upload/cloud_upload.png" alt="Upload From Url..." />
+			<img id="fromUrl" src="/cloud_upload.png" alt="Upload From Url..." />
 			<br />
 			<form id="urlUploadForm" action="upload.php">
 				<input id="urlUpload" placeholder="Upload From URL" type="text" />
