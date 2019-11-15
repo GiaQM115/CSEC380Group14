@@ -15,6 +15,13 @@
     <div id="titleDiv">
         <h2>Home</h2>
     </div>
+		<div id="featuredVideoDiv">
+			<video controls width="1280" height="720">
+				<!-- Fix the source here, it probably shouldn't be static; make this the first video in the db and pull source form there -->
+				<source src="Weezer_Buddy_Holly.ogv" type="ogv">
+				Your browser does not support this video format. Dang.
+			<video>
+		</div>
     <div id="logoutDiv">
         <form action="/home/" id="logoutForm" method="post" target="_self">
             <button form="logoutForm" id="logoutButton" type="submit">Logout</button>

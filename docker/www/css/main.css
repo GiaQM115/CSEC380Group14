@@ -98,10 +98,16 @@ a:hover {
 }
 
 #profileDiv {
-		position: relative;
-		width: 100%;
-		padding-left: 7%;
-		margin-bottom: 5%;
+	position: relative;
+	width: 100%;
+	padding-left: 7%;
+	margin-bottom: 5%;
+}
+
+#featuredVideoDiv {
+	border-style: solid;
+	width: 1280px;
+	margin: auto;
 }
 
 input {
