@@ -4,7 +4,7 @@
     <title>BrickFlix</title>
     <meta charset="utf-8">
     <link href="/favicon.ico" rel="icon">
-    <link href="/css/main.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
@@ -12,6 +12,16 @@
     <div id="logoDiv">
         <h1>BrickFlix</h1>
     </div>
+		<div id="titleDiv">
+			<h2>My Profile: Recent Uploads</h2>
+		</div>
+		<div id="profileDiv">
+			<img alt="" class="featuredThumbnail" id="recent5" src="">
+			<img alt="" class="featuredThumbnail" id="recent3" src="../../../documentation/use_cases.png">
+			<img alt="" class="featuredThumbnail" id="recent1" src="../../../documentation/network_topology.png">			
+			<img alt="" class="featuredThumbnail" id="recent2" src="../../../documentation/use_cases.png">
+			<img alt="" class="featuredThumbnail" id="recent4" src="../../../documentation/network_topology.png">			
+		</div>
     <div id="titleDiv">
         <h2>Upload Manager</h2>
     </div>
@@ -21,17 +31,14 @@
         </form>
     </div>
 		<div id="fromFileDiv" class="uploadDiv">
-			<!-- WAITING ON IMG UPLOAD -->
-			<img id="fromFile" src="" alt="Upload From File..." />
+			<img id="fromFile" src="file_upload.png" alt="Upload From File..." />
 			<br />
 			<button id="uploadFile">Upload From File</button>
 		</div>
 		<div id="fromUrlDiv" class="uploadDiv">
-			<!-- WAITING ON IMG UPLOAD -->
-			<img id="fromUrl" src="" alt="Upload From Url..." />
+			<img id="fromUrl" src="cloud_upload.png" alt="Upload From Url..." />
 			<br />
-			<!-- INDEX.PHP PLACEHOLDER: replace with php file that handles URL uploads -->
-			<form id="urlUploadForm" action="index.php">
+			<form id="urlUploadForm" action="upload.php">
 				<input id="urlUpload" placeholder="Upload From URL" type="text" />
 			</form>
 			<br />
