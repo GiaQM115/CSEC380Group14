@@ -9,5 +9,5 @@ if (!$auth->isLoggedIn()) {
     include __DIR__ . '/login.html';
 } else {
     http_response_code(302);
-    header('Location: /home/');
+    header('Location: /home.php');
 }
