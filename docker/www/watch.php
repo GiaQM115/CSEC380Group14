@@ -13,7 +13,7 @@ if ($auth->isLoggedIn()) {
         $result = $statement->fetchAll();
 
         // Run this code if the result is not empty, otherwise not found
-        if(!$result) {
+        if (!$result) {
             $title = $result[0];
             $src = '/src/' . $result[1];
             $uploader = $result[2];

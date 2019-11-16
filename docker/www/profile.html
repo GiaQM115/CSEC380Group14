@@ -3,38 +3,38 @@
 <head>
     <title>BrickFlix</title>
     <meta charset="utf-8">
-    <link href="/favicon.ico" rel="icon">
-    <link href="/css/main.css" rel="stylesheet">
-    <link href="/css/classes.css" rel="stylesheet">
+    <link href="favicon.ico" rel="icon">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/classes.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
 <div>
-    <div id="logoDiv">
+    <div class="logoDiv">
         <h1>BrickFlix</h1>
     </div>
     <div class="titleDiv">
         <h2>My Profile: Recent Uploads</h2>
     </div>
-    <div id="profileDiv">
+    <div class="profileDiv">
         <!-- TODO: <img alt="" class="featuredThumbnail" src=""> in PHP -->
     </div>
     <div class="titleDiv">
         <h2>Upload Manager</h2>
     </div>
-    <div class="logoutDiv">
-        <form action="/logout.php" id="logoutForm" method="post">
+    <div class="navDiv">
+        <form action="logout.php" id="logoutForm" method="post">
             <button form="logoutForm" type="submit">Logout</button>
         </form>
     </div>
     <div class="uploadDiv">
-        <img alt="Upload From File..." src="/images/file_upload.png"/>
+        <img alt="Upload From File..." src="images/file_upload.png"/>
         <br/>
         <button id="uploadFile">Upload From File</button>
     </div>
     <div class="uploadDiv">
         <form action="upload.php" id="urlUploadForm">
-            <img alt="Upload From Url..." id="fromUrl" src="/images/cloud_upload.png"/>
+            <img alt="Upload From Url..." id="fromUrl" src="images/cloud_upload.png"/>
             <label for="urlUpload"></label><input id="urlUpload" placeholder="Upload From URL" type="text"/>
         </form>
         <button id="uploadUrl">Upload From URL</button>

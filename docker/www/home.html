@@ -3,9 +3,9 @@
 <head>
     <title>BrickFlix</title>
     <meta charset="utf-8">
-    <link href="/favicon.ico" rel="icon">
-    <link href="/css/main.css" rel="stylesheet">
-    <link href="/css/classes.css" rel="stylesheet">
+    <link href="favicon.ico" rel="icon">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/classes.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
@@ -17,13 +17,16 @@
         <h2>Home</h2>
     </div>
     <div class="featuredVideoDiv">
-        <video controls height="720" width="1280">
+        <video controls height="480" width="720">
             <!-- TODO: Implement video source in PHP -->
             Your browser does not support this video format. Dang.
         </video>
     </div>
-    <div class="logoutDiv">
-        <form action="/logout.php" id="logoutForm" method="post">
+    <div class="navDiv">
+        <form action="login.php" id="profileForm" method="get">
+            <button form="profileForm" type="submit">My Profile</button>
+        </form>
+        <form action="logout.php" id="logoutForm" method="post">
             <button form="logoutForm" type="submit">Logout</button>
         </form>
     </div>
