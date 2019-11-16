@@ -5,32 +5,31 @@
     <meta charset="utf-8">
     <link href="/favicon.ico" rel="icon">
     <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/classes.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
 <div>
-    <div id="logoDiv">
+    <div class="logoDiv">
         <h1>BrickFlix</h1>
     </div>
-    <div id="titleDiv">
+    <div class="titleDiv">
         <h2>Home</h2>
     </div>
-		<div id="featuredVideoDiv">
-			<video controls width="1280" height="720">
-				<!-- Fix the source here, it probably shouldn't be static; make this the first video in the db and pull source form there -->
-				<source src="Weezer_Buddy_Holly.ogv" type="ogv">
-				Your browser does not support this video format. Dang.
-			<video>
-		</div>
-    <div id="logoutDiv">
-        <form action="/home/" id="logoutForm" method="post" target="_self">
-            <button form="logoutForm" id="logoutButton" type="submit">Logout</button>
+    <div class="featuredVideoDiv">
+        <video controls height="720" width="1280">
+            <!-- TODO: Implement video source in PHP -->
+            Your browser does not support this video format. Dang.
+        </video>
+    </div>
+    <div class="logoutDiv">
+        <form action="/logout.php" id="logoutForm" method="post">
+            <button form="logoutForm" type="submit">Logout</button>
         </form>
     </div>
-    <div id="footerDiv">
+    <div class="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>
     </div>
 </div>
 </body>
-<script src="/home/home.js" type="text/javascript"></script>
 </html>

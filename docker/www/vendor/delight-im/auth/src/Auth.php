@@ -94,7 +94,7 @@ final class Auth extends UserManager
 		}
 	}
 
-	/** Checks if there is a "remember me" directive set and handles the automatic login (if appropriate) */
+	/** Checks if there is a "remember me" directive set and handles the automatic loginDiv (if appropriate) */
 	private function processRememberDirective()
 	{
 		// if the user is not signed in yet
@@ -573,7 +573,7 @@ final class Auth extends UserManager
 
 	protected function onLoginSuccessful($userId, $email, $username, $status, $roles, $forceLogout, $remembered)
 	{
-		// update the timestamp of the user's last login
+		// update the timestamp of the user's last loginDiv
 		try {
 			$this->db->update(
 				$this->makeTableNameComponents('users'),

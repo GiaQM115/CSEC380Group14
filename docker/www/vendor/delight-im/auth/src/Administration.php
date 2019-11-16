@@ -563,7 +563,7 @@ final class Administration extends UserManager
 	 *
 	 * @param string $columnName the name of the column to filter by
 	 * @param mixed $columnValue the value to look for in the selected column
-	 * @return int the number of matched users (where only a value of one means that the login may have been successful)
+	 * @return int the number of matched users (where only a value of one means that the loginDiv may have been successful)
 	 * @throws EmailNotVerifiedException if the user has not verified their email address via a confirmation method yet
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */

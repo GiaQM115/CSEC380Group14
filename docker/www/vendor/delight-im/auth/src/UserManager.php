@@ -217,7 +217,7 @@ abstract class UserManager
 	/**
 	 * Called when a user has successfully logged in
 	 *
-	 * This may happen via the standard login, via the "remember me" feature, or due to impersonation by administrators
+	 * This may happen via the standard loginDiv, via the "remember me" feature, or due to impersonation by administrators
 	 *
 	 * @param int $userId the ID of the user
 	 * @param string $email the email address of the user

@@ -5,28 +5,29 @@
     <meta charset="utf-8">
     <link href="favicon.ico" rel="icon">
     <link href="css/main.css" rel="stylesheet">
+    <link href="/css/classes.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
 <div>
-    <div id="logoDiv">
+    <div class="logoDiv">
         <h1>BrickFlix</h1>
     </div>
-    <div id="titleDiv">
+    <div class="titleDiv">
         <h2>Welcome to BrickFlix. Please log in.</h2>
     </div>
-    <div id="login">
-        <form action="/" id="loginForm" method="post" target="_self">
+    <div class="loginDiv">
+        <form action="/login.php" id="loginForm" method="post">
             <label>
                 <input name="username" placeholder="username" required type="text">
             </label>
             <label>
                 <input name="password" placeholder="password" required type="password">
             </label>
-            <button form="loginForm" id="loginButton" type="submit">Login</button>
+            <button form="loginForm" type="submit">Login</button>
         </form>
     </div>
-    <div id="footerDiv">
+    <div class="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>
     </div>
 </div>
