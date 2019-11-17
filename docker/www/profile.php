@@ -5,7 +5,7 @@ require_once __DIR__ . '/src/db_conn.php';
 
 // Run this code if user IS logged in, otherwise redirect
 if ($auth->isLoggedIn()) {
-    // TODO
+    // TODO: load metadata for videos
 
     // Include the HTML
     include __DIR__ . '/profile.html';

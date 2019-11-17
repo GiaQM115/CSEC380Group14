@@ -17,5 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     http_response_code(400);
 }
 
-// Include the login page
-include __DIR__ . '/index.php';
+// Redirect to the login page
+http_response_code(302);
+header('Location: /');

@@ -14,13 +14,7 @@
         <h1>BrickFlix</h1>
     </div>
     <div class="titleDiv">
-        <h2>My Profile: Recent Uploads</h2>
-    </div>
-    <div class="profileDiv">
-        <!-- TODO: <img alt="" class="featuredThumbnail" src=""> in PHP -->
-    </div>
-    <div class="titleDiv">
-        <h2>Upload Manager</h2>
+        <h2>My Profile</h2>
     </div>
     <div class="navDiv">
         <form action="home.php" id="homeForm" method="get">
@@ -30,18 +24,32 @@
             <button form="logoutForm" type="submit">Logout</button>
         </form>
     </div>
-    <div class="uploadDiv">
-        <img alt="Upload From File..." src="images/file_upload.png"/>
-        <br/>
-        <button id="uploadFile">Upload From File</button>
+    <div class="profileDiv">
+        <!-- TODO: <img alt="" class="featuredThumbnail" src=""> in PHP -->
+    </div>
+    <div class="titleDiv">
+        <h2>Upload Manager</h2>
     </div>
     <div class="uploadDiv">
-        <form action="upload.php" id="urlUploadForm">
-            <img alt="Upload From Url..." id="fromUrl" src="images/cloud_upload.png"/>
-            <label for="urlUpload"></label><input id="urlUpload" placeholder="Upload From URL" type="text"/>
+        <img alt="Upload From File" src="images/file_upload.png">
+        <form action="upload.php" enctype="multipart/form-data" id="fileForm" method="post">
+            <label>
+                <input accept="video/mp4" name="file" type="file" value="Upload">
+            </label>
+            <button form="fileForm" type="submit">Upload From File</button>
         </form>
-        <button id="uploadUrl">Upload From URL</button>
     </div>
+    <!--
+    <div class="uploadDiv">
+        <img alt="Upload From URL" src="images/cloud_upload.png">
+        <form action="upload.php" id="urlForm" method="post">
+            <label>
+                <input name="urlToUpload" type="text">
+            </label>
+            <button form="urlForm" type="submit">Upload From URL</button>
+        </form>
+    </div>
+    -->
     <div class="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>
     </div>

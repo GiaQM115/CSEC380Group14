@@ -27,7 +27,7 @@ if ($auth->isLoggedIn()) {
 
             function video_source($src)
             {
-                printf('<source src="%s" type="video/ogv">%s', $src, "\n");
+                printf('<source src="%s" type="video/mp4">%s', $src, "\n");
             }
 
             // Include the HTML

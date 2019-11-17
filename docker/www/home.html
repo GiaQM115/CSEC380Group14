@@ -16,19 +16,19 @@
     <div class="titleDiv">
         <h2>Home</h2>
     </div>
-    <div class="featuredVideoDiv">
-        <video controls height="480" width="720">
-            <!-- TODO: Implement video source in PHP -->
-            Your browser does not support this video format. Dang.
-        </video>
-    </div>
     <div class="navDiv">
-        <form action="login.php" id="profileForm" method="get">
-            <button form="profileForm" type="submit">Profile</button>
+        <form action="profile.php" id="profileForm" method="get">
+            <button form="profileForm" type="submit">My Profile</button>
         </form>
         <form action="logout.php" id="logoutForm" method="post">
             <button form="logoutForm" type="submit">Logout</button>
         </form>
+    </div>
+    <div class="featuredVideoDiv">
+        <video controls height="480" preload="metadata" width="720">
+            <!-- TODO: Implement video source in PHP -->
+            Your browser does not support this video format. Dang.
+        </video>
     </div>
     <div class="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>
