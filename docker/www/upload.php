@@ -12,7 +12,7 @@ if ($auth->isLoggedIn()) {
         $fileextension = substr($name, $position + 1);
         $fileextension = strtolower($fileextension);
 
-        $path = 'videos/';
+        $path = '../videos/';
         if (empty($name)) {
             echo "Please choose a file";
         } else if ($fileextension !== "mp4") {

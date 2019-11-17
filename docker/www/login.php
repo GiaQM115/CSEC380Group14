@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/src/db_conn.php';
+require_once __DIR__ . '/src/insert_accounts.php';
 
 use Delight\Auth\AuthError;
 use Delight\Auth\AuthException;
@@ -19,6 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username']) && isset($
     http_response_code(400);
 }
 
-// Redirect to the login page
+// Redirect to the home page
 http_response_code(302);
-header('Location: /');
+header('Location: /home.php');
