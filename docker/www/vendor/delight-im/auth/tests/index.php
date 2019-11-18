@@ -50,7 +50,7 @@ function processRequestData(\Delight\Auth\Auth $auth)
 {
 	if (isset($_POST)) {
 		if (isset($_POST['action'])) {
-			if ($_POST['action'] === 'loginDiv') {
+			if ($_POST['action'] === 'login') {
 				if ($_POST['remember'] == 1) {
 					// keep logged in for one year
 					$rememberDuration = (int)(60 * 60 * 24 * 365.25);
@@ -124,8 +124,8 @@ function processRequestData(\Delight\Auth\Auth $auth)
 				}
 			} else if ($_POST['action'] === 'confirmEmail') {
 				try {
-					if (isset($_POST['loginDiv']) && $_POST['loginDiv'] > 0) {
-						if ($_POST['loginDiv'] == 2) {
+					if (isset($_POST['login']) && $_POST['login'] > 0) {
+						if ($_POST['login'] == 2) {
 							// keep logged in for one year
 							$rememberDuration = (int)(60 * 60 * 24 * 365.25);
 						} else {
@@ -710,7 +710,7 @@ function showGuestUserForm()
 	echo '<h1>Public</h1>';
 
 	echo '<form action="" method="post" accept-charset="utf-8">';
-	echo '<input type="hidden" name="action" value="loginDiv" />';
+	echo '<input type="hidden" name="action" value="login" />';
 	echo '<input type="text" name="email" placeholder="Email address" /> ';
 	echo '<input type="text" name="password" placeholder="Password" /> ';
 	echo '<select name="remember" size="1">';
@@ -721,7 +721,7 @@ function showGuestUserForm()
 	echo '</form>';
 
 	echo '<form action="" method="post" accept-charset="utf-8">';
-	echo '<input type="hidden" name="action" value="loginDiv" />';
+	echo '<input type="hidden" name="action" value="login" />';
 	echo '<input type="text" name="username" placeholder="Username" /> ';
 	echo '<input type="text" name="password" placeholder="Password" /> ';
 	echo '<select name="remember" size="1">';
@@ -898,7 +898,7 @@ function showConfirmEmailForm()
 	echo '<input type="hidden" name="action" value="confirmEmail" />';
 	echo '<input type="text" name="selector" placeholder="Selector" /> ';
 	echo '<input type="text" name="token" placeholder="Token" /> ';
-	echo '<select name="loginDiv" size="1">';
+	echo '<select name="login" size="1">';
 	echo '<option value="0">Sign in automatically? — No</option>';
 	echo '<option value="1">Sign in automatically? — Yes</option>';
 	echo '<option value="2">Sign in automatically? — Yes (and remember)</option>';

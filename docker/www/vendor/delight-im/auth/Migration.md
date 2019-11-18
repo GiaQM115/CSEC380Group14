@@ -205,7 +205,7 @@ Update your version of this library using Composer and its `composer update` or 
 
    ALTER TABLE `users_confirmations` CHANGE `email` `email` VARCHAR(249) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
-   ALTER TABLE `users_throttling` CHANGE `action_type` `action_type` ENUM(loginDiv,'register','confirm_email') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+   ALTER TABLE `users_throttling` CHANGE `action_type` `action_type` ENUM('login','register','confirm_email') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
    REPAIR TABLE users;
    OPTIMIZE TABLE users;
