@@ -13,25 +13,27 @@
     <div class="logoDiv">
         <h1>BrickFlix</h1>
     </div>
-    <div class="titleDiv">
-        <h2>Home</h2>
-    </div>
     <div class="navDiv">
-        <form action="profile.php" id="profileForm" method="get">
-            <button form="profileForm" type="submit">My Profile</button>
-        </form>
-        <form action="delete.php" id="deleteForm" method="post">
-            <button form="deleteForm" type="submit">Delete Video</button>
+        <form action="home.php" id="homeForm" method="get">
+            <button form="homeForm" type="submit">Home</button>
         </form>
         <form action="logout.php" id="logoutForm" method="post">
             <button form="logoutForm" type="submit">Logout</button>
         </form>
     </div>
-    <div class="featuredVideoDiv">
-        <video controls height="480" preload="metadata" width="720">
-            <!-- TODO: Implement video source in PHP -->
-            Your browser does not support this video format. Dang.
-        </video>
+    <div class="titleDiv">
+        <h2>Delete Manager</h2>
+    </div>
+    <div class="DeleteDiv">
+        <form action="delVideo.php" enctype="multipart/form-data" id="DeleteForm" method="post">
+            <select>
+                <option value="volvo">Going to contact database to get names of videos of the user</option>
+                <option value="saab">Saab</option>
+                <option value="fiat">Fiat</option>
+                <option value="audi">Audi</option> 
+            </select>
+            <button type="submit">Delete Video</button>
+        </form>
     </div>
     <div class="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>
