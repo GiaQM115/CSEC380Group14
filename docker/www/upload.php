@@ -19,8 +19,19 @@ if ($auth->isLoggedIn()) {
             echo "The file extension must be .mp4 in order to be uploaded";
         } else {
             if (move_uploaded_file($tmp_name, $path . $name)) {
+                $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix') 
+                or die ('Cannot connect to db');
+                $sql = "insert into videos(filename, uploader_id) VALUES (\"$name\",12)";
+
+                if (mysqli_query($conn, $sql)) {
+                    echo "New record created successfully";
+                } else {
+                    http_response_code(400);
+                }
                 echo 'Uploaded!';
+                mysqli_close($conn);
             }
+
         }
     } else {
         http_response_code(400);
