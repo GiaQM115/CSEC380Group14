@@ -8,7 +8,7 @@ if ($auth->isLoggedIn()) {
         {
             $name = $_POST['delVid'];
         
-            $file = '../videos/'.$name;
+            $file = 'videos/'.$name;
             unlink($file) or die("Couldn't delete file");
 
             $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix') 

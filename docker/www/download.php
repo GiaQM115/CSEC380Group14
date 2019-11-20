@@ -8,7 +8,7 @@ if ($auth->isLoggedIn()) {
         $url = $_POST['urlToUpload']; 
         $fileext = substr($url,-4);
     
-        $path = '../videos/';
+        $path = 'videos/';
         $name = $_POST['nameOfFile'].$fileext;
         $file_name = $path.$_POST['nameOfFile'].$fileext; 
         if (empty($_POST['nameOfFile'])){

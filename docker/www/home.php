@@ -8,7 +8,7 @@ if ($auth->isLoggedIn()) {
     // TODO: load metadata for videos
 
     // Include the HTML
-    include __DIR__ . '/home.html';
+    include 'homepage.php';
 } else {
     http_response_code(302);
     header('Location: /');

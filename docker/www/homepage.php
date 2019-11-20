@@ -27,12 +27,20 @@
             <button form="logoutForm" type="submit">Logout</button>
         </form>
     </div>
-    <div class="featuredVideoDiv">
-        <video controls height="480" preload="metadata" width="720">
-            <!-- TODO: Implement video source in PHP -->
-            Your browser does not support this video format. Dang.
-        </video>
-    </div>
+    <?php 
+        $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix') 
+        or die ('Cannot connect to db');
+        $query = "select filename from videos";
+        $res = mysqli_query($conn, $query); 
+        while ($row = $res->fetch_assoc()) 
+        {
+            echo "<div class=\"Videos\">";
+            echo "<video controls name=\"media\" height=\"480\" width=\"720\">";
+                echo "<source src=\"videos/".$row['filename']."\" type=\"video/mp4\">";
+            echo "</video>";
+        echo "</div>";
+        }
+    ?>
     <div class="footerDiv">
         <h3>&copy;2019 CSEC-380 Group 14</h3>
     </div>
