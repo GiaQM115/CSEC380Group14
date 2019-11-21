@@ -30,7 +30,7 @@ if ($auth->isLoggedIn()) {
 
         while ($row = $res->fetch_assoc()) {
             printf('
-<div class="videosDiv">
+<div class="viewerDiv">
     <video controls height="480" width="720">
         <source src="videos/%s" type="video/mp4">
     </video>
