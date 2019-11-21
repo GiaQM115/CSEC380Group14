@@ -12,5 +12,5 @@ RUN a2dissite 000-default && a2ensite brickflix
 
 # Initialize web content
 COPY ./ /var/www/html/
-RUN rm *.conf Dockerfile && mkdir /var/www/videos
-RUN chown -R www-data:www-data /var/www/html/ /var/www/videos
+RUN rm *.conf Dockerfile && mkdir /var/www/html/videos/
+RUN chown -R www-data:www-data /var/www/html/
