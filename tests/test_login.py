@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-URL = "172.18.0.3/login.html"
+URL = "127.0.0.1/login.html"
 
 def test_login(username, password):
 	global URL
