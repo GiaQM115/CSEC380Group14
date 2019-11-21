@@ -14,9 +14,7 @@
     <h1>BrickFlix</h1>
 </div>
 
-<div class="headDiv">
-    <?php pageHead(); ?>
-</div>
+<?php pageHead(); ?>
 
 <div class="navDiv">
     <?php pageNav(); ?>
