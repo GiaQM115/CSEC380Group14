@@ -34,5 +34,12 @@ button {
     color: white;
     padding: 10px;
     cursor: pointer;
+		margin-top: 1%;
     text-align: center;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+		width: 100%;
 }

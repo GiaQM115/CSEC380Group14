@@ -16,16 +16,14 @@
 .deleteDiv {
     display: block;
     float: left;
-    height: 100%;
-    width: 50%;
+    width: 100%;
     text-align: center;
-    padding-top: 1%;
+    padding-top: 5%;
 }
 
 .uploadDiv {
     display: block;
     float: left;
-    height: 100%;
     width: 50%;
     text-align: center;
     padding-top: 1%;
@@ -38,11 +36,6 @@
     padding: 10px;
     text-align: center;
     margin: auto;
-}
-
-.headDiv {
-    color: white;
-    text-align: center;
 }
 
 .navDiv {
@@ -86,7 +79,6 @@
 .profileDiv {
     position: relative;
     width: 100%;
-    padding-left: 7%;
     margin-bottom: 5%;
 }
 

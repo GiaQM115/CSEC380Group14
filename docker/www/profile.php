@@ -26,15 +26,15 @@ if ($auth->isLoggedIn()) {
     {
         printf('
 <div class="profileDiv">
-    <div class="headDiv">
-        <h2>Upload Manager</h2>
-    </div>
+
+    <h2>Upload Manager</h2>
 
     <div class="uploadDiv">
         <img alt="Upload From File" src="images/file_upload.png">
         <form action="upload.php" enctype="multipart/form-data" id="fileForm" method="post">
             <input accept="video/mp4" name="file" type="file" value="Upload">
-            <button form="fileForm" type="submit">Upload From File</button>
+            <br>
+						<button form="fileForm" type="submit">Upload From File</button>
         </form>
     </div>
 
@@ -43,17 +43,16 @@ if ($auth->isLoggedIn()) {
         <form action="download.php" id="urlForm" method="post">
             <input name="urlToUpload" id="urlToUpload" placeholder="URL" type="text">
             <input name="nameOfFile" id="nameOfFile" placeholder="Name to call it" type="text">
-            <button form="urlForm" type="submit">Upload From URL</button>
+            <br>
+						<button form="urlForm" type="submit">Upload From URL</button>
         </form>
     </div>
+</div>
 
-    <div class="headDiv">
-        <h2>Delete Manager</h2>
-    </div>
-
-    <div class="deleteDiv">
-        <form action="delete.php" enctype="multipart/form-data" id="deleteForm" method="post">
-            <select name="delVid">
+<div class="deleteDiv">
+		<h2>Delete Manager</h2>
+    <form action="delete.php" enctype="multipart/form-data" id="deleteForm" method="post">
+        <select name="delVid">
 ');
         $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
         or die ('Cannot connect to db');
@@ -63,10 +62,9 @@ if ($auth->isLoggedIn()) {
             printf('<option value="%s">%s</option>', $row['filename'], $row['filename']);
         }
         printf('
-            </select>
-            <input type="submit" form="deleteForm" value="Delete Video">
-        </form>
-    </div>
+        </select>
+        <input type="submit" form="deleteForm" value="Delete Video">
+    </form>
 </div>
 ');
     }
