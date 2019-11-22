@@ -20,7 +20,7 @@
     <?php pageNav(); ?>
 </div>
 
-<?php pageBody(); ?>
+<?php pageBody($auth); ?>
 
 <div class="footerDiv">
     <h3>&copy;2019 CSEC-380 Group 14</h3>

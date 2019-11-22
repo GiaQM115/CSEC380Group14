@@ -15,7 +15,7 @@ if ($auth->isLoggedIn()) {
         or die ('Cannot connect to db');
 
         if (mysqli_query($conn, "DELETE FROM videos WHERE filename='$name'")) {
-            echo "New record created successfully";
+            echo "Record deleted successfully";
         } else {
             http_response_code(400);
         }

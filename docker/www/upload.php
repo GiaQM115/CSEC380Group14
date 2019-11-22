@@ -18,7 +18,9 @@ if ($auth->isLoggedIn()) {
         } else if (move_uploaded_file($tmp_name, $path . $name)) {
             $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
             or die ('Cannot connect to db');
-            $sql = "INSERT INTO videos(filename, uploader_id) VALUES ('$name' , 1)";
+
+            $id = $auth->getUserId();
+            $sql = "INSERT INTO videos(filename, uploader_id) VALUES ('$name' , $id)";
 
             if (mysqli_query($conn, $sql)) {
                 echo "New record created successfully";

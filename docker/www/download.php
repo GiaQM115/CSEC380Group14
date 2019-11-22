@@ -18,7 +18,9 @@ if ($auth->isLoggedIn()) {
         } else if (file_put_contents($path . $name, file_get_contents($url))) {
             $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
             or die ('Cannot connect to db');
-            $sql = sprintf("INSERT INTO videos(filename, uploader_id) VALUES ('$name', 12)");
+
+            $id = $auth->getUserId();
+            $sql = sprintf("INSERT INTO videos(filename, uploader_id) VALUES ('$name', $id)");
 
             if (mysqli_query($conn, $sql)) {
                 echo "New record created successfully";

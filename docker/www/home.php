@@ -26,7 +26,8 @@ if ($auth->isLoggedIn()) {
     {
         $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
         or die ('Cannot connect to db');
-        $res = mysqli_query($conn, "SELECT username, filename, upload_date FROM videos JOIN users ON videos.uploader_id = users.id");
+
+        $res = mysqli_query($conn, "SELECT username, filename, upload_date FROM videos JOIN users ON videos.uploader_id = users.id ORDER BY videos.id DESC");
 	printf('
 <h2>What do you want to watch today?</h2>
 <div class="viewerDiv">
@@ -34,12 +35,15 @@ if ($auth->isLoggedIn()) {
 
         while ($row = $res->fetch_assoc()) {
 	$title = "".$row['username']." uploaded  ".$row['filename']." on ".$row['upload_date'];
-	printf('<h3>%s</h3>',$title);
             printf('
-    <video controls height="480" width="720">
-        <source src="videos/%s" type="video/mp4">
-    </video>
-', $row['filename']);
+    <div class="videoDiv">
+        <video controls height="480" width="720">
+            <source src="videos/%s" type="video/mp4">
+        </video>
+        <br>
+        <h3>%s</h3>
+    </div>
+', $row['filename'], $title);
         }
 	printf('</div>');
     }

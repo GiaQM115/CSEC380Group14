@@ -22,7 +22,7 @@ if ($auth->isLoggedIn()) {
 ');
     }
 
-    function pageBody()
+    function pageBody(\Delight\Auth\Auth $auth)
     {
         printf('
 <div class="profileDiv">
@@ -57,7 +57,8 @@ if ($auth->isLoggedIn()) {
         $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
         or die ('Cannot connect to db');
 
-        $res = mysqli_query($conn, "SELECT filename FROM videos");
+        $id = $auth->getUserId();
+        $res = mysqli_query($conn, "SELECT filename FROM videos WHERE uploader_id = $id");
         while ($row = $res->fetch_assoc()) {
             printf('<option value="%s">%s</option>', $row['filename'], $row['filename']);
         }
