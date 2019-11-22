@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `videos`
     `id`           int(10) unsigned                                            NOT NULL AUTO_INCREMENT,
     `filename`     varchar(96)                                                 NOT NULL,
     `uploader_id`  int(10) unsigned                                            NOT NULL,
+	`upload_date`	date												NOT NULL DEFAULT CURDATE(),
     PRIMARY KEY (`id`),
     FOREIGN KEY (`uploader_id`) REFERENCES users(id)
 ) ENGINE = MyISAM
