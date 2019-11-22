@@ -2,27 +2,48 @@
 session_start();
 
 require_once __DIR__ . '/src/db_conn.php';
-require_once __DIR__ . '/src/insert_data.php';
-
-use Delight\Auth\AuthError;
-use Delight\Auth\AuthException;
-
-// Attempt to log in if the request is a POST with the correct parameters
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
-    try {
-        $auth->loginWithUsername($_POST['username'], $_POST['password']);
-    } catch (AuthException $e) {
-        http_response_code(401);
-    } catch (AuthError $e) {
-        http_response_code(500);
-    }
-}
 
 // Run this code if user ISN'T logged in, otherwise redirect
-if ($auth->isLoggedIn()) {
-    http_response_code(302);
-    header('Location: /home/');
+if (!$auth->isLoggedIn()) {
+    function pageHead()
+    {
+        printf('<h2>Welcome to BrickFlix. Please log in.</h2>');
+    }
+
+    function pageNav()
+    {
+        // No nav bar on login page
+    }
+
+    function pageBody()
+    {
+        printf('
+<div class="loginDiv">
+    <form action="login.php" id="loginForm" method="post">
+        <input name="username" placeholder="username" required type="text">
+        <input name="password" placeholder="password" required type="password">
+        <br>
+				<button form="loginForm" type="submit">Login</button>
+    </form>
+</div>
+<h2>Who is BrickFlix?</h2>
+<p class="basicParagraph">
+BrickFlix is you.<br>
+BrickFlix is me.<br>
+BrickFlix is us all.<br>
+Here at BrickFlix, we believe in community. Let us all come together, share funny videos, and 
+put a little more joy in the world one upload at a time.
+<br>
+<br>
+Please use BrickFlix responsibly. If you want to upload something you would not show your grandma, 
+do not show us.
+</p>
+');
+    }
+
+    // Include the HTML skeleton
+    include __DIR__ . '/skel.php';
 } else {
-    // Finally, include the HTML
-    include __DIR__ . '/login.html';
+    http_response_code(302);
+    header('Location: /home.php');
 }
