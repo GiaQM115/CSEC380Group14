@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>BrickFlix</title>
-    <meta charset="utf-8">
     <link href="favicon.ico" rel="icon">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/classes.css" rel="stylesheet">

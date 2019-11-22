@@ -13,8 +13,8 @@ if ($auth->isLoggedIn()) {
     function pageNav()
     {
         printf('
-<form action="profile.php" id="profileForm" method="get">
-    <button form="profileForm" type="submit">My Profile</button>
+<form action="dashboard.php" id="profileForm" method="get">
+    <button form="profileForm" type="submit">My Dashboard</button>
 </form>
 <form action="logout.php" id="logoutForm" method="post">
     <button form="logoutForm" type="submit">Logout</button>
@@ -24,28 +24,28 @@ if ($auth->isLoggedIn()) {
 
     function pageBody()
     {
-        $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
-        or die ('Cannot connect to db');
-
-        $res = mysqli_query($conn, "SELECT username, filename, upload_date FROM videos JOIN users ON videos.uploader_id = users.id ORDER BY videos.id DESC");
-	printf('
+        printf('
 <h2>What do you want to watch today?</h2>
 <div class="viewerDiv">
 ');
+        $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
+        or die ('Cannot connect to db');
 
-        while ($row = $res->fetch_assoc()) {
-	$title = "".$row['username']." uploaded  ".$row['filename']." on ".$row['upload_date'];
+        $sql = mysqli_query($conn, "SELECT username, filename, upload_date FROM videos JOIN users ON videos.uploader_id = users.id ORDER BY videos.id DESC");
+
+        while ($row = $sql->fetch_assoc()) {
+            $title = $row['username'] . " uploaded  " . $row['filename'] . " on " . $row['upload_date'];
             printf('
-    <div class="videoDiv">
-        <video controls height="480" width="720">
-            <source src="videos/%s" type="video/mp4">
-        </video>
-        <br>
-        <h3>%s</h3>
-    </div>
+<div class="videoDiv">
+    <video controls width="960" height="720" preload="metadata">
+        <source src="videos/%s" type="video/mp4">
+    </video>
+    <br>
+    <h3>%s</h3>
+</div>
 ', $row['filename'], $title);
         }
-	printf('</div>');
+        printf('</div>');
     }
 
     // Include the HTML skeleton

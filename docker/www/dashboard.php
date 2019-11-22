@@ -1,13 +1,15 @@
 <?php
 session_start();
 
+use Delight\Auth\Auth;
+
 require_once __DIR__ . '/src/db_conn.php';
 
 // Run this code if user IS logged in, otherwise redirect
 if ($auth->isLoggedIn()) {
     function pageHead()
     {
-        printf('<h2>My Profile</h2>');
+        printf('<h2>My Dashboard</h2>');
     }
 
     function pageNav()
@@ -22,7 +24,7 @@ if ($auth->isLoggedIn()) {
 ');
     }
 
-    function pageBody(\Delight\Auth\Auth $auth)
+    function pageBody(Auth $auth)
     {
         printf('
 <div class="profileDiv">
@@ -34,7 +36,7 @@ if ($auth->isLoggedIn()) {
         <form action="upload.php" enctype="multipart/form-data" id="fileForm" method="post">
             <input accept="video/mp4" name="file" type="file" value="Upload">
             <br>
-						<button form="fileForm" type="submit">Upload From File</button>
+			<button form="fileForm" type="submit">Upload From File</button>
         </form>
     </div>
 
@@ -44,7 +46,7 @@ if ($auth->isLoggedIn()) {
             <input name="urlToUpload" id="urlToUpload" placeholder="URL" type="text">
             <input name="nameOfFile" id="nameOfFile" placeholder="Name to call it" type="text">
             <br>
-						<button form="urlForm" type="submit">Upload From URL</button>
+			<button form="urlForm" type="submit">Upload From URL</button>
         </form>
     </div>
 </div>
@@ -58,8 +60,9 @@ if ($auth->isLoggedIn()) {
         or die ('Cannot connect to db');
 
         $id = $auth->getUserId();
-        $res = mysqli_query($conn, "SELECT filename FROM videos WHERE uploader_id = $id");
-        while ($row = $res->fetch_assoc()) {
+        $sql = mysqli_query($conn, "SELECT filename FROM videos WHERE uploader_id = $id");
+
+        while ($row = $sql->fetch_assoc()) {
             printf('<option value="%s">%s</option>', $row['filename'], $row['filename']);
         }
         printf('

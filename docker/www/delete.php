@@ -8,13 +8,15 @@ if ($auth->isLoggedIn()) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delVid'])) {
         $name = $_POST['delVid'];
 
-        $file = 'videos/' . $name;
-        unlink($file) or die("Couldn't delete file");
+        unlink('videos/' . $name) or die("Couldn't delete file");
 
         $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
         or die ('Cannot connect to db');
 
-        if (mysqli_query($conn, "DELETE FROM videos WHERE filename='$name'")) {
+        $id = $auth->getUserId();
+        $sql = "DELETE FROM videos WHERE filename='$name' AND id=$id";
+
+        if (mysqli_query($conn, $sql)) {
             echo "Record deleted successfully";
         } else {
             http_response_code(400);
@@ -30,4 +32,4 @@ if ($auth->isLoggedIn()) {
 
 // Redirect to the profile page
 http_response_code(302);
-header('Location: /profile.php');
+header('Location: /dashboard.php');
