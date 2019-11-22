@@ -26,6 +26,15 @@ if ($auth->isLoggedIn()) {
     {
         printf('
 <h2>What do you want to watch today?</h2>
+
+<div class="lisDiv">
+        <form action="listVideo.php" id="listForm" method="post">
+            <input name="listVid" id="listVid" placeholder="Leave blank for list of all videos or (<string>*) to search" type="text">
+            <br>
+			<button form="listForm" type="submit">Search</button>
+        </form>
+    </div>
+
 <div class="viewerDiv">
 ');
         $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
