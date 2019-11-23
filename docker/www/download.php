@@ -19,9 +19,9 @@ if ($auth->isLoggedIn()) {
             or die ('Cannot connect to db');
 
             $id = $auth->getUserId();
-            $sql = "INSERT INTO videos(filename, uploader_id) VALUES ('$name', $id)";
+            $sql = "INSERT INTO videos(uploader_id, filename) VALUES ($id, '$name')";
 
-            if (mysqli_query($conn, $sql)) {
+            if (mysqli_multi_query($conn, $sql)) {
                 echo "New record created successfully";
             } else {
                 http_response_code(400);
