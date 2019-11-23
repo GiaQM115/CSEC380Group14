@@ -22,8 +22,7 @@ require_once __DIR__ . '/Exceptions.php';
  *
  * @internal
  */
-abstract class UserManager
-{
+abstract class UserManager {
 
 	/** @var string session field for whether the client is currently signed in */
 	const SESSION_FIELD_LOGGED_IN = 'auth_logged_in';
@@ -59,10 +58,9 @@ abstract class UserManager
 	 * @param int $maxLength the maximum length of the output string (integer multiple of 4)
 	 * @return string the new random string
 	 */
-	public static function createRandomString($maxLength = 24)
-	{
+	public static function createRandomString($maxLength = 24) {
 		// calculate how many bytes of randomness we need for the specified string length
-		$bytes = \floor((int)$maxLength / 4) * 3;
+		$bytes = \floor((int) $maxLength / 4) * 3;
 
 		// get random data
 		$data = \openssl_random_pseudo_bytes($bytes);
@@ -76,22 +74,24 @@ abstract class UserManager
 	 * @param string|null $dbTablePrefix (optional) the prefix for the names of all database tables used by this component
 	 * @param string|null $dbSchema (optional) the schema name for all database tables used by this component
 	 */
-	protected function __construct($databaseConnection, $dbTablePrefix = null, $dbSchema = null)
-	{
+	protected function __construct($databaseConnection, $dbTablePrefix = null, $dbSchema = null) {
 		if ($databaseConnection instanceof PdoDatabase) {
 			$this->db = $databaseConnection;
-		} elseif ($databaseConnection instanceof PdoDsn) {
+		}
+		elseif ($databaseConnection instanceof PdoDsn) {
 			$this->db = PdoDatabase::fromDsn($databaseConnection);
-		} elseif ($databaseConnection instanceof \PDO) {
+		}
+		elseif ($databaseConnection instanceof \PDO) {
 			$this->db = PdoDatabase::fromPdo($databaseConnection, true);
-		} else {
+		}
+		else {
 			$this->db = null;
 
 			throw new \InvalidArgumentException('The database connection must be an instance of either `PdoDatabase`, `PdoDsn` or `PDO`');
 		}
 
-		$this->dbSchema = $dbSchema !== null ? (string)$dbSchema : null;
-		$this->dbTablePrefix = (string)$dbTablePrefix;
+		$this->dbSchema = $dbSchema !== null ? (string) $dbSchema : null;
+		$this->dbTablePrefix = (string) $dbTablePrefix;
 	}
 
 	/**
@@ -124,8 +124,7 @@ abstract class UserManager
 	 * @see confirmEmail
 	 * @see confirmEmailAndSignIn
 	 */
-	protected function createUserInternal($requireUniqueUsername, $email, $password, $username = null, callable $callback = null)
-	{
+	protected function createUserInternal($requireUniqueUsername, $email, $password, $username = null, callable $callback = null) {
 		\ignore_user_abort(true);
 
 		$email = self::validateEmailAddress($email);
@@ -146,7 +145,7 @@ abstract class UserManager
 				// count the number of users who do already have that specified username
 				$occurrencesOfUsername = $this->db->selectValue(
 					'SELECT COUNT(*) FROM ' . $this->makeTableName('users') . ' WHERE username = ?',
-					[$username]
+					[ $username ]
 				);
 
 				// if any user with that username does already exist
@@ -171,14 +170,16 @@ abstract class UserManager
 					'registered' => \time()
 				]
 			);
-		} // if we have a duplicate entry
+		}
+		// if we have a duplicate entry
 		catch (IntegrityConstraintViolationException $e) {
 			throw new UserAlreadyExistsException();
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
-		$newUserId = (int)$this->db->getLastInsertId();
+		$newUserId = (int) $this->db->getLastInsertId();
 
 		if ($verified === 0) {
 			$this->createConfirmationRequest($newUserId, $email, $callback);
@@ -195,21 +196,21 @@ abstract class UserManager
 	 * @throws UnknownIdException if no user with the specified ID has been found
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	protected function updatePasswordInternal($userId, $newPassword)
-	{
+	protected function updatePasswordInternal($userId, $newPassword) {
 		$newPassword = \password_hash($newPassword, \PASSWORD_DEFAULT);
 
 		try {
 			$affected = $this->db->update(
 				$this->makeTableNameComponents('users'),
-				['password' => $newPassword],
-				['id' => $userId]
+				[ 'password' => $newPassword ],
+				[ 'id' => $userId ]
 			);
 
 			if ($affected === 0) {
 				throw new UnknownIdException();
 			}
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 	}
@@ -228,19 +229,18 @@ abstract class UserManager
 	 * @param bool $remembered whether the user has been remembered (instead of them having authenticated actively)
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	protected function onLoginSuccessful($userId, $email, $username, $status, $roles, $forceLogout, $remembered)
-	{
+	protected function onLoginSuccessful($userId, $email, $username, $status, $roles, $forceLogout, $remembered) {
 		// re-generate the session ID to prevent session fixation attacks (requests a cookie to be written on the client)
 		Session::regenerate(true);
 
 		// save the user data in the session variables maintained by this library
 		$_SESSION[self::SESSION_FIELD_LOGGED_IN] = true;
-		$_SESSION[self::SESSION_FIELD_USER_ID] = (int)$userId;
+		$_SESSION[self::SESSION_FIELD_USER_ID] = (int) $userId;
 		$_SESSION[self::SESSION_FIELD_EMAIL] = $email;
 		$_SESSION[self::SESSION_FIELD_USERNAME] = $username;
-		$_SESSION[self::SESSION_FIELD_STATUS] = (int)$status;
-		$_SESSION[self::SESSION_FIELD_ROLES] = (int)$roles;
-		$_SESSION[self::SESSION_FIELD_FORCE_LOGOUT] = (int)$forceLogout;
+		$_SESSION[self::SESSION_FIELD_STATUS] = (int) $status;
+		$_SESSION[self::SESSION_FIELD_ROLES] = (int) $roles;
+		$_SESSION[self::SESSION_FIELD_FORCE_LOGOUT] = (int) $forceLogout;
 		$_SESSION[self::SESSION_FIELD_REMEMBERED] = $remembered;
 		$_SESSION[self::SESSION_FIELD_LAST_RESYNC] = \time();
 	}
@@ -257,25 +257,27 @@ abstract class UserManager
 	 * @throws AmbiguousUsernameException if multiple users with the specified username have been found
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	protected function getUserDataByUsername($username, array $requestedColumns)
-	{
+	protected function getUserDataByUsername($username, array $requestedColumns) {
 		try {
 			$projection = \implode(', ', $requestedColumns);
 
 			$users = $this->db->select(
 				'SELECT ' . $projection . ' FROM ' . $this->makeTableName('users') . ' WHERE username = ? LIMIT 2 OFFSET 0',
-				[$username]
+				[ $username ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
 		if (empty($users)) {
 			throw new UnknownUsernameException();
-		} else {
+		}
+		else {
 			if (\count($users) === 1) {
 				return $users[0];
-			} else {
+			}
+			else {
 				throw new AmbiguousUsernameException();
 			}
 		}
@@ -288,8 +290,7 @@ abstract class UserManager
 	 * @return string the sanitized email address
 	 * @throws InvalidEmailException if the email address has been invalid
 	 */
-	protected static function validateEmailAddress($email)
-	{
+	protected static function validateEmailAddress($email) {
 		if (empty($email)) {
 			throw new InvalidEmailException();
 		}
@@ -310,8 +311,7 @@ abstract class UserManager
 	 * @return string the sanitized password
 	 * @throws InvalidPasswordException if the password has been invalid
 	 */
-	protected static function validatePassword($password)
-	{
+	protected static function validatePassword($password) {
 		if (empty($password)) {
 			throw new InvalidPasswordException();
 		}
@@ -341,8 +341,7 @@ abstract class UserManager
 	 * @param callable $callback the function that sends the confirmation email to the user
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	protected function createConfirmationRequest($userId, $email, callable $callback)
-	{
+	protected function createConfirmationRequest($userId, $email, callable $callback) {
 		$selector = self::createRandomString(16);
 		$token = self::createRandomString(16);
 		$tokenHashed = \password_hash($token, \PASSWORD_DEFAULT);
@@ -352,20 +351,22 @@ abstract class UserManager
 			$this->db->insert(
 				$this->makeTableNameComponents('users_confirmations'),
 				[
-					'user_id' => (int)$userId,
+					'user_id' => (int) $userId,
 					'email' => $email,
 					'selector' => $selector,
 					'token' => $tokenHashed,
 					'expires' => $expires
 				]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
 		if (\is_callable($callback)) {
 			$callback($selector, $token);
-		} else {
+		}
+		else {
 			throw new MissingCallbackError();
 		}
 	}
@@ -377,38 +378,37 @@ abstract class UserManager
 	 * @param string $selector (optional) the selector which the deletion should be restricted to
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	protected function deleteRememberDirectiveForUserById($userId, $selector = null)
-	{
+	protected function deleteRememberDirectiveForUserById($userId, $selector = null) {
 		$whereMappings = [];
 
 		if (isset($selector)) {
-			$whereMappings['selector'] = (string)$selector;
+			$whereMappings['selector'] = (string) $selector;
 		}
 
-		$whereMappings['user'] = (int)$userId;
+		$whereMappings['user'] = (int) $userId;
 
 		try {
 			$this->db->delete(
 				$this->makeTableNameComponents('users_remembered'),
 				$whereMappings
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 	}
 
 	/**
-	 * Triggers a forced logoutDiv in all sessions that belong to the specified user
+	 * Triggers a forced logout in all sessions that belong to the specified user
 	 *
 	 * @param int $userId the ID of the user to sign out
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	protected function forceLogoutForUserById($userId)
-	{
+	protected function forceLogoutForUserById($userId) {
 		$this->deleteRememberDirectiveForUserById($userId);
 		$this->db->exec(
 			'UPDATE ' . $this->makeTableName('users') . ' SET force_logout = force_logout + 1 WHERE id = ?',
-			[$userId]
+			[ $userId ]
 		);
 	}
 
@@ -420,8 +420,7 @@ abstract class UserManager
 	 * @param string $name the name of the table
 	 * @return string[] the components of the (qualified) full name of the table
 	 */
-	protected function makeTableNameComponents($name)
-	{
+	protected function makeTableNameComponents($name) {
 		$components = [];
 
 		if (!empty($this->dbSchema)) {
@@ -431,7 +430,8 @@ abstract class UserManager
 		if (!empty($name)) {
 			if (!empty($this->dbTablePrefix)) {
 				$components[] = $this->dbTablePrefix . $name;
-			} else {
+			}
+			else {
 				$components[] = $name;
 			}
 		}
@@ -447,8 +447,7 @@ abstract class UserManager
 	 * @param string $name the name of the table
 	 * @return string the (qualified) full name of the table
 	 */
-	protected function makeTableName($name)
-	{
+	protected function makeTableName($name) {
 		$components = $this->makeTableNameComponents($name);
 
 		return \implode('.', $components);

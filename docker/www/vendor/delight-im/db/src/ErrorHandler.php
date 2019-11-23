@@ -28,8 +28,7 @@ use Delight\Db\Throwable\WrongCredentialsError;
  *
  * https://dev.mysql.com/doc/refman/5.5/en/error-messages-server.html
  */
-final class ErrorHandler
-{
+final class ErrorHandler {
 
 	/**
 	 * Handles the specified exception thrown by PDO and tries to throw a more specific exception or error instead
@@ -38,8 +37,7 @@ final class ErrorHandler
 	 * @throws Exception
 	 * @throws Error
 	 */
-	public static function rethrow(PDOException $e)
-	{
+	public static function rethrow(PDOException $e) {
 		// the 2-character class of the error (if any) has the highest priority
 		$errorClass = null;
 		// the 3-character subclass of the error (if any) has a medium priority
@@ -63,22 +61,29 @@ final class ErrorHandler
 
 		if ($errorClass === '3D') {
 			throw new NoDatabaseSelectedError($e->getMessage());
-		} elseif ($errorClass === '23') {
+		}
+		elseif ($errorClass === '23') {
 			throw new IntegrityConstraintViolationException($e->getMessage());
-		} elseif ($errorClass === '42') {
+		}
+		elseif ($errorClass === '42') {
 			if ($errorSubClass === 'S02') {
 				throw new TableNotFoundError($e->getMessage());
-			} elseif ($errorSubClass === 'S22') {
+			}
+			elseif ($errorSubClass === 'S22') {
 				throw new UnknownColumnError($e->getMessage());
-			} else {
+			}
+			else {
 				throw new SyntaxError($e->getMessage());
 			}
-		} else {
+		}
+		else {
 			if ($error === 1044) {
 				throw new WrongCredentialsError($e->getMessage());
-			} elseif ($error === 1049) {
+			}
+			elseif ($error === 1049) {
 				throw new DatabaseNotFoundError($e->getMessage());
-			} else {
+			}
+			else {
 				throw new Error($e->getMessage());
 			}
 		}

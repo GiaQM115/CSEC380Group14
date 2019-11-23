@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** Individual measurement of a profiler that monitors performance */
-interface Measurement
-{
+interface Measurement {
 
 	/**
 	 * Returns the duration of the operation that was monitored

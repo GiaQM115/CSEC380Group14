@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** Description of a data source */
-interface DataSource
-{
+interface DataSource {
 
 	/**
 	 * Converts this instance to a DSN

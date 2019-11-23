@@ -8,8 +8,7 @@
 
 namespace Delight\Auth;
 
-final class Status
-{
+final class Status {
 
 	const NORMAL = 0;
 	const ARCHIVED = 1;

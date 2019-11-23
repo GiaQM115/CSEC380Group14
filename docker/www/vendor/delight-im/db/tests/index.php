@@ -17,7 +17,7 @@
 
 \header('Content-type: text/plain; charset=utf-8');
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $db = \Delight\Db\PdoDatabase::fromDsn(
 	new \Delight\Db\PdoDsn(

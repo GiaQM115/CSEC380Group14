@@ -4,47 +4,47 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit10d6d6600e67b60080ff2edfa21e69ba
+class ComposerStaticInit7127f4c7d13345d6388c41a7b1938de6
 {
-    public static $prefixLengthsPsr4 = array(
-        'D' =>
-            array(
-                'Delight\\Http\\' => 13,
-                'Delight\\Db\\' => 11,
-                'Delight\\Cookie\\' => 15,
-                'Delight\\Base64\\' => 15,
-                'Delight\\Auth\\' => 13,
-            ),
+    public static $prefixLengthsPsr4 = array (
+        'D' => 
+        array (
+            'Delight\\Http\\' => 13,
+            'Delight\\Db\\' => 11,
+            'Delight\\Cookie\\' => 15,
+            'Delight\\Base64\\' => 15,
+            'Delight\\Auth\\' => 13,
+        ),
     );
 
-    public static $prefixDirsPsr4 = array(
-        'Delight\\Http\\' =>
-            array(
-                0 => __DIR__ . '/..' . '/delight-im/http/src',
-            ),
-        'Delight\\Db\\' =>
-            array(
-                0 => __DIR__ . '/..' . '/delight-im/db/src',
-            ),
-        'Delight\\Cookie\\' =>
-            array(
-                0 => __DIR__ . '/..' . '/delight-im/cookie/src',
-            ),
-        'Delight\\Base64\\' =>
-            array(
-                0 => __DIR__ . '/..' . '/delight-im/base64/src',
-            ),
-        'Delight\\Auth\\' =>
-            array(
-                0 => __DIR__ . '/..' . '/delight-im/auth/src',
-            ),
+    public static $prefixDirsPsr4 = array (
+        'Delight\\Http\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/http/src',
+        ),
+        'Delight\\Db\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/db/src',
+        ),
+        'Delight\\Cookie\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/cookie/src',
+        ),
+        'Delight\\Base64\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/base64/src',
+        ),
+        'Delight\\Auth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/delight-im/auth/src',
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit10d6d6600e67b60080ff2edfa21e69ba::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit10d6d6600e67b60080ff2edfa21e69ba::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7127f4c7d13345d6388c41a7b1938de6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7127f4c7d13345d6388c41a7b1938de6::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

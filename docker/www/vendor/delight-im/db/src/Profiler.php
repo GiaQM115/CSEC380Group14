@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** Profiler that monitors performance of individual database queries and statements */
-interface Profiler
-{
+interface Profiler {
 
 	/** Starts a new measurement */
 	public function beginMeasurement();

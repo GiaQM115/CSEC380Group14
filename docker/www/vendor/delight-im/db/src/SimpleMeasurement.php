@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** Implementation of an individual measurement of a profiler that monitors performance */
-final class SimpleMeasurement implements Measurement
-{
+final class SimpleMeasurement implements Measurement {
 
 	/** @var float the duration in milliseconds */
 	private $duration;
@@ -29,31 +28,26 @@ final class SimpleMeasurement implements Measurement
 	 * @param array|null $boundValues (optional) the values that have been bound to the query or statement
 	 * @param array|null $trace (optional) the trace that shows the path taken through the program until the operation was executed
 	 */
-	public function __construct($duration, $sql, array $boundValues = null, $trace = null)
-	{
+	public function __construct($duration, $sql, array $boundValues = null, $trace = null) {
 		$this->duration = $duration;
 		$this->sql = $sql;
 		$this->boundValues = $boundValues;
 		$this->trace = $trace;
 	}
 
-	public function getDuration()
-	{
+	public function getDuration() {
 		return $this->duration;
 	}
 
-	public function getSql()
-	{
+	public function getSql() {
 		return $this->sql;
 	}
 
-	public function getBoundValues()
-	{
+	public function getBoundValues() {
 		return $this->boundValues;
 	}
 
-	public function getTrace()
-	{
+	public function getTrace() {
 		return $this->trace;
 	}
 

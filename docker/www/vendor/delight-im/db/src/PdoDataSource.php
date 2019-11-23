@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** Description of a data source for use with PHP's built-in PDO */
-final class PdoDataSource implements DataSource
-{
+final class PdoDataSource implements DataSource {
 
 	/** The driver name for MySQL */
 	const DRIVER_NAME_MYSQL = 'mysql';
@@ -53,9 +52,8 @@ final class PdoDataSource implements DataSource
 	 *
 	 * @param string $driverName the name of the driver, e.g. `mysql` or `pgsql`
 	 */
-	public function __construct($driverName)
-	{
-		$this->driverName = (string)$driverName;
+	public function __construct($driverName) {
+		$this->driverName = (string) $driverName;
 		$this->hostname = self::HOST_DEFAULT;
 		$this->port = self::suggestPortFromDriverName($driverName);
 		$this->unixSocket = null;
@@ -73,9 +71,8 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $hostname the hostname where the database can be accessed, e.g. `db.example.com`
 	 * @return static this instance for chaining
 	 */
-	public function setHostname($hostname = null)
-	{
-		$this->hostname = $hostname !== null ? (string)$hostname : null;
+	public function setHostname($hostname = null) {
+		$this->hostname = $hostname !== null ? (string) $hostname : null;
 
 		return $this;
 	}
@@ -86,9 +83,8 @@ final class PdoDataSource implements DataSource
 	 * @param int|null $port the port number to use at the given host, e.g. `3306` or `5432`
 	 * @return static this instance for chaining
 	 */
-	public function setPort($port = null)
-	{
-		$this->port = $port !== null ? (int)$port : null;
+	public function setPort($port = null) {
+		$this->port = $port !== null ? (int) $port : null;
 
 		return $this;
 	}
@@ -99,9 +95,8 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $unixSocket the UNIX socket to use, e.g. `/tmp/db.sock`
 	 * @return static this instance for chaining
 	 */
-	public function setUnixSocket($unixSocket = null)
-	{
-		$this->unixSocket = $unixSocket !== null ? (string)$unixSocket : null;
+	public function setUnixSocket($unixSocket = null) {
+		$this->unixSocket = $unixSocket !== null ? (string) $unixSocket : null;
 
 		return $this;
 	}
@@ -112,9 +107,8 @@ final class PdoDataSource implements DataSource
 	 * @param bool|null $memory whether to keep the database in memory only
 	 * @return static this instance for chaining
 	 */
-	public function setMemory($memory = null)
-	{
-		$this->memory = $memory !== null ? (bool)$memory : null;
+	public function setMemory($memory = null) {
+		$this->memory = $memory !== null ? (bool) $memory : null;
 
 		return $this;
 	}
@@ -125,9 +119,8 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $filePath the path to the file where the database can be accessed on disk, e.g. `/opt/databases/mydb.ext`
 	 * @return static this instance for chaining
 	 */
-	public function setFilePath($filePath = null)
-	{
-		$this->filePath = $filePath !== null ? (string)$filePath : null;
+	public function setFilePath($filePath = null) {
+		$this->filePath = $filePath !== null ? (string) $filePath : null;
 
 		return $this;
 	}
@@ -138,9 +131,8 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $databaseName the name of the database, e.g. `my_application`
 	 * @return static this instance for chaining
 	 */
-	public function setDatabaseName($databaseName = null)
-	{
-		$this->databaseName = $databaseName !== null ? (string)$databaseName : null;
+	public function setDatabaseName($databaseName = null) {
+		$this->databaseName = $databaseName !== null ? (string) $databaseName : null;
 
 		return $this;
 	}
@@ -151,9 +143,8 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $charset the character encoding, e.g. `utf8`
 	 * @return static this instance for chaining
 	 */
-	public function setCharset($charset = null)
-	{
-		$this->charset = $charset !== null ? (string)$charset : null;
+	public function setCharset($charset = null) {
+		$this->charset = $charset !== null ? (string) $charset : null;
 
 		return $this;
 	}
@@ -164,8 +155,7 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $username the name of a user that can access the database
 	 * @return static this instance for chaining
 	 */
-	public function setUsername($username = null)
-	{
+	public function setUsername($username = null) {
 		$this->username = $username;
 
 		return $this;
@@ -177,15 +167,13 @@ final class PdoDataSource implements DataSource
 	 * @param string|null $password the password corresponding to the username
 	 * @return static this instance for chaining
 	 */
-	public function setPassword($password = null)
-	{
+	public function setPassword($password = null) {
 		$this->password = $password;
 
 		return $this;
 	}
 
-	public function toDsn()
-	{
+	public function toDsn() {
 		$components = [];
 
 		if (isset($this->hostname)) {
@@ -201,18 +189,18 @@ final class PdoDataSource implements DataSource
 					}
 				}
 
-				$components[] = 'host=' . $hostname;
+				$components[] = 'host='.$hostname;
 			}
 		}
 
 		if (isset($this->port)) {
 			if ($this->driverName !== self::DRIVER_NAME_ORACLE) {
-				$components[] = 'port=' . $this->port;
+				$components[] = 'port='.$this->port;
 			}
 		}
 
 		if (isset($this->unixSocket)) {
-			$components[] = 'unix_socket=' . $this->unixSocket;
+			$components[] = 'unix_socket='.$this->unixSocket;
 		}
 
 		if (isset($this->memory)) {
@@ -237,29 +225,32 @@ final class PdoDataSource implements DataSource
 				}
 
 				if (count($oracleLocation) > 0) {
-					$components[] = 'dbname=//' . implode(':', $oracleLocation) . '/' . $this->databaseName;
-				} else {
-					$components[] = 'dbname=' . $this->databaseName;
+					$components[] = 'dbname=//'.implode(':', $oracleLocation).'/'.$this->databaseName;
 				}
-			} else {
-				$components[] = 'dbname=' . $this->databaseName;
+				else {
+					$components[] = 'dbname='.$this->databaseName;
+				}
+			}
+			else {
+				$components[] = 'dbname='.$this->databaseName;
 			}
 		}
 
 		if (isset($this->charset)) {
 			if ($this->driverName === self::DRIVER_NAME_POSTGRESQL) {
-				$components[] = 'client_encoding=' . $this->charset;
-			} else {
-				$components[] = 'charset=' . $this->charset;
+				$components[] = 'client_encoding='.$this->charset;
+			}
+			else {
+				$components[] = 'charset='.$this->charset;
 			}
 		}
 
 		if (isset($this->username)) {
-			$components[] = 'user=' . $this->username;
+			$components[] = 'user='.$this->username;
 		}
 
 		if (isset($this->password)) {
-			$components[] = 'password=' . $this->password;
+			$components[] = 'password='.$this->password;
 		}
 
 		$dsnStr = $this->driverName . ':' . implode(';', $components);
@@ -273,15 +264,11 @@ final class PdoDataSource implements DataSource
 	 * @param string $driverName the name of the driver
 	 * @return string|null the suggested charset
 	 */
-	private static function suggestCharsetFromDriverName($driverName)
-	{
+	private static function suggestCharsetFromDriverName($driverName) {
 		switch ($driverName) {
-			case self::DRIVER_NAME_MYSQL:
-				return 'utf8mb4';
-			case self::DRIVER_NAME_POSTGRESQL:
-				return 'UTF8';
-			default:
-				return null;
+			case self::DRIVER_NAME_MYSQL: return 'utf8mb4';
+			case self::DRIVER_NAME_POSTGRESQL: return 'UTF8';
+			default: return null;
 		}
 	}
 
@@ -291,15 +278,11 @@ final class PdoDataSource implements DataSource
 	 * @param string $driverName the name of the driver
 	 * @return int|null the suggested port number
 	 */
-	private static function suggestPortFromDriverName($driverName)
-	{
+	private static function suggestPortFromDriverName($driverName) {
 		switch ($driverName) {
-			case self::DRIVER_NAME_MYSQL:
-				return 3306;
-			case self::DRIVER_NAME_POSTGRESQL:
-				return 5432;
-			default:
-				return null;
+			case self::DRIVER_NAME_MYSQL: return 3306;
+			case self::DRIVER_NAME_POSTGRESQL: return 5432;
+			default: return null;
 		}
 	}
 

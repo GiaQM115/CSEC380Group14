@@ -25,7 +25,7 @@
 
 \header('Content-type: text/html; charset=utf-8');
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 $db = new \PDO('mysql:dbname=php_auth;host=127.0.0.1;charset=utf8mb4', 'root', 'monkey');
 // or
@@ -42,19 +42,20 @@ $result = \processRequestData($auth);
 
 if ($auth->check()) {
 	\showAuthenticatedUserForm($auth);
-} else {
+}
+else {
 	\showGuestUserForm();
 }
 
-function processRequestData(\Delight\Auth\Auth $auth)
-{
+function processRequestData(\Delight\Auth\Auth $auth) {
 	if (isset($_POST)) {
 		if (isset($_POST['action'])) {
 			if ($_POST['action'] === 'login') {
 				if ($_POST['remember'] == 1) {
 					// keep logged in for one year
-					$rememberDuration = (int)(60 * 60 * 24 * 365.25);
-				} else {
+					$rememberDuration = (int) (60 * 60 * 24 * 365.25);
+				}
+				else {
 					// do not keep logged in after session ends
 					$rememberDuration = null;
 				}
@@ -62,27 +63,36 @@ function processRequestData(\Delight\Auth\Auth $auth)
 				try {
 					if (isset($_POST['email'])) {
 						$auth->login($_POST['email'], $_POST['password'], $rememberDuration);
-					} elseif (isset($_POST['username'])) {
+					}
+					elseif (isset($_POST['username'])) {
 						$auth->loginWithUsername($_POST['username'], $_POST['password'], $rememberDuration);
-					} else {
+					}
+					else {
 						return 'either email address or username required';
 					}
 
 					return 'ok';
-				} catch (\Delight\Auth\InvalidEmailException $e) {
+				}
+				catch (\Delight\Auth\InvalidEmailException $e) {
 					return 'wrong email address';
-				} catch (\Delight\Auth\UnknownUsernameException $e) {
+				}
+				catch (\Delight\Auth\UnknownUsernameException $e) {
 					return 'unknown username';
-				} catch (\Delight\Auth\AmbiguousUsernameException $e) {
+				}
+				catch (\Delight\Auth\AmbiguousUsernameException $e) {
 					return 'ambiguous username';
-				} catch (\Delight\Auth\InvalidPasswordException $e) {
+				}
+				catch (\Delight\Auth\InvalidPasswordException $e) {
 					return 'wrong password';
-				} catch (\Delight\Auth\EmailNotVerifiedException $e) {
+				}
+				catch (\Delight\Auth\EmailNotVerifiedException $e) {
 					return 'email address not verified';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'register') {
+			}
+			else if ($_POST['action'] === 'register') {
 				try {
 					if ($_POST['require_verification'] == 1) {
 						$callback = function ($selector, $token) {
@@ -98,7 +108,8 @@ function processRequestData(\Delight\Auth\Auth $auth)
 							echo \htmlspecialchars($token);
 							echo '</pre>';
 						};
-					} else {
+					}
+					else {
 						$callback = null;
 					}
 
@@ -108,45 +119,59 @@ function processRequestData(\Delight\Auth\Auth $auth)
 
 					if ($_POST['require_unique_username'] == 0) {
 						return $auth->register($_POST['email'], $_POST['password'], $_POST['username'], $callback);
-					} else {
+					}
+					else {
 						return $auth->registerWithUniqueUsername($_POST['email'], $_POST['password'], $_POST['username'], $callback);
 					}
-				} catch (\Delight\Auth\InvalidEmailException $e) {
+				}
+				catch (\Delight\Auth\InvalidEmailException $e) {
 					return 'invalid email address';
-				} catch (\Delight\Auth\InvalidPasswordException $e) {
+				}
+				catch (\Delight\Auth\InvalidPasswordException $e) {
 					return 'invalid password';
-				} catch (\Delight\Auth\UserAlreadyExistsException $e) {
+				}
+				catch (\Delight\Auth\UserAlreadyExistsException $e) {
 					return 'email address already exists';
-				} catch (\Delight\Auth\DuplicateUsernameException $e) {
+				}
+				catch (\Delight\Auth\DuplicateUsernameException $e) {
 					return 'username already exists';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'confirmEmail') {
+			}
+			else if ($_POST['action'] === 'confirmEmail') {
 				try {
 					if (isset($_POST['login']) && $_POST['login'] > 0) {
 						if ($_POST['login'] == 2) {
 							// keep logged in for one year
-							$rememberDuration = (int)(60 * 60 * 24 * 365.25);
-						} else {
+							$rememberDuration = (int) (60 * 60 * 24 * 365.25);
+						}
+						else {
 							// do not keep logged in after session ends
 							$rememberDuration = null;
 						}
 
 						return $auth->confirmEmailAndSignIn($_POST['selector'], $_POST['token'], $rememberDuration);
-					} else {
+					}
+					else {
 						return $auth->confirmEmail($_POST['selector'], $_POST['token']);
 					}
-				} catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
+				}
+				catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
 					return 'invalid token';
-				} catch (\Delight\Auth\TokenExpiredException $e) {
+				}
+				catch (\Delight\Auth\TokenExpiredException $e) {
 					return 'token expired';
-				} catch (\Delight\Auth\UserAlreadyExistsException $e) {
+				}
+				catch (\Delight\Auth\UserAlreadyExistsException $e) {
 					return 'email address already exists';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'resendConfirmationForEmail') {
+			}
+			else if ($_POST['action'] === 'resendConfirmationForEmail') {
 				try {
 					$auth->resendConfirmationForEmail($_POST['email'], function ($selector, $token) {
 						echo '<pre>';
@@ -163,12 +188,15 @@ function processRequestData(\Delight\Auth\Auth $auth)
 					});
 
 					return 'ok';
-				} catch (\Delight\Auth\ConfirmationRequestNotFound $e) {
+				}
+				catch (\Delight\Auth\ConfirmationRequestNotFound $e) {
 					return 'no request found';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'resendConfirmationForUserId') {
+			}
+			else if ($_POST['action'] === 'resendConfirmationForUserId') {
 				try {
 					$auth->resendConfirmationForUserId($_POST['userId'], function ($selector, $token) {
 						echo '<pre>';
@@ -185,12 +213,15 @@ function processRequestData(\Delight\Auth\Auth $auth)
 					});
 
 					return 'ok';
-				} catch (\Delight\Auth\ConfirmationRequestNotFound $e) {
+				}
+				catch (\Delight\Auth\ConfirmationRequestNotFound $e) {
 					return 'no request found';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'forgotPassword') {
+			}
+			else if ($_POST['action'] === 'forgotPassword') {
 				try {
 					$auth->forgotPassword($_POST['email'], function ($selector, $token) {
 						echo '<pre>';
@@ -207,76 +238,102 @@ function processRequestData(\Delight\Auth\Auth $auth)
 					});
 
 					return 'ok';
-				} catch (\Delight\Auth\InvalidEmailException $e) {
+				}
+				catch (\Delight\Auth\InvalidEmailException $e) {
 					return 'invalid email address';
-				} catch (\Delight\Auth\EmailNotVerifiedException $e) {
+				}
+				catch (\Delight\Auth\EmailNotVerifiedException $e) {
 					return 'email address not verified';
-				} catch (\Delight\Auth\ResetDisabledException $e) {
+				}
+				catch (\Delight\Auth\ResetDisabledException $e) {
 					return 'password reset is disabled';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'resetPassword') {
+			}
+			else if ($_POST['action'] === 'resetPassword') {
 				try {
 					$auth->resetPassword($_POST['selector'], $_POST['token'], $_POST['password']);
 
 					return 'ok';
-				} catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
+				}
+				catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
 					return 'invalid token';
-				} catch (\Delight\Auth\TokenExpiredException $e) {
+				}
+				catch (\Delight\Auth\TokenExpiredException $e) {
 					return 'token expired';
-				} catch (\Delight\Auth\ResetDisabledException $e) {
+				}
+				catch (\Delight\Auth\ResetDisabledException $e) {
 					return 'password reset is disabled';
-				} catch (\Delight\Auth\InvalidPasswordException $e) {
+				}
+				catch (\Delight\Auth\InvalidPasswordException $e) {
 					return 'invalid password';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'canResetPassword') {
+			}
+			else if ($_POST['action'] === 'canResetPassword') {
 				try {
 					$auth->canResetPasswordOrThrow($_POST['selector'], $_POST['token']);
 
 					return 'yes';
-				} catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
+				}
+				catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
 					return 'invalid token';
-				} catch (\Delight\Auth\TokenExpiredException $e) {
+				}
+				catch (\Delight\Auth\TokenExpiredException $e) {
 					return 'token expired';
-				} catch (\Delight\Auth\ResetDisabledException $e) {
+				}
+				catch (\Delight\Auth\ResetDisabledException $e) {
 					return 'password reset is disabled';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'reconfirmPassword') {
+			}
+			else if ($_POST['action'] === 'reconfirmPassword') {
 				try {
 					return $auth->reconfirmPassword($_POST['password']) ? 'correct' : 'wrong';
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'changePassword') {
+			}
+			else if ($_POST['action'] === 'changePassword') {
 				try {
 					$auth->changePassword($_POST['oldPassword'], $_POST['newPassword']);
 
 					return 'ok';
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
-				} catch (\Delight\Auth\InvalidPasswordException $e) {
+				}
+				catch (\Delight\Auth\InvalidPasswordException $e) {
 					return 'invalid password(s)';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'changePasswordWithoutOldPassword') {
+			}
+			else if ($_POST['action'] === 'changePasswordWithoutOldPassword') {
 				try {
 					$auth->changePasswordWithoutOldPassword($_POST['newPassword']);
 
 					return 'ok';
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
-				} catch (\Delight\Auth\InvalidPasswordException $e) {
+				}
+				catch (\Delight\Auth\InvalidPasswordException $e) {
 					return 'invalid password';
 				}
-			} else if ($_POST['action'] === 'changeEmail') {
+			}
+			else if ($_POST['action'] === 'changeEmail') {
 				try {
 					$auth->changeEmail($_POST['newEmail'], function ($selector, $token) {
 						echo '<pre>';
@@ -293,50 +350,64 @@ function processRequestData(\Delight\Auth\Auth $auth)
 					});
 
 					return 'ok';
-				} catch (\Delight\Auth\InvalidEmailException $e) {
+				}
+				catch (\Delight\Auth\InvalidEmailException $e) {
 					return 'invalid email address';
-				} catch (\Delight\Auth\UserAlreadyExistsException $e) {
+				}
+				catch (\Delight\Auth\UserAlreadyExistsException $e) {
 					return 'email address already exists';
-				} catch (\Delight\Auth\EmailNotVerifiedException $e) {
+				}
+				catch (\Delight\Auth\EmailNotVerifiedException $e) {
 					return 'account not verified';
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
-				} catch (\Delight\Auth\TooManyRequestsException $e) {
+				}
+				catch (\Delight\Auth\TooManyRequestsException $e) {
 					return 'too many requests';
 				}
-			} else if ($_POST['action'] === 'setPasswordResetEnabled') {
+			}
+			else if ($_POST['action'] === 'setPasswordResetEnabled') {
 				try {
 					$auth->setPasswordResetEnabled($_POST['enabled'] == 1);
 
 					return 'ok';
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
 				}
-			} else if ($_POST['action'] === 'logOut') {
+			}
+			else if ($_POST['action'] === 'logOut') {
 				$auth->logOut();
 
 				return 'ok';
-			} else if ($_POST['action'] === 'logOutEverywhereElse') {
+			}
+			else if ($_POST['action'] === 'logOutEverywhereElse') {
 				try {
 					$auth->logOutEverywhereElse();
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
 				}
 
 				return 'ok';
-			} else if ($_POST['action'] === 'logOutEverywhere') {
+			}
+			else if ($_POST['action'] === 'logOutEverywhere') {
 				try {
 					$auth->logOutEverywhere();
-				} catch (\Delight\Auth\NotLoggedInException $e) {
+				}
+				catch (\Delight\Auth\NotLoggedInException $e) {
 					return 'not logged in';
 				}
 
 				return 'ok';
-			} else if ($_POST['action'] === 'destroySession') {
+			}
+			else if ($_POST['action'] === 'destroySession') {
 				$auth->destroySession();
 
 				return 'ok';
-			} else if ($_POST['action'] === 'admin.createUser') {
+			}
+			else if ($_POST['action'] === 'admin.createUser') {
 				try {
 					if (!isset($_POST['require_unique_username'])) {
 						$_POST['require_unique_username'] = '0';
@@ -344,201 +415,262 @@ function processRequestData(\Delight\Auth\Auth $auth)
 
 					if ($_POST['require_unique_username'] == 0) {
 						return $auth->admin()->createUser($_POST['email'], $_POST['password'], $_POST['username']);
-					} else {
+					}
+					else {
 						return $auth->admin()->createUserWithUniqueUsername($_POST['email'], $_POST['password'], $_POST['username']);
 					}
-				} catch (\Delight\Auth\InvalidEmailException $e) {
+				}
+				catch (\Delight\Auth\InvalidEmailException $e) {
 					return 'invalid email address';
-				} catch (\Delight\Auth\InvalidPasswordException $e) {
+				}
+				catch (\Delight\Auth\InvalidPasswordException $e) {
 					return 'invalid password';
-				} catch (\Delight\Auth\UserAlreadyExistsException $e) {
+				}
+				catch (\Delight\Auth\UserAlreadyExistsException $e) {
 					return 'email address already exists';
-				} catch (\Delight\Auth\DuplicateUsernameException $e) {
+				}
+				catch (\Delight\Auth\DuplicateUsernameException $e) {
 					return 'username already exists';
 				}
-			} else if ($_POST['action'] === 'admin.deleteUser') {
+			}
+			else if ($_POST['action'] === 'admin.deleteUser') {
 				if (isset($_POST['id'])) {
 					try {
 						$auth->admin()->deleteUserById($_POST['id']);
-					} catch (\Delight\Auth\UnknownIdException $e) {
+					}
+					catch (\Delight\Auth\UnknownIdException $e) {
 						return 'unknown ID';
 					}
-				} elseif (isset($_POST['email'])) {
+				}
+				elseif (isset($_POST['email'])) {
 					try {
 						$auth->admin()->deleteUserByEmail($_POST['email']);
-					} catch (\Delight\Auth\InvalidEmailException $e) {
+					}
+					catch (\Delight\Auth\InvalidEmailException $e) {
 						return 'unknown email address';
 					}
-				} elseif (isset($_POST['username'])) {
+				}
+				elseif (isset($_POST['username'])) {
 					try {
 						$auth->admin()->deleteUserByUsername($_POST['username']);
-					} catch (\Delight\Auth\UnknownUsernameException $e) {
+					}
+					catch (\Delight\Auth\UnknownUsernameException $e) {
 						return 'unknown username';
-					} catch (\Delight\Auth\AmbiguousUsernameException $e) {
+					}
+					catch (\Delight\Auth\AmbiguousUsernameException $e) {
 						return 'ambiguous username';
 					}
-				} else {
+				}
+				else {
 					return 'either ID, email address or username required';
 				}
 
 				return 'ok';
-			} else if ($_POST['action'] === 'admin.addRole') {
+			}
+			else if ($_POST['action'] === 'admin.addRole') {
 				if (isset($_POST['role'])) {
 					if (isset($_POST['id'])) {
 						try {
 							$auth->admin()->addRoleForUserById($_POST['id'], $_POST['role']);
-						} catch (\Delight\Auth\UnknownIdException $e) {
+						}
+						catch (\Delight\Auth\UnknownIdException $e) {
 							return 'unknown ID';
 						}
-					} elseif (isset($_POST['email'])) {
+					}
+					elseif (isset($_POST['email'])) {
 						try {
 							$auth->admin()->addRoleForUserByEmail($_POST['email'], $_POST['role']);
-						} catch (\Delight\Auth\InvalidEmailException $e) {
+						}
+						catch (\Delight\Auth\InvalidEmailException $e) {
 							return 'unknown email address';
 						}
-					} elseif (isset($_POST['username'])) {
+					}
+					elseif (isset($_POST['username'])) {
 						try {
 							$auth->admin()->addRoleForUserByUsername($_POST['username'], $_POST['role']);
-						} catch (\Delight\Auth\UnknownUsernameException $e) {
+						}
+						catch (\Delight\Auth\UnknownUsernameException $e) {
 							return 'unknown username';
-						} catch (\Delight\Auth\AmbiguousUsernameException $e) {
+						}
+						catch (\Delight\Auth\AmbiguousUsernameException $e) {
 							return 'ambiguous username';
 						}
-					} else {
+					}
+					else {
 						return 'either ID, email address or username required';
 					}
-				} else {
+				}
+				else {
 					return 'role required';
 				}
 
 				return 'ok';
-			} else if ($_POST['action'] === 'admin.removeRole') {
+			}
+			else if ($_POST['action'] === 'admin.removeRole') {
 				if (isset($_POST['role'])) {
 					if (isset($_POST['id'])) {
 						try {
 							$auth->admin()->removeRoleForUserById($_POST['id'], $_POST['role']);
-						} catch (\Delight\Auth\UnknownIdException $e) {
+						}
+						catch (\Delight\Auth\UnknownIdException $e) {
 							return 'unknown ID';
 						}
-					} elseif (isset($_POST['email'])) {
+					}
+					elseif (isset($_POST['email'])) {
 						try {
 							$auth->admin()->removeRoleForUserByEmail($_POST['email'], $_POST['role']);
-						} catch (\Delight\Auth\InvalidEmailException $e) {
+						}
+						catch (\Delight\Auth\InvalidEmailException $e) {
 							return 'unknown email address';
 						}
-					} elseif (isset($_POST['username'])) {
+					}
+					elseif (isset($_POST['username'])) {
 						try {
 							$auth->admin()->removeRoleForUserByUsername($_POST['username'], $_POST['role']);
-						} catch (\Delight\Auth\UnknownUsernameException $e) {
+						}
+						catch (\Delight\Auth\UnknownUsernameException $e) {
 							return 'unknown username';
-						} catch (\Delight\Auth\AmbiguousUsernameException $e) {
+						}
+						catch (\Delight\Auth\AmbiguousUsernameException $e) {
 							return 'ambiguous username';
 						}
-					} else {
+					}
+					else {
 						return 'either ID, email address or username required';
 					}
-				} else {
+				}
+				else {
 					return 'role required';
 				}
 
 				return 'ok';
-			} else if ($_POST['action'] === 'admin.hasRole') {
+			}
+			else if ($_POST['action'] === 'admin.hasRole') {
 				if (isset($_POST['id'])) {
 					if (isset($_POST['role'])) {
 						try {
 							return $auth->admin()->doesUserHaveRole($_POST['id'], $_POST['role']) ? 'yes' : 'no';
-						} catch (\Delight\Auth\UnknownIdException $e) {
+						}
+						catch (\Delight\Auth\UnknownIdException $e) {
 							return 'unknown ID';
 						}
-					} else {
+					}
+					else {
 						return 'role required';
 					}
-				} else {
+				}
+				else {
 					return 'ID required';
 				}
-			} else if ($_POST['action'] === 'admin.getRoles') {
+			}
+			else if ($_POST['action'] === 'admin.getRoles') {
 				if (isset($_POST['id'])) {
 					try {
 						return $auth->admin()->getRolesForUserById($_POST['id']);
-					} catch (\Delight\Auth\UnknownIdException $e) {
+					}
+					catch (\Delight\Auth\UnknownIdException $e) {
 						return 'unknown ID';
 					}
-				} else {
+				}
+				else {
 					return 'ID required';
 				}
-			} else if ($_POST['action'] === 'admin.logInAsUserById') {
+			}
+			else if ($_POST['action'] === 'admin.logInAsUserById') {
 				if (isset($_POST['id'])) {
 					try {
 						$auth->admin()->logInAsUserById($_POST['id']);
 
 						return 'ok';
-					} catch (\Delight\Auth\UnknownIdException $e) {
+					}
+					catch (\Delight\Auth\UnknownIdException $e) {
 						return 'unknown ID';
-					} catch (\Delight\Auth\EmailNotVerifiedException $e) {
+					}
+					catch (\Delight\Auth\EmailNotVerifiedException $e) {
 						return 'email address not verified';
 					}
-				} else {
+				}
+				else {
 					return 'ID required';
 				}
-			} else if ($_POST['action'] === 'admin.logInAsUserByEmail') {
+			}
+			else if ($_POST['action'] === 'admin.logInAsUserByEmail') {
 				if (isset($_POST['email'])) {
 					try {
 						$auth->admin()->logInAsUserByEmail($_POST['email']);
 
 						return 'ok';
-					} catch (\Delight\Auth\InvalidEmailException $e) {
+					}
+					catch (\Delight\Auth\InvalidEmailException $e) {
 						return 'unknown email address';
-					} catch (\Delight\Auth\EmailNotVerifiedException $e) {
+					}
+					catch (\Delight\Auth\EmailNotVerifiedException $e) {
 						return 'email address not verified';
 					}
-				} else {
+				}
+				else {
 					return 'Email address required';
 				}
-			} else if ($_POST['action'] === 'admin.logInAsUserByUsername') {
+			}
+			else if ($_POST['action'] === 'admin.logInAsUserByUsername') {
 				if (isset($_POST['username'])) {
 					try {
 						$auth->admin()->logInAsUserByUsername($_POST['username']);
 
 						return 'ok';
-					} catch (\Delight\Auth\UnknownUsernameException $e) {
+					}
+					catch (\Delight\Auth\UnknownUsernameException $e) {
 						return 'unknown username';
-					} catch (\Delight\Auth\AmbiguousUsernameException $e) {
+					}
+					catch (\Delight\Auth\AmbiguousUsernameException $e) {
 						return 'ambiguous username';
-					} catch (\Delight\Auth\EmailNotVerifiedException $e) {
+					}
+					catch (\Delight\Auth\EmailNotVerifiedException $e) {
 						return 'email address not verified';
 					}
-				} else {
+				}
+				else {
 					return 'Username required';
 				}
-			} else if ($_POST['action'] === 'admin.changePasswordForUser') {
+			}
+			else if ($_POST['action'] === 'admin.changePasswordForUser') {
 				if (isset($_POST['newPassword'])) {
 					if (isset($_POST['id'])) {
 						try {
 							$auth->admin()->changePasswordForUserById($_POST['id'], $_POST['newPassword']);
-						} catch (\Delight\Auth\UnknownIdException $e) {
+						}
+						catch (\Delight\Auth\UnknownIdException $e) {
 							return 'unknown ID';
-						} catch (\Delight\Auth\InvalidPasswordException $e) {
+						}
+						catch (\Delight\Auth\InvalidPasswordException $e) {
 							return 'invalid password';
 						}
-					} elseif (isset($_POST['username'])) {
+					}
+					elseif (isset($_POST['username'])) {
 						try {
 							$auth->admin()->changePasswordForUserByUsername($_POST['username'], $_POST['newPassword']);
-						} catch (\Delight\Auth\UnknownUsernameException $e) {
+						}
+						catch (\Delight\Auth\UnknownUsernameException $e) {
 							return 'unknown username';
-						} catch (\Delight\Auth\AmbiguousUsernameException $e) {
+						}
+						catch (\Delight\Auth\AmbiguousUsernameException $e) {
 							return 'ambiguous username';
-						} catch (\Delight\Auth\InvalidPasswordException $e) {
+						}
+						catch (\Delight\Auth\InvalidPasswordException $e) {
 							return 'invalid password';
 						}
-					} else {
+					}
+					else {
 						return 'either ID or username required';
 					}
-				} else {
+				}
+				else {
 					return 'new password required';
 				}
 
 				return 'ok';
-			} else {
+			}
+			else {
 				throw new Exception('Unexpected action: ' . $_POST['action']);
 			}
 		}
@@ -547,8 +679,7 @@ function processRequestData(\Delight\Auth\Auth $auth)
 	return null;
 }
 
-function showDebugData(\Delight\Auth\Auth $auth, $result)
-{
+function showDebugData(\Delight\Auth\Auth $auth, $result) {
 	echo '<pre>';
 
 	echo 'Last operation' . "\t\t\t\t";
@@ -617,23 +748,28 @@ function showDebugData(\Delight\Auth\Auth $auth, $result)
 	echo '</pre>';
 }
 
-function convertStatusToText(\Delight\Auth\Auth $auth)
-{
+function convertStatusToText(\Delight\Auth\Auth $auth) {
 	if ($auth->isLoggedIn() === true) {
 		if ($auth->getStatus() === \Delight\Auth\Status::NORMAL && $auth->isNormal()) {
 			return 'normal';
-		} elseif ($auth->getStatus() === \Delight\Auth\Status::ARCHIVED && $auth->isArchived()) {
+		}
+		elseif ($auth->getStatus() === \Delight\Auth\Status::ARCHIVED && $auth->isArchived()) {
 			return 'archived';
-		} elseif ($auth->getStatus() === \Delight\Auth\Status::BANNED && $auth->isBanned()) {
+		}
+		elseif ($auth->getStatus() === \Delight\Auth\Status::BANNED && $auth->isBanned()) {
 			return 'banned';
-		} elseif ($auth->getStatus() === \Delight\Auth\Status::LOCKED && $auth->isLocked()) {
+		}
+		elseif ($auth->getStatus() === \Delight\Auth\Status::LOCKED && $auth->isLocked()) {
 			return 'locked';
-		} elseif ($auth->getStatus() === \Delight\Auth\Status::PENDING_REVIEW && $auth->isPendingReview()) {
+		}
+		elseif ($auth->getStatus() === \Delight\Auth\Status::PENDING_REVIEW && $auth->isPendingReview()) {
 			return 'pending review';
-		} elseif ($auth->getStatus() === \Delight\Auth\Status::SUSPENDED && $auth->isSuspended()) {
+		}
+		elseif ($auth->getStatus() === \Delight\Auth\Status::SUSPENDED && $auth->isSuspended()) {
 			return 'suspended';
 		}
-	} elseif ($auth->isLoggedIn() === false) {
+	}
+	elseif ($auth->isLoggedIn() === false) {
 		if ($auth->getStatus() === null) {
 			return 'none';
 		}
@@ -642,15 +778,13 @@ function convertStatusToText(\Delight\Auth\Auth $auth)
 	throw new Exception('Invalid status `' . $auth->getStatus() . '`');
 }
 
-function showGeneralForm()
-{
+function showGeneralForm() {
 	echo '<form action="" method="get" accept-charset="utf-8">';
 	echo '<button type="submit">Refresh</button>';
 	echo '</form>';
 }
 
-function showAuthenticatedUserForm(\Delight\Auth\Auth $auth)
-{
+function showAuthenticatedUserForm(\Delight\Auth\Auth $auth) {
 	echo '<form action="" method="post" accept-charset="utf-8">';
 	echo '<input type="hidden" name="action" value="reconfirmPassword" />';
 	echo '<input type="text" name="password" placeholder="Password" /> ';
@@ -705,8 +839,7 @@ function showAuthenticatedUserForm(\Delight\Auth\Auth $auth)
 	\showDestroySessionForm();
 }
 
-function showGuestUserForm()
-{
+function showGuestUserForm() {
 	echo '<h1>Public</h1>';
 
 	echo '<form action="" method="post" accept-charset="utf-8">';
@@ -892,8 +1025,7 @@ function showGuestUserForm()
 	echo '</form>';
 }
 
-function showConfirmEmailForm()
-{
+function showConfirmEmailForm() {
 	echo '<form action="" method="post" accept-charset="utf-8">';
 	echo '<input type="hidden" name="action" value="confirmEmail" />';
 	echo '<input type="text" name="selector" placeholder="Selector" /> ';
@@ -919,16 +1051,14 @@ function showConfirmEmailForm()
 	echo '</form>';
 }
 
-function showDestroySessionForm()
-{
+function showDestroySessionForm() {
 	echo '<form action="" method="post" accept-charset="utf-8">';
 	echo '<input type="hidden" name="action" value="destroySession" />';
 	echo '<button type="submit">Destroy session</button>';
 	echo '</form>';
 }
 
-function createRolesOptions()
-{
+function createRolesOptions() {
 	$out = '';
 
 	foreach (\Delight\Auth\Role::getMap() as $roleValue => $roleName) {

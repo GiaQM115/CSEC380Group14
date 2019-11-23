@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** DSN for use with PHP's built-in PDO */
-final class PdoDsn implements Dsn
-{
+final class PdoDsn implements Dsn {
 
 	/** @var string the DSN as a string */
 	private $dsn;
@@ -26,11 +25,10 @@ final class PdoDsn implements Dsn
 	 * @param string $username (optional) the username that complements the DSN
 	 * @param string $password (optional) the password that complements the DSN
 	 */
-	public function __construct($dsnStr, $username = null, $password = null)
-	{
-		$this->dsn = (string)$dsnStr;
-		$this->username = (string)$username;
-		$this->password = (string)$password;
+	public function __construct($dsnStr, $username = null, $password = null) {
+		$this->dsn = (string) $dsnStr;
+		$this->username = (string) $username;
+		$this->password = (string) $password;
 	}
 
 	/**
@@ -38,8 +36,7 @@ final class PdoDsn implements Dsn
 	 *
 	 * @return string
 	 */
-	public function getDsn()
-	{
+	public function getDsn() {
 		return $this->dsn;
 	}
 
@@ -48,8 +45,7 @@ final class PdoDsn implements Dsn
 	 *
 	 * @return string|null
 	 */
-	public function getUsername()
-	{
+	public function getUsername() {
 		return $this->username;
 	}
 
@@ -58,8 +54,7 @@ final class PdoDsn implements Dsn
 	 *
 	 * @return string|null
 	 */
-	public function getPassword()
-	{
+	public function getPassword() {
 		return $this->password;
 	}
 

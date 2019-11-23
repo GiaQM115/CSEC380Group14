@@ -8,8 +8,7 @@
 
 namespace Delight\Auth;
 
-final class Role
-{
+final class Role {
 
 	const ADMIN = 1;
 	const AUTHOR = 2;
@@ -47,8 +46,7 @@ final class Role
 	 *
 	 * @return array
 	 */
-	public static function getMap()
-	{
+	public static function getMap() {
 		$reflectionClass = new \ReflectionClass(static::class);
 
 		return \array_flip($reflectionClass->getConstants());
@@ -59,8 +57,7 @@ final class Role
 	 *
 	 * @return string[]
 	 */
-	public static function getNames()
-	{
+	public static function getNames() {
 		$reflectionClass = new \ReflectionClass(static::class);
 
 		return \array_keys($reflectionClass->getConstants());
@@ -71,15 +68,12 @@ final class Role
 	 *
 	 * @return int[]
 	 */
-	public static function getValues()
-	{
+	public static function getValues() {
 		$reflectionClass = new \ReflectionClass(static::class);
 
 		return \array_values($reflectionClass->getConstants());
 	}
 
-	private function __construct()
-	{
-	}
+	private function __construct() {}
 
 }

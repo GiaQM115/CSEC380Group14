@@ -15,8 +15,7 @@ use Delight\Db\Throwable\RollBackTransactionFailureException;
 use Delight\Db\Throwable\TransactionFailureException;
 
 /** Safe and convenient SQL database access in a driver-agnostic way */
-interface Database
-{
+interface Database {
 
 	/**
 	 * Selects from the database using the specified query and returns all rows and columns

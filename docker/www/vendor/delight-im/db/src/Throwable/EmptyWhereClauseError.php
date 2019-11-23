@@ -17,6 +17,4 @@ namespace Delight\Db\Throwable;
  *
  * Usually, one can simply execute a manual statement instead to get rid of this restriction
  */
-class EmptyWhereClauseError extends Error
-{
-}
+class EmptyWhereClauseError extends Error {}

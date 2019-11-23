@@ -18,8 +18,7 @@ use Delight\Db\Throwable\EmptyWhereClauseError;
 use Delight\Db\Throwable\RollBackTransactionFailureException;
 
 /** Database access using PHP's built-in PDO */
-final class PdoDatabase implements Database
-{
+final class PdoDatabase implements Database {
 
 	/** @var array|null the old connection attributes to restore during denormalization */
 	private $previousAttributes;
@@ -47,13 +46,13 @@ final class PdoDatabase implements Database
 	 * @param PdoDsn|null $pdoDsn (optional) the PDO-specific DSN that may be used to establish the connection
 	 * @param bool|null (optional) $preserveOldState whether the old state of the connection should be preserved
 	 */
-	private function __construct(PDO $pdoInstance = null, PdoDsn $pdoDsn = null, $preserveOldState = null)
-	{
+	private function __construct(PDO $pdoInstance = null, PdoDsn $pdoDsn = null, $preserveOldState = null) {
 		// if the old state of the connection must be stored somewhere
 		if ($preserveOldState) {
 			// prepare an array for that task
 			$this->previousAttributes = [];
-		} // if the old state of the connection doesn't need to be tracked
+		}
+		// if the old state of the connection doesn't need to be tracked
 		else {
 			$this->previousAttributes = null;
 		}
@@ -87,8 +86,7 @@ final class PdoDatabase implements Database
 	 * @param bool|null (optional) $preserveOldState whether the old state of the PDO instance should be preserved
 	 * @return static the new instance
 	 */
-	public static function fromPdo(PDO $pdoInstance, $preserveOldState = null)
-	{
+	public static function fromPdo(PDO $pdoInstance, $preserveOldState = null) {
 		return new static($pdoInstance, null, $preserveOldState);
 	}
 
@@ -100,8 +98,7 @@ final class PdoDatabase implements Database
 	 * @param PdoDsn $pdoDsn the PDO-specific DSN to use
 	 * @return static the new instance
 	 */
-	public static function fromDsn(PdoDsn $pdoDsn)
-	{
+	public static function fromDsn(PdoDsn $pdoDsn) {
 		return new static(null, $pdoDsn);
 	}
 
@@ -113,45 +110,39 @@ final class PdoDatabase implements Database
 	 * @param PdoDataSource $pdoDataSource the data source to use
 	 * @return static the new instance
 	 */
-	public static function fromDataSource(PdoDataSource $pdoDataSource)
-	{
+	public static function fromDataSource(PdoDataSource $pdoDataSource) {
 		return new static(null, $pdoDataSource->toDsn());
 	}
 
-	public function select($query, array $bindValues = null)
-	{
+	public function select($query, array $bindValues = null) {
 		return $this->selectInternal(function ($stmt) {
 			/** @var PDOStatement $stmt */
 			return $stmt->fetchAll();
 		}, $query, $bindValues);
 	}
 
-	public function selectValue($query, array $bindValues = null)
-	{
+	public function selectValue($query, array $bindValues = null) {
 		return $this->selectInternal(function ($stmt) {
 			/** @var PDOStatement $stmt */
 			return $stmt->fetchColumn(0);
 		}, $query, $bindValues);
 	}
 
-	public function selectRow($query, array $bindValues = null)
-	{
+	public function selectRow($query, array $bindValues = null) {
 		return $this->selectInternal(function ($stmt) {
 			/** @var PDOStatement $stmt */
 			return $stmt->fetch();
 		}, $query, $bindValues);
 	}
 
-	public function selectColumn($query, array $bindValues = null)
-	{
+	public function selectColumn($query, array $bindValues = null) {
 		return $this->selectInternal(function ($stmt) {
 			/** @var PDOStatement $stmt */
 			return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 		}, $query, $bindValues);
 	}
 
-	public function insert($tableName, array $insertMappings)
-	{
+	public function insert($tableName, array $insertMappings) {
 		// if no values have been provided that could be inserted
 		if (empty($insertMappings)) {
 			// we cannot perform an insert here
@@ -163,7 +154,7 @@ final class PdoDatabase implements Database
 		// get the column names
 		$columnNames = array_keys($insertMappings);
 		// escape the column names
-		$columnNames = array_map([$this, 'quoteIdentifier'], $columnNames);
+		$columnNames = array_map([ $this, 'quoteIdentifier' ], $columnNames);
 		// build the column list
 		$columnList = implode(', ', $columnNames);
 		// prepare the values (which are placeholders only)
@@ -171,14 +162,13 @@ final class PdoDatabase implements Database
 		// build the value list
 		$placeholderList = implode(', ', $values);
 		// and finally build the full statement (still using placeholders)
-		$statement = 'INSERT INTO ' . $tableName . ' (' . $columnList . ') VALUES (' . $placeholderList . ');';
+		$statement = 'INSERT INTO '.$tableName.' ('.$columnList.') VALUES ('.$placeholderList.');';
 
 		// execute the (parameterized) statement and supply the values to be bound to it
 		return $this->exec($statement, array_values($insertMappings));
 	}
 
-	public function update($tableName, array $updateMappings, array $whereMappings)
-	{
+	public function update($tableName, array $updateMappings, array $whereMappings) {
 		// if no values have been provided that we could update to
 		if (empty($updateMappings)) {
 			// we cannot perform an update here
@@ -218,14 +208,13 @@ final class PdoDatabase implements Database
 		}
 
 		// build the full statement (still using placeholders)
-		$statement = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $setDirectives) . ' WHERE ' . implode(' AND ', $wherePredicates) . ';';
+		$statement = 'UPDATE '.$tableName.' SET '.implode(', ', $setDirectives).' WHERE '.implode(' AND ', $wherePredicates).';';
 
 		// execute the (parameterized) statement and supply the values to be bound to it
 		return $this->exec($statement, $bindValues);
 	}
 
-	public function delete($tableName, array $whereMappings)
-	{
+	public function delete($tableName, array $whereMappings) {
 		// if no values have been provided that we could filter by (which is possible but dangerous)
 		if (empty($whereMappings)) {
 			// we should not perform a deletion here
@@ -248,20 +237,20 @@ final class PdoDatabase implements Database
 		}
 
 		// build the full statement (still using placeholders)
-		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . implode(' AND ', $wherePredicates) . ';';
+		$statement = 'DELETE FROM '.$tableName.' WHERE '.implode(' AND ', $wherePredicates).';';
 
 		// execute the (parameterized) statement and supply the values to be bound to it
 		return $this->exec($statement, $bindValues);
 	}
 
-	public function exec($statement, array $bindValues = null)
-	{
+	public function exec($statement, array $bindValues = null) {
 		$this->normalizeConnection();
 
 		try {
 			// create a prepared statement from the supplied SQL string
 			$stmt = $this->pdo->prepare($statement);
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			ErrorHandler::rethrow($e);
 		}
 
@@ -275,7 +264,8 @@ final class PdoDatabase implements Database
 		try {
 			// bind the supplied values to the statement and execute it
 			$stmt->execute($bindValues);
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			ErrorHandler::rethrow($e);
 		}
 
@@ -292,8 +282,7 @@ final class PdoDatabase implements Database
 		return $affectedRows;
 	}
 
-	public function getLastInsertId($sequenceName = null)
-	{
+	public function getLastInsertId($sequenceName = null) {
 		$this->normalizeConnection();
 
 		$id = $this->pdo->lastInsertId($sequenceName);
@@ -303,13 +292,13 @@ final class PdoDatabase implements Database
 		return $id;
 	}
 
-	public function beginTransaction()
-	{
+	public function beginTransaction() {
 		$this->normalizeConnection();
 
 		try {
 			$success = $this->pdo->beginTransaction();
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			$success = $e->getMessage();
 		}
 
@@ -320,13 +309,11 @@ final class PdoDatabase implements Database
 		}
 	}
 
-	public function startTransaction()
-	{
+	public function startTransaction() {
 		$this->beginTransaction();
 	}
 
-	public function isTransactionActive()
-	{
+	public function isTransactionActive() {
 		$this->normalizeConnection();
 
 		$state = $this->pdo->inTransaction();
@@ -336,13 +323,13 @@ final class PdoDatabase implements Database
 		return $state;
 	}
 
-	public function commit()
-	{
+	public function commit() {
 		$this->normalizeConnection();
 
 		try {
 			$success = $this->pdo->commit();
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			$success = $e->getMessage();
 		}
 
@@ -353,13 +340,13 @@ final class PdoDatabase implements Database
 		}
 	}
 
-	public function rollBack()
-	{
+	public function rollBack() {
 		$this->normalizeConnection();
 
 		try {
 			$success = $this->pdo->rollBack();
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			$success = $e->getMessage();
 		}
 
@@ -370,33 +357,25 @@ final class PdoDatabase implements Database
 		}
 	}
 
-	public function getProfiler()
-	{
+	public function getProfiler() {
 		return $this->profiler;
 	}
 
-	public function setProfiler(Profiler $profiler = null)
-	{
+	public function setProfiler(Profiler $profiler = null) {
 		$this->profiler = $profiler;
 
 		return $this;
 	}
 
-	public function getDriverName()
-	{
+	public function getDriverName() {
 		$this->ensureConnected();
 
 		switch ($this->driverName) {
-			case PdoDataSource::DRIVER_NAME_MYSQL:
-				return 'MySQL';
-			case PdoDataSource::DRIVER_NAME_POSTGRESQL:
-				return 'PostgreSQL';
-			case PdoDataSource::DRIVER_NAME_SQLITE:
-				return 'SQLite';
-			case PdoDataSource::DRIVER_NAME_ORACLE:
-				return 'Oracle';
-			default:
-				return $this->driverName;
+			case PdoDataSource::DRIVER_NAME_MYSQL: return 'MySQL';
+			case PdoDataSource::DRIVER_NAME_POSTGRESQL: return 'PostgreSQL';
+			case PdoDataSource::DRIVER_NAME_SQLITE: return 'SQLite';
+			case PdoDataSource::DRIVER_NAME_ORACLE: return 'Oracle';
+			default: return $this->driverName;
 		}
 	}
 
@@ -405,8 +384,7 @@ final class PdoDatabase implements Database
 	 *
 	 * @return string
 	 */
-	public function getServerInfo()
-	{
+	public function getServerInfo() {
 		$this->ensureConnected();
 
 		return $this->pdo->getAttribute(PDO::ATTR_SERVER_INFO);
@@ -417,8 +395,7 @@ final class PdoDatabase implements Database
 	 *
 	 * @return string
 	 */
-	public function getServerVersion()
-	{
+	public function getServerVersion() {
 		$this->ensureConnected();
 
 		return $this->pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
@@ -429,39 +406,37 @@ final class PdoDatabase implements Database
 	 *
 	 * @return string
 	 */
-	public function getClientVersion()
-	{
+	public function getClientVersion() {
 		$this->ensureConnected();
 
 		return $this->pdo->getAttribute(PDO::ATTR_CLIENT_VERSION);
 	}
 
-	public function quoteIdentifier($identifier)
-	{
+	public function quoteIdentifier($identifier) {
 		$this->ensureConnected();
 
 		if ($this->driverName === PdoDataSource::DRIVER_NAME_MYSQL) {
 			$char = '`';
-		} else {
+		}
+		else {
 			$char = '"';
 		}
 
 		return $char . str_replace($char, $char . $char, $identifier) . $char;
 	}
 
-	public function quoteTableName($tableName)
-	{
+	public function quoteTableName($tableName) {
 		if (\is_array($tableName)) {
-			$tableName = \array_map([$this, 'quoteIdentifier'], $tableName);
+			$tableName = \array_map([ $this, 'quoteIdentifier' ], $tableName);
 
 			return \implode('.', $tableName);
-		} else {
+		}
+		else {
 			return $this->quoteIdentifier($tableName);
 		}
 	}
 
-	public function quoteLiteral($literal)
-	{
+	public function quoteLiteral($literal) {
 		$this->ensureConnected();
 
 		if (!empty($literal) && is_array($literal)) {
@@ -470,18 +445,19 @@ final class PdoDatabase implements Database
 			}
 
 			return $literal;
-		} else {
+		}
+		else {
 			return $this->pdo->quote($literal);
 		}
 	}
 
-	public function addOnConnectListener(callable $onConnectListener)
-	{
+	public function addOnConnectListener(callable $onConnectListener) {
 		// if the database connection has not been established yet
 		if ($this->pdo === null) {
 			// schedule the callback for later execution
 			$this->onConnectListeners[] = $onConnectListener;
-		} // if the database connection has already been established
+		}
+		// if the database connection has already been established
 		else {
 			// execute the callback immediately
 			$onConnectListener($this);
@@ -491,12 +467,12 @@ final class PdoDatabase implements Database
 	}
 
 	/** Makes sure that the connection is active and otherwise establishes it automatically */
-	private function ensureConnected()
-	{
+	private function ensureConnected() {
 		if ($this->pdo === null) {
 			try {
 				$this->pdo = new PDO($this->dsn->getDsn(), $this->dsn->getUsername(), $this->dsn->getPassword());
-			} catch (PDOException $e) {
+			}
+			catch (PDOException $e) {
 				ErrorHandler::rethrow($e);
 			}
 
@@ -518,16 +494,14 @@ final class PdoDatabase implements Database
 	}
 
 	/** Normalizes this connection by setting attributes that provide the strong guarantees about the connection's behavior that we need */
-	private function normalizeConnection()
-	{
+	private function normalizeConnection() {
 		$this->ensureConnected();
 
 		$this->configureConnection($this->attributes, $this->previousAttributes);
 	}
 
 	/** Restores this connection's original behavior if desired */
-	private function denormalizeConnection()
-	{
+	private function denormalizeConnection() {
 		$this->configureConnection($this->previousAttributes, $this->attributes);
 	}
 
@@ -537,8 +511,7 @@ final class PdoDatabase implements Database
 	 * @param array|null $newAttributes the new attributes to set
 	 * @param array|null $oldAttributes where old configurations may be saved to restore them later
 	 */
-	private function configureConnection(array &$newAttributes = null, array &$oldAttributes = null)
-	{
+	private function configureConnection(array &$newAttributes = null, array &$oldAttributes = null) {
 		// if a connection is available
 		if (isset($this->pdo)) {
 			// if there are attributes that need to be applied
@@ -550,7 +523,8 @@ final class PdoDatabase implements Database
 						// retrieve the old value for this attribute
 						try {
 							$oldValue = @$this->pdo->getAttribute($key);
-						} catch (PDOException $e) {
+						}
+						catch (PDOException $e) {
 							// the specified attribute is not supported by the driver
 							$oldValue = null;
 						}
@@ -590,14 +564,14 @@ final class PdoDatabase implements Database
 	 * @param array|null $bindValues (optional) the values to bind as replacements for the `?` characters in the query
 	 * @return mixed whatever the callback has extracted and returned from the result set
 	 */
-	private function selectInternal(callable $callback, $query, array $bindValues = null)
-	{
+	private function selectInternal(callable $callback, $query, array $bindValues = null) {
 		$this->normalizeConnection();
 
 		try {
 			// create a prepared statement from the supplied SQL string
 			$stmt = $this->pdo->prepare($query);
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			ErrorHandler::rethrow($e);
 		}
 
@@ -611,7 +585,8 @@ final class PdoDatabase implements Database
 		// bind the supplied values to the query and execute it
 		try {
 			$stmt->execute($bindValues);
-		} catch (PDOException $e) {
+		}
+		catch (PDOException $e) {
 			ErrorHandler::rethrow($e);
 		}
 
@@ -629,7 +604,8 @@ final class PdoDatabase implements Database
 		if (empty($results) && $stmt->rowCount() === 0) {
 			// consistently return `null`
 			return null;
-		} // if some results have been found
+		}
+		// if some results have been found
 		else {
 			// return these as extracted by the callback
 			return $results;

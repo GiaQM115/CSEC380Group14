@@ -9,6 +9,4 @@
 namespace Delight\Db\Throwable;
 
 /** Base class for all exceptions that occur with transaction controls */
-abstract class TransactionFailureException extends Exception
-{
-}
+abstract class TransactionFailureException extends Exception {}

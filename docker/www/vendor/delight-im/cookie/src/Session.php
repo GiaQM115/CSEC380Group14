@@ -17,20 +17,16 @@ use Delight\Http\ResponseHeader;
  *
  * Note that sessions must always be started before the HTTP headers are sent to the client, i.e. before the actual output starts
  */
-final class Session
-{
+final class Session {
 
-	private function __construct()
-	{
-	}
+	private function __construct() { }
 
 	/**
 	 * Starts or resumes a session in a way compatible to PHP's built-in `session_start()` function
 	 *
 	 * @param string|null $sameSiteRestriction indicates that the cookie should not be sent along with cross-site requests (either `null`, `Lax` or `Strict`)
 	 */
-	public static function start($sameSiteRestriction = Cookie::SAME_SITE_RESTRICTION_LAX)
-	{
+	public static function start($sameSiteRestriction = Cookie::SAME_SITE_RESTRICTION_LAX) {
 		// run PHP's built-in equivalent
 		\session_start();
 
@@ -50,11 +46,11 @@ final class Session
 	 * @param string|null $newId (optional) a new session ID to replace the current session ID
 	 * @return string the (old) session ID or an empty string
 	 */
-	public static function id($newId = null)
-	{
+	public static function id($newId = null) {
 		if ($newId === null) {
 			return \session_id();
-		} else {
+		}
+		else {
 			return \session_id($newId);
 		}
 	}
@@ -65,8 +61,7 @@ final class Session
 	 * @param bool $deleteOldSession whether to delete the old session or not
 	 * @param string|null $sameSiteRestriction indicates that the cookie should not be sent along with cross-site requests (either `null`, `Lax` or `Strict`)
 	 */
-	public static function regenerate($deleteOldSession = false, $sameSiteRestriction = Cookie::SAME_SITE_RESTRICTION_LAX)
-	{
+	public static function regenerate($deleteOldSession = false, $sameSiteRestriction = Cookie::SAME_SITE_RESTRICTION_LAX) {
 		// run PHP's built-in equivalent
 		\session_regenerate_id($deleteOldSession);
 
@@ -80,8 +75,7 @@ final class Session
 	 * @param string $key the key to check
 	 * @return bool whether there is a value for the specified key or not
 	 */
-	public static function has($key)
-	{
+	public static function has($key) {
 		return isset($_SESSION[$key]);
 	}
 
@@ -92,11 +86,11 @@ final class Session
 	 * @param mixed $defaultValue the default value to return if the requested value cannot be found
 	 * @return mixed the requested value or the default value
 	 */
-	public static function get($key, $defaultValue = null)
-	{
+	public static function get($key, $defaultValue = null) {
 		if (isset($_SESSION[$key])) {
 			return $_SESSION[$key];
-		} else {
+		}
+		else {
 			return $defaultValue;
 		}
 	}
@@ -110,15 +104,15 @@ final class Session
 	 * @param mixed $defaultValue the default value to return if the requested value cannot be found
 	 * @return mixed the requested value or the default value
 	 */
-	public static function take($key, $defaultValue = null)
-	{
+	public static function take($key, $defaultValue = null) {
 		if (isset($_SESSION[$key])) {
 			$value = $_SESSION[$key];
 
 			unset($_SESSION[$key]);
 
 			return $value;
-		} else {
+		}
+		else {
 			return $defaultValue;
 		}
 	}
@@ -131,8 +125,7 @@ final class Session
 	 * @param string $key the key to set the value for
 	 * @param mixed $value the value to set
 	 */
-	public static function set($key, $value)
-	{
+	public static function set($key, $value) {
 		$_SESSION[$key] = $value;
 	}
 
@@ -141,8 +134,7 @@ final class Session
 	 *
 	 * @param string $key the key to remove the value for
 	 */
-	public static function delete($key)
-	{
+	public static function delete($key) {
 		unset($_SESSION[$key]);
 	}
 
@@ -151,8 +143,7 @@ final class Session
 	 *
 	 * @param string|null $sameSiteRestriction indicates that the cookie should not be sent along with cross-site requests (either `null`, `Lax` or `Strict`)
 	 */
-	private static function rewriteCookieHeader($sameSiteRestriction = Cookie::SAME_SITE_RESTRICTION_LAX)
-	{
+	private static function rewriteCookieHeader($sameSiteRestriction = Cookie::SAME_SITE_RESTRICTION_LAX) {
 		// get and remove the original cookie header set by PHP
 		$originalCookieHeader = ResponseHeader::take('Set-Cookie', \session_name() . '=');
 

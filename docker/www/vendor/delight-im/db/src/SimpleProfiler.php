@@ -9,8 +9,7 @@
 namespace Delight\Db;
 
 /** Implementation of a profiler that monitors performance of individual database queries and statements */
-final class SimpleProfiler implements Profiler
-{
+final class SimpleProfiler implements Profiler {
 
 	/** The maximum number of entries in traces to use as the default */
 	const TRACE_MAX_LENGTH_DEFAULT = 10;
@@ -22,30 +21,29 @@ final class SimpleProfiler implements Profiler
 	/** @var float|null the start time of the current measurement in milliseconds */
 	private $currentMeasurementStartTime;
 
-	public function __construct($maxTraceLength = null)
-	{
+	public function __construct($maxTraceLength = null) {
 		$this->measurements = [];
 
 		if ($maxTraceLength === null) {
 			$this->maxTraceLength = self::TRACE_MAX_LENGTH_DEFAULT;
-		} else {
-			$this->maxTraceLength = (int)$maxTraceLength;
+		}
+		else {
+			$this->maxTraceLength = (int) $maxTraceLength;
 		}
 
 		$this->currentMeasurementStartTime = null;
 	}
 
-	public function beginMeasurement()
-	{
+	public function beginMeasurement() {
 		$this->currentMeasurementStartTime = microtime(true) * 1000;
 	}
 
-	public function endMeasurement($sql, array $boundValues = null, $discardMostRecentTraceEntries = null)
-	{
+	public function endMeasurement($sql, array $boundValues = null, $discardMostRecentTraceEntries = null) {
 		if ($discardMostRecentTraceEntries === null) {
 			$discardMostRecentTraceEntries = 0;
-		} else {
-			$discardMostRecentTraceEntries = (int)$discardMostRecentTraceEntries;
+		}
+		else {
+			$discardMostRecentTraceEntries = (int) $discardMostRecentTraceEntries;
 		}
 
 		// get the trace at this point of the program execution
@@ -68,23 +66,19 @@ final class SimpleProfiler implements Profiler
 		);
 	}
 
-	public function getCount()
-	{
+	public function getCount() {
 		return count($this->measurements);
 	}
 
-	public function getMeasurement($index)
-	{
+	public function getMeasurement($index) {
 		return $this->measurements[$index];
 	}
 
-	public function getMeasurements()
-	{
+	public function getMeasurements() {
 		return $this->measurements;
 	}
 
-	public function sort()
-	{
+	public function sort() {
 		usort($this->measurements, function ($a, $b) {
 			/** @var Measurement $a */
 			/** @var Measurement $b */

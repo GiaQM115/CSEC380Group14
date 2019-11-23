@@ -12,7 +12,7 @@
 
 \header('Content-type: text/plain; charset=utf-8');
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /* BEGIN TEST COOKIES */
 
@@ -196,23 +196,22 @@ $oldSessionId = \Delight\Cookie\Session::id();
 
 echo 'ALL TESTS PASSED' . "\n";
 
-function testCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httpOnly = false)
-{
+function testCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httpOnly = false) {
 	$actualValue = \Delight\Cookie\Cookie::buildCookieHeader($name, $value, $expire, $path, $domain, $secure, $httpOnly);
 
 	if (\is_null($actualValue)) {
 		$expectedValue = @\simulateSetCookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
-	} else {
+	}
+	else {
 		$expectedValue = \simulateSetCookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
 	}
 
 	\testEqual($actualValue, $expectedValue);
 }
 
-function testEqual($actualValue, $expectedValue)
-{
-	$actualValue = (string)$actualValue;
-	$expectedValue = (string)$expectedValue;
+function testEqual($actualValue, $expectedValue) {
+	$actualValue = (string) $actualValue;
+	$expectedValue = (string) $expectedValue;
 
 	echo '[';
 	echo $expectedValue;
@@ -234,14 +233,12 @@ function testEqual($actualValue, $expectedValue)
 	}
 }
 
-function simulateSetCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httpOnly = false)
-{
+function simulateSetCookie($name, $value = null, $expire = 0, $path = null, $domain = null, $secure = false, $httpOnly = false) {
 	\setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
 
 	return \Delight\Http\ResponseHeader::take('Set-Cookie');
 }
 
-function fail($lineNumber)
-{
+function fail($lineNumber) {
 	exit('Error in line ' . $lineNumber);
 }

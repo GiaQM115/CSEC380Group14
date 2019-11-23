@@ -19,10 +19,9 @@ use Delight\Db\Throwable\IntegrityConstraintViolationException;
 require_once __DIR__ . '/Exceptions.php';
 
 /** Component that provides all features and utilities for secure authentication of individual users */
-final class Auth extends UserManager
-{
+final class Auth extends UserManager {
 
-	const COOKIE_PREFIXES = [Cookie::PREFIX_SECURE, Cookie::PREFIX_HOST];
+	const COOKIE_PREFIXES = [ Cookie::PREFIX_SECURE, Cookie::PREFIX_HOST ];
 	const COOKIE_CONTENT_SEPARATOR = '~';
 
 	/** @var string the user's current IP address */
@@ -42,13 +41,12 @@ final class Auth extends UserManager
 	 * @param int|null $sessionResyncInterval (optional) the interval in seconds after which to resynchronize the session data with its authoritative source in the database
 	 * @param string|null $dbSchema (optional) the schema name for all database tables used by this component
 	 */
-	public function __construct($databaseConnection, $ipAddress = null, $dbTablePrefix = null, $throttling = null, $sessionResyncInterval = null, $dbSchema = null)
-	{
+	public function __construct($databaseConnection, $ipAddress = null, $dbTablePrefix = null, $throttling = null, $sessionResyncInterval = null, $dbSchema = null) {
 		parent::__construct($databaseConnection, $dbTablePrefix, $dbSchema);
 
 		$this->ipAddress = !empty($ipAddress) ? $ipAddress : (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null);
-		$this->throttling = isset($throttling) ? (bool)$throttling : true;
-		$this->sessionResyncInterval = isset($sessionResyncInterval) ? ((int)$sessionResyncInterval) : (60 * 5);
+		$this->throttling = isset($throttling) ? (bool) $throttling : true;
+		$this->sessionResyncInterval = isset($sessionResyncInterval) ? ((int) $sessionResyncInterval) : (60 * 5);
 		$this->rememberCookieName = self::createRememberCookieName();
 
 		$this->initSessionIfNecessary();
@@ -59,8 +57,7 @@ final class Auth extends UserManager
 	}
 
 	/** Initializes the session and sets the correct configuration */
-	private function initSessionIfNecessary()
-	{
+	private function initSessionIfNecessary() {
 		if (\session_status() === \PHP_SESSION_NONE) {
 			// use cookies to store session IDs
 			\ini_set('session.use_cookies', 1);
@@ -75,8 +72,7 @@ final class Auth extends UserManager
 	}
 
 	/** Improves the application's security over HTTP(S) by setting specific headers */
-	private function enhanceHttpSecurity()
-	{
+	private function enhanceHttpSecurity() {
 		// remove exposure of PHP version (at least where possible)
 		\header_remove('X-Powered-By');
 
@@ -95,8 +91,7 @@ final class Auth extends UserManager
 	}
 
 	/** Checks if there is a "remember me" directive set and handles the automatic login (if appropriate) */
-	private function processRememberDirective()
-	{
+	private function processRememberDirective() {
 		// if the user is not signed in yet
 		if (!$this->isLoggedIn()) {
 			// if there is currently no cookie for the 'remember me' feature
@@ -121,9 +116,10 @@ final class Auth extends UserManager
 					try {
 						$rememberData = $this->db->selectRow(
 							'SELECT a.user, a.token, a.expires, b.email, b.username, b.status, b.roles_mask, b.force_logout FROM ' . $this->makeTableName('users_remembered') . ' AS a JOIN ' . $this->makeTableName('users') . ' AS b ON a.user = b.id WHERE a.selector = ?',
-							[$parts[0]]
+							[ $parts[0] ]
 						);
-					} catch (Error $e) {
+					}
+					catch (Error $e) {
 						throw new DatabaseError($e->getMessage());
 					}
 
@@ -148,8 +144,7 @@ final class Auth extends UserManager
 		}
 	}
 
-	private function resyncSessionIfNecessary()
-	{
+	private function resyncSessionIfNecessary() {
 		// if the user is signed in
 		if ($this->isLoggedIn()) {
 			// the following session field may not have been initialized for sessions that had already existed before the introduction of this feature
@@ -163,9 +158,10 @@ final class Auth extends UserManager
 				try {
 					$authoritativeData = $this->db->selectRow(
 						'SELECT email, username, status, roles_mask, force_logout FROM ' . $this->makeTableName('users') . ' WHERE id = ?',
-						[$this->getUserId()]
+						[ $this->getUserId() ]
 					);
-				} catch (Error $e) {
+				}
+				catch (Error $e) {
 					throw new DatabaseError($e->getMessage());
 				}
 
@@ -180,18 +176,20 @@ final class Auth extends UserManager
 					if ($authoritativeData['force_logout'] > $_SESSION[self::SESSION_FIELD_FORCE_LOGOUT]) {
 						// the user must be signed out
 						$this->logOut();
-					} // if the counter that keeps track of forced logouts has remained unchanged
+					}
+					// if the counter that keeps track of forced logouts has remained unchanged
 					else {
 						// the session data needs to be updated
 						$_SESSION[self::SESSION_FIELD_EMAIL] = $authoritativeData['email'];
 						$_SESSION[self::SESSION_FIELD_USERNAME] = $authoritativeData['username'];
-						$_SESSION[self::SESSION_FIELD_STATUS] = (int)$authoritativeData['status'];
-						$_SESSION[self::SESSION_FIELD_ROLES] = (int)$authoritativeData['roles_mask'];
+						$_SESSION[self::SESSION_FIELD_STATUS] = (int) $authoritativeData['status'];
+						$_SESSION[self::SESSION_FIELD_ROLES] = (int) $authoritativeData['roles_mask'];
 
 						// remember that we've just performed the required resynchronization
 						$_SESSION[self::SESSION_FIELD_LAST_RESYNC] = \time();
 					}
-				} // if no data has been found for the user
+				}
+				// if no data has been found for the user
 				else {
 					// their account may have been deleted so they should be signed out
 					$this->logOut();
@@ -229,14 +227,13 @@ final class Auth extends UserManager
 	 * @see confirmEmail
 	 * @see confirmEmailAndSignIn
 	 */
-	public function register($email, $password, $username = null, callable $callback = null)
-	{
-		$this->throttle(['enumerateUsers', $this->getIpAddress()], 1, (60 * 60), 75);
-		$this->throttle(['createNewAccount', $this->getIpAddress()], 1, (60 * 60 * 12), 5, true);
+	public function register($email, $password, $username = null, callable $callback = null) {
+		$this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+		$this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, true);
 
 		$newUserId = $this->createUserInternal(false, $email, $password, $username, $callback);
 
-		$this->throttle(['createNewAccount', $this->getIpAddress()], 1, (60 * 60 * 12), 5, false);
+		$this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, false);
 
 		return $newUserId;
 	}
@@ -271,14 +268,13 @@ final class Auth extends UserManager
 	 * @see confirmEmail
 	 * @see confirmEmailAndSignIn
 	 */
-	public function registerWithUniqueUsername($email, $password, $username = null, callable $callback = null)
-	{
-		$this->throttle(['enumerateUsers', $this->getIpAddress()], 1, (60 * 60), 75);
-		$this->throttle(['createNewAccount', $this->getIpAddress()], 1, (60 * 60 * 12), 5, true);
+	public function registerWithUniqueUsername($email, $password, $username = null, callable $callback = null) {
+		$this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+		$this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, true);
 
 		$newUserId = $this->createUserInternal(true, $email, $password, $username, $callback);
 
-		$this->throttle(['createNewAccount', $this->getIpAddress()], 1, (60 * 60 * 12), 5, false);
+		$this->throttle([ 'createNewAccount', $this->getIpAddress() ], 1, (60 * 60 * 12), 5, false);
 
 		return $newUserId;
 	}
@@ -297,9 +293,8 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function login($email, $password, $rememberDuration = null, callable $onBeforeSuccess = null)
-	{
-		$this->throttle(['attemptToLogin', 'email', $email], 500, (60 * 60 * 24), null, true);
+	public function login($email, $password, $rememberDuration = null, callable $onBeforeSuccess = null) {
+		$this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, true);
 
 		$this->authenticateUserInternal($password, $email, null, $rememberDuration, $onBeforeSuccess);
 	}
@@ -323,9 +318,8 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function loginWithUsername($username, $password, $rememberDuration = null, callable $onBeforeSuccess = null)
-	{
-		$this->throttle(['attemptToLogin', 'username', $username], 500, (60 * 60 * 24), null, true);
+	public function loginWithUsername($username, $password, $rememberDuration = null, callable $onBeforeSuccess = null) {
+		$this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, true);
 
 		$this->authenticateUserInternal($password, null, $username, $rememberDuration, $onBeforeSuccess);
 	}
@@ -347,23 +341,24 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function reconfirmPassword($password)
-	{
+	public function reconfirmPassword($password) {
 		if ($this->isLoggedIn()) {
 			try {
 				$password = self::validatePassword($password);
-			} catch (InvalidPasswordException $e) {
+			}
+			catch (InvalidPasswordException $e) {
 				return false;
 			}
 
-			$this->throttle(['reconfirmPassword', $this->getIpAddress()], 3, (60 * 60), 4, true);
+			$this->throttle([ 'reconfirmPassword', $this->getIpAddress() ], 3, (60 * 60), 4, true);
 
 			try {
 				$expectedHash = $this->db->selectValue(
 					'SELECT password FROM ' . $this->makeTableName('users') . ' WHERE id = ?',
-					[$this->getUserId()]
+					[ $this->getUserId() ]
 				);
-			} catch (Error $e) {
+			}
+			catch (Error $e) {
 				throw new DatabaseError($e->getMessage());
 			}
 
@@ -371,14 +366,16 @@ final class Auth extends UserManager
 				$validated = \password_verify($password, $expectedHash);
 
 				if (!$validated) {
-					$this->throttle(['reconfirmPassword', $this->getIpAddress()], 3, (60 * 60), 4, false);
+					$this->throttle([ 'reconfirmPassword', $this->getIpAddress() ], 3, (60 * 60), 4, false);
 				}
 
 				return $validated;
-			} else {
+			}
+			else {
 				throw new NotLoggedInException();
 			}
-		} else {
+		}
+		else {
 			throw new NotLoggedInException();
 		}
 	}
@@ -388,8 +385,7 @@ final class Auth extends UserManager
 	 *
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function logOut()
-	{
+	public function logOut() {
 		// if the user has been signed in
 		if ($this->isLoggedIn()) {
 			// retrieve any locally existing remember directive
@@ -423,8 +419,7 @@ final class Auth extends UserManager
 	 * @throws NotLoggedInException if the user is not currently signed in
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function logOutEverywhereElse()
-	{
+	public function logOutEverywhereElse() {
 		if (!$this->isLoggedIn()) {
 			throw new NotLoggedInException();
 		}
@@ -432,7 +427,7 @@ final class Auth extends UserManager
 		// determine the expiry date of any locally existing remember directive
 		$previousRememberDirectiveExpiry = $this->getRememberDirectiveExpiry();
 
-		// schedule a forced logoutDiv in all sessions
+		// schedule a forced logout in all sessions
 		$this->forceLogoutForUserById($this->getUserId());
 
 		// the following session field may not have been initialized for sessions that had already existed before the introduction of this feature
@@ -440,7 +435,7 @@ final class Auth extends UserManager
 			$_SESSION[self::SESSION_FIELD_FORCE_LOGOUT] = 0;
 		}
 
-		// ensure that we will simply skip or ignore the next forced logoutDiv (which we have just caused) in the current session
+		// ensure that we will simply skip or ignore the next forced logout (which we have just caused) in the current session
 		$_SESSION[self::SESSION_FIELD_FORCE_LOGOUT]++;
 
 		// re-generate the session ID to prevent session fixation attacks (requests a cookie to be written on the client)
@@ -462,15 +457,14 @@ final class Auth extends UserManager
 	 * @throws NotLoggedInException if the user is not currently signed in
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function logOutEverywhere()
-	{
+	public function logOutEverywhere() {
 		if (!$this->isLoggedIn()) {
 			throw new NotLoggedInException();
 		}
 
-		// schedule a forced logoutDiv in all sessions
+		// schedule a forced logout in all sessions
 		$this->forceLogoutForUserById($this->getUserId());
-		// and immediately apply the logoutDiv locally
+		// and immediately apply the logout locally
 		$this->logOut();
 	}
 
@@ -479,8 +473,7 @@ final class Auth extends UserManager
 	 *
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function destroySession()
-	{
+	public function destroySession() {
 		// remove all session variables without exception
 		$_SESSION = [];
 		// delete the session cookie
@@ -496,12 +489,11 @@ final class Auth extends UserManager
 	 * @param int $duration the duration in seconds
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function createRememberDirective($userId, $duration)
-	{
+	private function createRememberDirective($userId, $duration) {
 		$selector = self::createRandomString(24);
 		$token = self::createRandomString(32);
 		$tokenHashed = \password_hash($token, \PASSWORD_DEFAULT);
-		$expires = \time() + ((int)$duration);
+		$expires = \time() + ((int) $duration);
 
 		try {
 			$this->db->insert(
@@ -513,15 +505,15 @@ final class Auth extends UserManager
 					'expires' => $expires
 				]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
 		$this->setRememberCookie($selector, $token, $expires);
 	}
 
-	protected function deleteRememberDirectiveForUserById($userId, $selector = null)
-	{
+	protected function deleteRememberDirectiveForUserById($userId, $selector = null) {
 		parent::deleteRememberDirectiveForUserById($userId, $selector);
 
 		$this->setRememberCookie(null, null, \time() - 3600);
@@ -535,13 +527,13 @@ final class Auth extends UserManager
 	 * @param int $expires the UNIX time in seconds which the token should expire at
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function setRememberCookie($selector, $token, $expires)
-	{
+	private function setRememberCookie($selector, $token, $expires) {
 		$params = \session_get_cookie_params();
 
 		if (isset($selector) && isset($token)) {
 			$content = $selector . self::COOKIE_CONTENT_SEPARATOR . $token;
-		} else {
+		}
+		else {
 			$content = '';
 		}
 
@@ -571,16 +563,16 @@ final class Auth extends UserManager
 		}
 	}
 
-	protected function onLoginSuccessful($userId, $email, $username, $status, $roles, $forceLogout, $remembered)
-	{
+	protected function onLoginSuccessful($userId, $email, $username, $status, $roles, $forceLogout, $remembered) {
 		// update the timestamp of the user's last login
 		try {
 			$this->db->update(
 				$this->makeTableNameComponents('users'),
-				['last_login' => \time()],
-				['id' => $userId]
+				[ 'last_login' => \time() ],
+				[ 'id' => $userId ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
@@ -592,8 +584,7 @@ final class Auth extends UserManager
 	 *
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function deleteSessionCookie()
-	{
+	private function deleteSessionCookie() {
 		$params = \session_get_cookie_params();
 
 		// ask for the session cookie to be deleted (requests a cookie to be written on the client)
@@ -623,18 +614,18 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function confirmEmail($selector, $token)
-	{
-		$this->throttle(['confirmEmail', $this->getIpAddress()], 5, (60 * 60), 10);
-		$this->throttle(['confirmEmail', 'selector', $selector], 3, (60 * 60), 10);
-		$this->throttle(['confirmEmail', 'token', $token], 3, (60 * 60), 10);
+	public function confirmEmail($selector, $token) {
+		$this->throttle([ 'confirmEmail', $this->getIpAddress() ], 5, (60 * 60), 10);
+		$this->throttle([ 'confirmEmail', 'selector', $selector ], 3, (60 * 60), 10);
+		$this->throttle([ 'confirmEmail', 'token', $token ], 3, (60 * 60), 10);
 
 		try {
 			$confirmationData = $this->db->selectRow(
 				'SELECT a.id, a.user_id, a.email AS new_email, a.token, a.expires, b.email AS old_email FROM ' . $this->makeTableName('users_confirmations') . ' AS a JOIN ' . $this->makeTableName('users') . ' AS b ON b.id = a.user_id WHERE a.selector = ?',
-				[$selector]
+				[ $selector ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
@@ -645,9 +636,10 @@ final class Auth extends UserManager
 					try {
 						$this->db->delete(
 							$this->makeTableNameComponents('users_resets'),
-							['user' => $confirmationData['user_id']]
+							[ 'user' => $confirmationData['user_id'] ]
 						);
-					} catch (Error $e) {
+					}
+					catch (Error $e) {
 						throw new DatabaseError($e->getMessage());
 					}
 
@@ -659,11 +651,13 @@ final class Auth extends UserManager
 								'email' => $confirmationData['new_email'],
 								'verified' => 1
 							],
-							['id' => $confirmationData['user_id']]
+							[ 'id' => $confirmationData['user_id'] ]
 						);
-					} catch (IntegrityConstraintViolationException $e) {
+					}
+					catch (IntegrityConstraintViolationException $e) {
 						throw new UserAlreadyExistsException();
-					} catch (Error $e) {
+					}
+					catch (Error $e) {
 						throw new DatabaseError($e->getMessage());
 					}
 
@@ -680,9 +674,10 @@ final class Auth extends UserManager
 					try {
 						$this->db->delete(
 							$this->makeTableNameComponents('users_confirmations'),
-							['id' => $confirmationData['id']]
+							[ 'id' => $confirmationData['id'] ]
 						);
-					} catch (Error $e) {
+					}
+					catch (Error $e) {
 						throw new DatabaseError($e->getMessage());
 					}
 
@@ -696,13 +691,16 @@ final class Auth extends UserManager
 						$confirmationData['old_email'],
 						$confirmationData['new_email']
 					];
-				} else {
+				}
+				else {
 					throw new TokenExpiredException();
 				}
-			} else {
+			}
+			else {
 				throw new InvalidSelectorTokenPairException();
 			}
-		} else {
+		}
+		else {
 			throw new InvalidSelectorTokenPairException();
 		}
 	}
@@ -724,8 +722,7 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function confirmEmailAndSignIn($selector, $token, $rememberDuration = null)
-	{
+	public function confirmEmailAndSignIn($selector, $token, $rememberDuration = null) {
 		$emailBeforeAndAfter = $this->confirmEmail($selector, $token);
 
 		if (!$this->isLoggedIn()) {
@@ -734,7 +731,7 @@ final class Auth extends UserManager
 
 				$userData = $this->getUserDataByEmailAddress(
 					$emailBeforeAndAfter[1],
-					['id', 'email', 'username', 'status', 'roles_mask', 'force_logout']
+					[ 'id', 'email', 'username', 'status', 'roles_mask', 'force_logout' ]
 				);
 
 				$this->onLoginSuccessful($userData['id'], $userData['email'], $userData['username'], $userData['status'], $userData['roles_mask'], $userData['force_logout'], true);
@@ -758,11 +755,11 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function changePassword($oldPassword, $newPassword)
-	{
+	public function changePassword($oldPassword, $newPassword) {
 		if ($this->reconfirmPassword($oldPassword)) {
 			$this->changePasswordWithoutOldPassword($newPassword);
-		} else {
+		}
+		else {
 			throw new InvalidPasswordException();
 		}
 	}
@@ -775,17 +772,17 @@ final class Auth extends UserManager
 	 * @throws InvalidPasswordException if the desired new password has been invalid
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function changePasswordWithoutOldPassword($newPassword)
-	{
+	public function changePasswordWithoutOldPassword($newPassword) {
 		if ($this->isLoggedIn()) {
 			$newPassword = self::validatePassword($newPassword);
 			$this->updatePasswordInternal($this->getUserId(), $newPassword);
 
 			try {
 				$this->logOutEverywhereElse();
-			} catch (NotLoggedInException $ignored) {
 			}
-		} else {
+			catch (NotLoggedInException $ignored) {}
+		}
+		else {
 			throw new NotLoggedInException();
 		}
 	}
@@ -813,45 +810,47 @@ final class Auth extends UserManager
 	 * @see confirmEmail
 	 * @see confirmEmailAndSignIn
 	 */
-	public function changeEmail($newEmail, callable $callback)
-	{
+	public function changeEmail($newEmail, callable $callback) {
 		if ($this->isLoggedIn()) {
 			$newEmail = self::validateEmailAddress($newEmail);
 
-			$this->throttle(['enumerateUsers', $this->getIpAddress()], 1, (60 * 60), 75);
+			$this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
 
 			try {
 				$existingUsersWithNewEmail = $this->db->selectValue(
 					'SELECT COUNT(*) FROM ' . $this->makeTableName('users') . ' WHERE email = ?',
-					[$newEmail]
+					[ $newEmail ]
 				);
-			} catch (Error $e) {
+			}
+			catch (Error $e) {
 				throw new DatabaseError($e->getMessage());
 			}
 
-			if ((int)$existingUsersWithNewEmail !== 0) {
+			if ((int) $existingUsersWithNewEmail !== 0) {
 				throw new UserAlreadyExistsException();
 			}
 
 			try {
 				$verified = $this->db->selectValue(
 					'SELECT verified FROM ' . $this->makeTableName('users') . ' WHERE id = ?',
-					[$this->getUserId()]
+					[ $this->getUserId() ]
 				);
-			} catch (Error $e) {
+			}
+			catch (Error $e) {
 				throw new DatabaseError($e->getMessage());
 			}
 
 			// ensure that at least the current (old) email address has been verified before proceeding
-			if ((int)$verified !== 1) {
+			if ((int) $verified !== 1) {
 				throw new EmailNotVerifiedException();
 			}
 
-			$this->throttle(['requestEmailChange', 'userId', $this->getUserId()], 1, (60 * 60 * 24));
-			$this->throttle(['requestEmailChange', $this->getIpAddress()], 1, (60 * 60 * 24), 3);
+			$this->throttle([ 'requestEmailChange', 'userId', $this->getUserId() ], 1, (60 * 60 * 24));
+			$this->throttle([ 'requestEmailChange', $this->getIpAddress() ], 1, (60 * 60 * 24), 3);
 
 			$this->createConfirmationRequest($this->getUserId(), $newEmail, $callback);
-		} else {
+		}
+		else {
 			throw new NotLoggedInException();
 		}
 	}
@@ -872,9 +871,8 @@ final class Auth extends UserManager
 	 * @throws ConfirmationRequestNotFound if no previous request has been found that could be re-sent
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 */
-	public function resendConfirmationForEmail($email, callable $callback)
-	{
-		$this->throttle(['enumerateUsers', $this->getIpAddress()], 1, (60 * 60), 75);
+	public function resendConfirmationForEmail($email, callable $callback) {
+		$this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
 
 		$this->resendConfirmationForColumnValue('email', $email, $callback);
 	}
@@ -895,8 +893,7 @@ final class Auth extends UserManager
 	 * @throws ConfirmationRequestNotFound if no previous request has been found that could be re-sent
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 */
-	public function resendConfirmationForUserId($userId, callable $callback)
-	{
+	public function resendConfirmationForUserId($userId, callable $callback) {
 		$this->resendConfirmationForColumnValue('user_id', $userId, $callback);
 	}
 
@@ -920,14 +917,14 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function resendConfirmationForColumnValue($columnName, $columnValue, callable $callback)
-	{
+	private function resendConfirmationForColumnValue($columnName, $columnValue, callable $callback) {
 		try {
 			$latestAttempt = $this->db->selectRow(
 				'SELECT user_id, email FROM ' . $this->makeTableName('users_confirmations') . ' WHERE ' . $columnName . ' = ? ORDER BY id DESC LIMIT 1 OFFSET 0',
-				[$columnValue]
+				[ $columnValue ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
@@ -935,8 +932,8 @@ final class Auth extends UserManager
 			throw new ConfirmationRequestNotFound();
 		}
 
-		$this->throttle(['resendConfirmation', 'userId', $latestAttempt['user_id']], 1, (60 * 60 * 6));
-		$this->throttle(['resendConfirmation', $this->getIpAddress()], 4, (60 * 60 * 24 * 7), 2);
+		$this->throttle([ 'resendConfirmation', 'userId', $latestAttempt['user_id'] ], 1, (60 * 60 * 6));
+		$this->throttle([ 'resendConfirmation', $this->getIpAddress() ], 4, (60 * 60 * 24 * 7), 2);
 
 		$this->createConfirmationRequest(
 			$latestAttempt['user_id'],
@@ -966,49 +963,51 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function forgotPassword($email, callable $callback, $requestExpiresAfter = null, $maxOpenRequests = null)
-	{
+	public function forgotPassword($email, callable $callback, $requestExpiresAfter = null, $maxOpenRequests = null) {
 		$email = self::validateEmailAddress($email);
 
-		$this->throttle(['enumerateUsers', $this->getIpAddress()], 1, (60 * 60), 75);
+		$this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
 
 		if ($requestExpiresAfter === null) {
 			// use six hours as the default
 			$requestExpiresAfter = 60 * 60 * 6;
-		} else {
-			$requestExpiresAfter = (int)$requestExpiresAfter;
+		}
+		else {
+			$requestExpiresAfter = (int) $requestExpiresAfter;
 		}
 
 		if ($maxOpenRequests === null) {
 			// use two requests per user as the default
 			$maxOpenRequests = 2;
-		} else {
-			$maxOpenRequests = (int)$maxOpenRequests;
+		}
+		else {
+			$maxOpenRequests = (int) $maxOpenRequests;
 		}
 
 		$userData = $this->getUserDataByEmailAddress(
 			$email,
-			['id', 'verified', 'resettable']
+			[ 'id', 'verified', 'resettable' ]
 		);
 
 		// ensure that the account has been verified before initiating a password reset
-		if ((int)$userData['verified'] !== 1) {
+		if ((int) $userData['verified'] !== 1) {
 			throw new EmailNotVerifiedException();
 		}
 
 		// do not allow a password reset if the user has explicitly disabled this feature
-		if ((int)$userData['resettable'] !== 1) {
+		if ((int) $userData['resettable'] !== 1) {
 			throw new ResetDisabledException();
 		}
 
-		$openRequests = (int)$this->getOpenPasswordResetRequests($userData['id']);
+		$openRequests = (int) $this->getOpenPasswordResetRequests($userData['id']);
 
 		if ($openRequests < $maxOpenRequests) {
-			$this->throttle(['requestPasswordReset', $this->getIpAddress()], 4, (60 * 60 * 24 * 7), 2);
-			$this->throttle(['requestPasswordReset', 'user', $userData['id']], 4, (60 * 60 * 24 * 7), 2);
+			$this->throttle([ 'requestPasswordReset', $this->getIpAddress() ], 4, (60 * 60 * 24 * 7), 2);
+			$this->throttle([ 'requestPasswordReset', 'user', $userData['id'] ], 4, (60 * 60 * 24 * 7), 2);
 
 			$this->createPasswordResetRequest($userData['id'], $requestExpiresAfter, $callback);
-		} else {
+		}
+		else {
 			throw new TooManyRequestsException('', $requestExpiresAfter);
 		}
 	}
@@ -1030,12 +1029,11 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function authenticateUserInternal($password, $email = null, $username = null, $rememberDuration = null, callable $onBeforeSuccess = null)
-	{
-		$this->throttle(['enumerateUsers', $this->getIpAddress()], 1, (60 * 60), 75);
-		$this->throttle(['attemptToLogin', $this->getIpAddress()], 4, (60 * 60), 5, true);
+	private function authenticateUserInternal($password, $email = null, $username = null, $rememberDuration = null, callable $onBeforeSuccess = null) {
+		$this->throttle([ 'enumerateUsers', $this->getIpAddress() ], 1, (60 * 60), 75);
+		$this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, true);
 
-		$columnsToFetch = ['id', 'email', 'password', 'verified', 'username', 'status', 'roles_mask', 'force_logout'];
+		$columnsToFetch = [ 'id', 'email', 'password', 'verified', 'username', 'status', 'roles_mask', 'force_logout' ];
 
 		if ($email !== null) {
 			$email = self::validateEmailAddress($email);
@@ -1045,7 +1043,8 @@ final class Auth extends UserManager
 				$email,
 				$columnsToFetch
 			);
-		} elseif ($username !== null) {
+		}
+		elseif ($username !== null) {
 			$username = \trim($username);
 
 			// attempt to look up the account information using the specified username
@@ -1053,7 +1052,8 @@ final class Auth extends UserManager
 				$username,
 				$columnsToFetch
 			);
-		} // if neither an email address nor a username has been provided
+		}
+		// if neither an email address nor a username has been provided
 		else {
 			// we can't do anything here because the method call has been invalid
 			throw new EmailOrUsernameRequiredError();
@@ -1068,14 +1068,15 @@ final class Auth extends UserManager
 				$this->updatePasswordInternal($userData['id'], $password);
 			}
 
-			if ((int)$userData['verified'] === 1) {
+			if ((int) $userData['verified'] === 1) {
 				if (!isset($onBeforeSuccess) || (\is_callable($onBeforeSuccess) && $onBeforeSuccess($userData['id']) === true)) {
 					$this->onLoginSuccessful($userData['id'], $userData['email'], $userData['username'], $userData['status'], $userData['roles_mask'], $userData['force_logout'], false);
 
 					// continue to support the old parameter format
 					if ($rememberDuration === true) {
 						$rememberDuration = 60 * 60 * 24 * 28;
-					} elseif ($rememberDuration === false) {
+					}
+					elseif ($rememberDuration === false) {
 						$rememberDuration = null;
 					}
 
@@ -1084,27 +1085,32 @@ final class Auth extends UserManager
 					}
 
 					return;
-				} else {
-					$this->throttle(['attemptToLogin', $this->getIpAddress()], 4, (60 * 60), 5, false);
+				}
+				else {
+					$this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, false);
 
 					if (isset($email)) {
-						$this->throttle(['attemptToLogin', 'email', $email], 500, (60 * 60 * 24), null, false);
-					} elseif (isset($username)) {
-						$this->throttle(['attemptToLogin', 'username', $username], 500, (60 * 60 * 24), null, false);
+						$this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, false);
+					}
+					elseif (isset($username)) {
+						$this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, false);
 					}
 
 					throw new AttemptCancelledException();
 				}
-			} else {
+			}
+			else {
 				throw new EmailNotVerifiedException();
 			}
-		} else {
-			$this->throttle(['attemptToLogin', $this->getIpAddress()], 4, (60 * 60), 5, false);
+		}
+		else {
+			$this->throttle([ 'attemptToLogin', $this->getIpAddress() ], 4, (60 * 60), 5, false);
 
 			if (isset($email)) {
-				$this->throttle(['attemptToLogin', 'email', $email], 500, (60 * 60 * 24), null, false);
-			} elseif (isset($username)) {
-				$this->throttle(['attemptToLogin', 'username', $username], 500, (60 * 60 * 24), null, false);
+				$this->throttle([ 'attemptToLogin', 'email', $email ], 500, (60 * 60 * 24), null, false);
+			}
+			elseif (isset($username)) {
+				$this->throttle([ 'attemptToLogin', 'username', $username ], 500, (60 * 60 * 24), null, false);
 			}
 
 			// we cannot authenticate the user due to the password being wrong
@@ -1123,21 +1129,22 @@ final class Auth extends UserManager
 	 * @throws InvalidEmailException if the email address could not be found
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function getUserDataByEmailAddress($email, array $requestedColumns)
-	{
+	private function getUserDataByEmailAddress($email, array $requestedColumns) {
 		try {
 			$projection = \implode(', ', $requestedColumns);
 			$userData = $this->db->selectRow(
 				'SELECT ' . $projection . ' FROM ' . $this->makeTableName('users') . ' WHERE email = ?',
-				[$email]
+				[ $email ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
 		if (!empty($userData)) {
 			return $userData;
-		} else {
+		}
+		else {
 			throw new InvalidEmailException();
 		}
 	}
@@ -1149,8 +1156,7 @@ final class Auth extends UserManager
 	 * @return int the number of open requests for a password reset
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function getOpenPasswordResetRequests($userId)
-	{
+	private function getOpenPasswordResetRequests($userId) {
 		try {
 			$requests = $this->db->selectValue(
 				'SELECT COUNT(*) FROM ' . $this->makeTableName('users_resets') . ' WHERE user = ? AND expires > ?',
@@ -1162,10 +1168,12 @@ final class Auth extends UserManager
 
 			if (!empty($requests)) {
 				return $requests;
-			} else {
+			}
+			else {
 				return 0;
 			}
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 	}
@@ -1186,8 +1194,7 @@ final class Auth extends UserManager
 	 * @param callable $callback the function that sends the password reset information to the user
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	private function createPasswordResetRequest($userId, $expiresAfter, callable $callback)
-	{
+	private function createPasswordResetRequest($userId, $expiresAfter, callable $callback) {
 		$selector = self::createRandomString(20);
 		$token = self::createRandomString(20);
 		$tokenHashed = \password_hash($token, \PASSWORD_DEFAULT);
@@ -1203,13 +1210,15 @@ final class Auth extends UserManager
 					'expires' => $expiresAt
 				]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
 		if (\is_callable($callback)) {
 			$callback($selector, $token);
-		} else {
+		}
+		else {
 			throw new MissingCallbackError();
 		}
 	}
@@ -1229,23 +1238,23 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function resetPassword($selector, $token, $newPassword)
-	{
-		$this->throttle(['resetPassword', $this->getIpAddress()], 5, (60 * 60), 10);
-		$this->throttle(['resetPassword', 'selector', $selector], 3, (60 * 60), 10);
-		$this->throttle(['resetPassword', 'token', $token], 3, (60 * 60), 10);
+	public function resetPassword($selector, $token, $newPassword) {
+		$this->throttle([ 'resetPassword', $this->getIpAddress() ], 5, (60 * 60), 10);
+		$this->throttle([ 'resetPassword', 'selector', $selector ], 3, (60 * 60), 10);
+		$this->throttle([ 'resetPassword', 'token', $token ], 3, (60 * 60), 10);
 
 		try {
 			$resetData = $this->db->selectRow(
 				'SELECT a.id, a.user, a.token, a.expires, b.resettable FROM ' . $this->makeTableName('users_resets') . ' AS a JOIN ' . $this->makeTableName('users') . ' AS b ON b.id = a.user WHERE a.selector = ?',
-				[$selector]
+				[ $selector ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
 		if (!empty($resetData)) {
-			if ((int)$resetData['resettable'] === 1) {
+			if ((int) $resetData['resettable'] === 1) {
 				if (\password_verify($token, $resetData['token'])) {
 					if ($resetData['expires'] >= \time()) {
 						$newPassword = self::validatePassword($newPassword);
@@ -1255,21 +1264,26 @@ final class Auth extends UserManager
 						try {
 							$this->db->delete(
 								$this->makeTableNameComponents('users_resets'),
-								['id' => $resetData['id']]
+								[ 'id' => $resetData['id'] ]
 							);
-						} catch (Error $e) {
+						}
+						catch (Error $e) {
 							throw new DatabaseError($e->getMessage());
 						}
-					} else {
+					}
+					else {
 						throw new TokenExpiredException();
 					}
-				} else {
+				}
+				else {
 					throw new InvalidSelectorTokenPairException();
 				}
-			} else {
+			}
+			else {
 				throw new ResetDisabledException();
 			}
-		} else {
+		}
+		else {
 			throw new InvalidSelectorTokenPairException();
 		}
 	}
@@ -1289,18 +1303,19 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the number of allowed attempts/requests has been exceeded
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function canResetPasswordOrThrow($selector, $token)
-	{
+	public function canResetPasswordOrThrow($selector, $token) {
 		try {
 			// pass an invalid password intentionally to force an expected error
 			$this->resetPassword($selector, $token, null);
 
 			// we should already be in one of the `catch` blocks now so this is not expected
 			throw new AuthError();
-		} // if the password is the only thing that's invalid
+		}
+		// if the password is the only thing that's invalid
 		catch (InvalidPasswordException $ignored) {
 			// the password can be reset
-		} // if some other things failed (as well)
+		}
+		// if some other things failed (as well)
 		catch (AuthException $e) {
 			// re-throw the exception
 			throw $e;
@@ -1317,13 +1332,13 @@ final class Auth extends UserManager
 	 * @return bool whether the password can be reset using the supplied information
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function canResetPassword($selector, $token)
-	{
+	public function canResetPassword($selector, $token) {
 		try {
 			$this->canResetPasswordOrThrow($selector, $token);
 
 			return true;
-		} catch (AuthException $e) {
+		}
+		catch (AuthException $e) {
 			return false;
 		}
 	}
@@ -1335,9 +1350,8 @@ final class Auth extends UserManager
 	 * @throws NotLoggedInException if the user is not currently signed in
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function setPasswordResetEnabled($enabled)
-	{
-		$enabled = (bool)$enabled;
+	public function setPasswordResetEnabled($enabled) {
+		$enabled = (bool) $enabled;
 
 		if ($this->isLoggedIn()) {
 			try {
@@ -1350,10 +1364,12 @@ final class Auth extends UserManager
 						'id' => $this->getUserId()
 					]
 				);
-			} catch (Error $e) {
+			}
+			catch (Error $e) {
 				throw new DatabaseError($e->getMessage());
 			}
-		} else {
+		}
+		else {
 			throw new NotLoggedInException();
 		}
 	}
@@ -1365,20 +1381,21 @@ final class Auth extends UserManager
 	 * @throws NotLoggedInException if the user is not currently signed in
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function isPasswordResetEnabled()
-	{
+	public function isPasswordResetEnabled() {
 		if ($this->isLoggedIn()) {
 			try {
 				$enabled = $this->db->selectValue(
 					'SELECT resettable FROM ' . $this->makeTableName('users') . ' WHERE id = ?',
-					[$this->getUserId()]
+					[ $this->getUserId() ]
 				);
 
-				return (int)$enabled === 1;
-			} catch (Error $e) {
+				return (int) $enabled === 1;
+			}
+			catch (Error $e) {
 				throw new DatabaseError($e->getMessage());
 			}
-		} else {
+		}
+		else {
 			throw new NotLoggedInException();
 		}
 	}
@@ -1388,8 +1405,7 @@ final class Auth extends UserManager
 	 *
 	 * @return boolean whether the user is logged in or not
 	 */
-	public function isLoggedIn()
-	{
+	public function isLoggedIn() {
 		return isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_LOGGED_IN]) && $_SESSION[self::SESSION_FIELD_LOGGED_IN] === true;
 	}
 
@@ -1398,8 +1414,7 @@ final class Auth extends UserManager
 	 *
 	 * @return boolean
 	 */
-	public function check()
-	{
+	public function check() {
 		return $this->isLoggedIn();
 	}
 
@@ -1408,11 +1423,11 @@ final class Auth extends UserManager
 	 *
 	 * @return int the user ID
 	 */
-	public function getUserId()
-	{
+	public function getUserId() {
 		if (isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_USER_ID])) {
 			return $_SESSION[self::SESSION_FIELD_USER_ID];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -1422,8 +1437,7 @@ final class Auth extends UserManager
 	 *
 	 * @return int
 	 */
-	public function id()
-	{
+	public function id() {
 		return $this->getUserId();
 	}
 
@@ -1432,11 +1446,11 @@ final class Auth extends UserManager
 	 *
 	 * @return string the email address
 	 */
-	public function getEmail()
-	{
+	public function getEmail() {
 		if (isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_EMAIL])) {
 			return $_SESSION[self::SESSION_FIELD_EMAIL];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -1446,11 +1460,11 @@ final class Auth extends UserManager
 	 *
 	 * @return string the display name
 	 */
-	public function getUsername()
-	{
+	public function getUsername() {
 		if (isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_USERNAME])) {
 			return $_SESSION[self::SESSION_FIELD_USERNAME];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -1460,11 +1474,11 @@ final class Auth extends UserManager
 	 *
 	 * @return int the status as one of the constants from the {@see Status} class
 	 */
-	public function getStatus()
-	{
+	public function getStatus() {
 		if (isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_STATUS])) {
 			return $_SESSION[self::SESSION_FIELD_STATUS];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -1477,8 +1491,7 @@ final class Auth extends UserManager
 	 * @see Status
 	 * @see Auth::getStatus
 	 */
-	public function isNormal()
-	{
+	public function isNormal() {
 		return $this->getStatus() === Status::NORMAL;
 	}
 
@@ -1490,8 +1503,7 @@ final class Auth extends UserManager
 	 * @see Status
 	 * @see Auth::getStatus
 	 */
-	public function isArchived()
-	{
+	public function isArchived() {
 		return $this->getStatus() === Status::ARCHIVED;
 	}
 
@@ -1503,8 +1515,7 @@ final class Auth extends UserManager
 	 * @see Status
 	 * @see Auth::getStatus
 	 */
-	public function isBanned()
-	{
+	public function isBanned() {
 		return $this->getStatus() === Status::BANNED;
 	}
 
@@ -1516,8 +1527,7 @@ final class Auth extends UserManager
 	 * @see Status
 	 * @see Auth::getStatus
 	 */
-	public function isLocked()
-	{
+	public function isLocked() {
 		return $this->getStatus() === Status::LOCKED;
 	}
 
@@ -1529,8 +1539,7 @@ final class Auth extends UserManager
 	 * @see Status
 	 * @see Auth::getStatus
 	 */
-	public function isPendingReview()
-	{
+	public function isPendingReview() {
 		return $this->getStatus() === Status::PENDING_REVIEW;
 	}
 
@@ -1542,8 +1551,7 @@ final class Auth extends UserManager
 	 * @see Status
 	 * @see Auth::getStatus
 	 */
-	public function isSuspended()
-	{
+	public function isSuspended() {
 		return $this->getStatus() === Status::SUSPENDED;
 	}
 
@@ -1555,17 +1563,17 @@ final class Auth extends UserManager
 	 *
 	 * @see Role
 	 */
-	public function hasRole($role)
-	{
+	public function hasRole($role) {
 		if (empty($role) || !\is_numeric($role)) {
 			return false;
 		}
 
 		if (isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_ROLES])) {
-			$role = (int)$role;
+			$role = (int) $role;
 
-			return (((int)$_SESSION[self::SESSION_FIELD_ROLES]) & $role) === $role;
-		} else {
+			return (((int) $_SESSION[self::SESSION_FIELD_ROLES]) & $role) === $role;
+		}
+		else {
 			return false;
 		}
 	}
@@ -1578,8 +1586,7 @@ final class Auth extends UserManager
 	 *
 	 * @see Role
 	 */
-	public function hasAnyRole(...$roles)
-	{
+	public function hasAnyRole(...$roles) {
 		foreach ($roles as $role) {
 			if ($this->hasRole($role)) {
 				return true;
@@ -1597,8 +1604,7 @@ final class Auth extends UserManager
 	 *
 	 * @see Role
 	 */
-	public function hasAllRoles(...$roles)
-	{
+	public function hasAllRoles(...$roles) {
 		foreach ($roles as $role) {
 			if (!$this->hasRole($role)) {
 				return false;
@@ -1613,11 +1619,10 @@ final class Auth extends UserManager
 	 *
 	 * @return array
 	 */
-	public function getRoles()
-	{
+	public function getRoles() {
 		return \array_filter(
 			Role::getMap(),
-			[$this, 'hasRole'],
+			[ $this, 'hasRole' ],
 			\ARRAY_FILTER_USE_KEY
 		);
 	}
@@ -1627,11 +1632,11 @@ final class Auth extends UserManager
 	 *
 	 * @return bool whether they have been remembered
 	 */
-	public function isRemembered()
-	{
+	public function isRemembered() {
 		if (isset($_SESSION) && isset($_SESSION[self::SESSION_FIELD_REMEMBERED])) {
 			return $_SESSION[self::SESSION_FIELD_REMEMBERED];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -1641,8 +1646,7 @@ final class Auth extends UserManager
 	 *
 	 * @return string the IP address (IPv4 or IPv6)
 	 */
-	public function getIpAddress()
-	{
+	public function getIpAddress() {
 		return $this->ipAddress;
 	}
 
@@ -1659,8 +1663,7 @@ final class Auth extends UserManager
 	 * @throws TooManyRequestsException if the actual demand has exceeded the designated supply
 	 * @throws AuthError if an internal problem occurred (do *not* catch)
 	 */
-	public function throttle(array $criteria, $supply, $interval, $burstiness = null, $simulated = null, $cost = null)
-	{
+	public function throttle(array $criteria, $supply, $interval, $burstiness = null, $simulated = null, $cost = null) {
 		if (!$this->throttling) {
 			return $supply;
 		}
@@ -1675,24 +1678,25 @@ final class Auth extends UserManager
 		);
 
 		// validate the supplied parameters and set appropriate defaults where necessary
-		$burstiness = ($burstiness !== null) ? (int)$burstiness : 1;
-		$simulated = ($simulated !== null) ? (bool)$simulated : false;
-		$cost = ($cost !== null) ? (int)$cost : 1;
+		$burstiness = ($burstiness !== null) ? (int) $burstiness : 1;
+		$simulated = ($simulated !== null) ? (bool) $simulated : false;
+		$cost = ($cost !== null) ? (int) $cost : 1;
 
 		$now = \time();
 
 		// determine the volume of the bucket
-		$capacity = $burstiness * (int)$supply;
+		$capacity = $burstiness * (int) $supply;
 
 		// calculate the rate at which the bucket is refilled (per second)
-		$bandwidthPerSecond = (int)$supply / (int)$interval;
+		$bandwidthPerSecond = (int) $supply / (int) $interval;
 
 		try {
 			$bucket = $this->db->selectRow(
 				'SELECT tokens, replenished_at FROM ' . $this->makeTableName('users_throttling') . ' WHERE bucket = ?',
-				[$key]
+				[ $key ]
 			);
-		} catch (Error $e) {
+		}
+		catch (Error $e) {
 			throw new DatabaseError($e->getMessage());
 		}
 
@@ -1701,14 +1705,14 @@ final class Auth extends UserManager
 		}
 
 		// initialize the number of tokens in the bucket
-		$bucket['tokens'] = isset($bucket['tokens']) ? (float)$bucket['tokens'] : (float)$capacity;
+		$bucket['tokens'] = isset($bucket['tokens']) ? (float) $bucket['tokens'] : (float) $capacity;
 		// initialize the last time that the bucket has been refilled (as a Unix timestamp in seconds)
-		$bucket['replenished_at'] = isset($bucket['replenished_at']) ? (int)$bucket['replenished_at'] : $now;
+		$bucket['replenished_at'] = isset($bucket['replenished_at']) ? (int) $bucket['replenished_at'] : $now;
 
 		// replenish the bucket as appropriate
 		$secondsSinceLastReplenishment = \max(0, $now - $bucket['replenished_at']);
 		$tokensToAdd = $secondsSinceLastReplenishment * $bandwidthPerSecond;
-		$bucket['tokens'] = \min((float)$capacity, $bucket['tokens'] + $tokensToAdd);
+		$bucket['tokens'] = \min((float) $capacity, $bucket['tokens'] + $tokensToAdd);
 		$bucket['replenished_at'] = $now;
 
 		$accepted = $bucket['tokens'] >= $cost;
@@ -1727,9 +1731,10 @@ final class Auth extends UserManager
 				$affected = $this->db->update(
 					$this->makeTableNameComponents('users_throttling'),
 					$bucket,
-					['bucket' => $key]
+					[ 'bucket' => $key ]
 				);
-			} catch (Error $e) {
+			}
+			catch (Error $e) {
 				throw new DatabaseError($e->getMessage());
 			}
 
@@ -1741,8 +1746,9 @@ final class Auth extends UserManager
 						$this->makeTableNameComponents('users_throttling'),
 						$bucket
 					);
-				} catch (IntegrityConstraintViolationException $ignored) {
-				} catch (Error $e) {
+				}
+				catch (IntegrityConstraintViolationException $ignored) {}
+				catch (Error $e) {
 					throw new DatabaseError($e->getMessage());
 				}
 			}
@@ -1750,7 +1756,8 @@ final class Auth extends UserManager
 
 		if ($accepted) {
 			return $bucket['tokens'];
-		} else {
+		}
+		else {
 			$tokensMissing = $cost - $bucket['tokens'];
 			$estimatedWaitingTimeSeconds = \ceil($tokensMissing / $bandwidthPerSecond);
 
@@ -1765,8 +1772,7 @@ final class Auth extends UserManager
 	 *
 	 * @return Administration
 	 */
-	public function admin()
-	{
+	public function admin() {
 		return new Administration($this->db, $this->dbTablePrefix, $this->dbSchema);
 	}
 
@@ -1778,8 +1784,7 @@ final class Auth extends UserManager
 	 * @return string the UUID
 	 * @author Jack @ Stack Overflow
 	 */
-	public static function createUuid()
-	{
+	public static function createUuid() {
 		$data = \openssl_random_pseudo_bytes(16);
 
 		// set the version to 0100
@@ -1797,8 +1802,7 @@ final class Auth extends UserManager
 	 * @param string|null $seed (optional) the data to deterministically generate the name from
 	 * @return string
 	 */
-	public static function createCookieName($descriptor, $seed = null)
-	{
+	public static function createCookieName($descriptor, $seed = null) {
 		// use the supplied seed or the current UNIX time in seconds
 		$seed = ($seed !== null) ? $seed : \time();
 
@@ -1827,8 +1831,7 @@ final class Auth extends UserManager
 	 * @param string|null $sessionName (optional) the session name that the output should be based on
 	 * @return string
 	 */
-	public static function createRememberCookieName($sessionName = null)
-	{
+	public static function createRememberCookieName($sessionName = null) {
 		return self::createCookieName(
 			'remember',
 			($sessionName !== null) ? $sessionName : \session_name()
@@ -1840,13 +1843,13 @@ final class Auth extends UserManager
 	 *
 	 * @return string|null
 	 */
-	private function getRememberDirectiveSelector()
-	{
+	private function getRememberDirectiveSelector() {
 		if (isset($_COOKIE[$this->rememberCookieName])) {
 			$selectorAndToken = \explode(self::COOKIE_CONTENT_SEPARATOR, $_COOKIE[$this->rememberCookieName], 2);
 
 			return $selectorAndToken[0];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -1856,8 +1859,7 @@ final class Auth extends UserManager
 	 *
 	 * @return int|null
 	 */
-	private function getRememberDirectiveExpiry()
-	{
+	private function getRememberDirectiveExpiry() {
 		// if the user is currently signed in
 		if ($this->isLoggedIn()) {
 			// determine the selector of any currently existing remember directive
@@ -1877,7 +1879,7 @@ final class Auth extends UserManager
 				// if an expiration date has been found
 				if (isset($existingExpiry)) {
 					// return the date
-					return (int)$existingExpiry;
+					return (int) $existingExpiry;
 				}
 			}
 		}

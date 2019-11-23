@@ -6,15 +6,7 @@
 		"delight-im/http": "^2.0"
 	},
 	"type": "library",
-	"keywords": [
-		"cookie",
-		"cookies",
-		"http",
-		"csrf",
-		"xss",
-		"samesite",
-		"same-site"
-	],
+	"keywords": [ "cookie", "cookies", "http", "csrf", "xss", "samesite", "same-site" ],
 	"homepage": "https://github.com/delight-im/PHP-Cookie",
 	"license": "MIT",
 	"autoload": {

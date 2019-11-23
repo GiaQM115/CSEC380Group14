@@ -12,8 +12,7 @@ use Delight\Base64\Throwable\DecodingError;
 use Delight\Base64\Throwable\EncodingError;
 
 /** Utilities for encoding and decoding data using Base64 and variants thereof */
-final class Base64
-{
+final class Base64 {
 
 	/**
 	 * The last three characters from the alphabet of the standard implementation
@@ -36,8 +35,7 @@ final class Base64
 	 * @return string
 	 * @throws EncodingError if the input has been invalid
 	 */
-	public static function encode($data)
-	{
+	public static function encode($data) {
 		$encoded = \base64_encode($data);
 
 		if ($encoded === false) {
@@ -54,8 +52,7 @@ final class Base64
 	 * @return mixed
 	 * @throws DecodingError if the input has been invalid
 	 */
-	public static function decode($data)
-	{
+	public static function decode($data) {
 		$decoded = \base64_decode($data, true);
 
 		if ($decoded === false) {
@@ -72,8 +69,7 @@ final class Base64
 	 * @return string
 	 * @throws EncodingError if the input has been invalid
 	 */
-	public static function encodeUrlSafe($data)
-	{
+	public static function encodeUrlSafe($data) {
 		$encoded = self::encode($data);
 
 		return \strtr(
@@ -90,8 +86,7 @@ final class Base64
 	 * @return mixed
 	 * @throws DecodingError if the input has been invalid
 	 */
-	public static function decodeUrlSafe($data)
-	{
+	public static function decodeUrlSafe($data) {
 		$data = \strtr(
 			$data,
 			self::LAST_THREE_URL_SAFE,
@@ -108,8 +103,7 @@ final class Base64
 	 * @return string
 	 * @throws EncodingError if the input has been invalid
 	 */
-	public static function encodeUrlSafeWithoutPadding($data)
-	{
+	public static function encodeUrlSafeWithoutPadding($data) {
 		$encoded = self::encode($data);
 
 		$encoded = \rtrim(
@@ -131,8 +125,7 @@ final class Base64
 	 * @return mixed
 	 * @throws DecodingError if the input has been invalid
 	 */
-	public static function decodeUrlSafeWithoutPadding($data)
-	{
+	public static function decodeUrlSafeWithoutPadding($data) {
 		return self::decodeUrlSafe($data);
 	}
 

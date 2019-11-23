@@ -6,15 +6,7 @@
 		"ext-pdo": "*"
 	},
 	"type": "library",
-	"keywords": [
-		"database",
-		"sql",
-		"pdo",
-		"mysql",
-		"postgresql",
-		"pgsql",
-		"sqlite"
-	],
+	"keywords": [ "database", "sql", "pdo", "mysql", "postgresql", "pgsql", "sqlite" ],
 	"homepage": "https://github.com/delight-im/PHP-DB",
 	"license": "MIT",
 	"autoload": {

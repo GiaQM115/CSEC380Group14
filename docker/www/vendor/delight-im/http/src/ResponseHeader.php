@@ -9,12 +9,9 @@
 namespace Delight\Http;
 
 /** HTTP response headers sent by the server */
-final class ResponseHeader
-{
+final class ResponseHeader {
 
-	private function __construct()
-	{
-	}
+	private function __construct() { }
 
 	/**
 	 * Returns the header with the specified name (and optional value prefix)
@@ -23,8 +20,7 @@ final class ResponseHeader
 	 * @param string $valuePrefix the optional string to match at the beginning of the header's value
 	 * @return string|null the header (if found) or `null`
 	 */
-	public static function get($name, $valuePrefix = '')
-	{
+	public static function get($name, $valuePrefix = '') {
 		$nameLength = strlen($name);
 		$valuePrefixLength = strlen($valuePrefix);
 
@@ -47,9 +43,8 @@ final class ResponseHeader
 	 * @param string $name the name of the header
 	 * @param string $value the corresponding value for the header
 	 */
-	public static function set($name, $value)
-	{
-		header($name . ': ' . $value);
+	public static function set($name, $value) {
+		header($name.': '.$value);
 	}
 
 	/**
@@ -58,9 +53,8 @@ final class ResponseHeader
 	 * @param string $name the name of the header
 	 * @param string $value the corresponding value for the header
 	 */
-	public static function add($name, $value)
-	{
-		header($name . ': ' . $value, false);
+	public static function add($name, $value) {
+		header($name.': '.$value, false);
 	}
 
 	/**
@@ -69,11 +63,11 @@ final class ResponseHeader
 	 * @param string $name the name of the header
 	 * @param string $valuePrefix the optional string to match at the beginning of the header's value
 	 */
-	public static function remove($name, $valuePrefix = '')
-	{
+	public static function remove($name, $valuePrefix = '') {
 		if (empty($valuePrefix)) {
 			header_remove($name);
-		} else {
+		}
+		else {
 			$found = self::get($name, $valuePrefix);
 
 			if (isset($found)) {
@@ -89,15 +83,15 @@ final class ResponseHeader
 	 * @param string $valuePrefix the optional string to match at the beginning of the header's value
 	 * @return string|null the header (if found) or `null`
 	 */
-	public static function take($name, $valuePrefix = '')
-	{
+	public static function take($name, $valuePrefix = '') {
 		$found = self::get($name, $valuePrefix);
 
 		if (isset($found)) {
 			header_remove($name);
 
 			return $found;
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
