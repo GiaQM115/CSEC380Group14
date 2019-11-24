@@ -1,0 +1,4 @@
+1. How would you fix your code so that this issue is no longer present?
+We would build a check into the code before the video is downloaded from the URL to ensure the content is the expected file type. This is not the strongest protection. Some further protections include storing the file outside of the webroot (ie another server or another domain), assign cryptographically random filenames, checking headers, and serving data with a plaintext MIME type.
+2. How does your test demonstrate SSRF as opposed to just accessing any old endpoint?
+To demonstrate SSRF, we not only verify that there is content at the endpoint, but we also check the content for the expected output. Because we know what command is being executed from our test code, we know the expected output. We parse the output to ensure it is what we anticipated.

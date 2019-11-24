@@ -1,2 +1,2 @@
-1. •	How would you fix your code so that this issue is no longer present?
-We would fix this issue by not actually allowing the user to run shell commands. We would search for videos by using the database instead.
+1. How would you fix your code so that this issue is no longer present?
+We would fix this issue by removing the users privilege to execute shell commands, as well as filter the users input to remove “;”. This would prevent any possibility of multi-command queries. We would also search for videos by using the database instead of the directory they’re stored in.

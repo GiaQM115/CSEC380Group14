@@ -1,5 +1,5 @@
 1. How do you prevent XSS is this step when displaying the username of the user who uploaded the video?
-We prevent XSS by using CSP to not allow and scripts to run in the page since we do not use any javascript for the website anyway.
-2. How do you ensure that users can’t delete videos that aren’t their own?
-We ensure that users can only delete their videos by only giving them the option to select videos they have uploaded in the delete manager. Then when we actually delete the video we check to make sure the correct user is deleting it.
+We prevent XSS by using CSP to not allow any scripts to run on the page. This isn’t a problem because we do not use Javascript on our server anyway.
 
+2. How do you ensure that users can’t delete videos that aren’t their own?
+We ensure that users can delete only their videos by using a drop down menu to limit their options to only the videos they’ve uploaded. There is also a check on our end prior to deletion to ensure the requesting user is the uploader.

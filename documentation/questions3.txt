@@ -1,13 +1,25 @@
-1. Link to test cases: // provide
+1. Provide a link to the test cases you generated for this activity.
 
-2. To ensure that users cannot bypass authentication requirements, //finish
+2. How do you ensure that users that navigate to the protected pages cannot bypass authentication requirements?
+    Every page on the site will run a check to see if the user is authenticated (by referring to the session ID). If the user is not authenticated, they will be redirected to the login page.
+    If the user attempts to access a not visitable php file (such as a form handler file), they will received a 401 error in response.
 
-3. // what the fuck is session fixation?
+3. How do you protect against session fixation?
+    To protect against session fixation, we will need prevent users from being able to specify their own session ID upon login.
+    If users can specify their own ID, then sessions must also be checked for integrity when they are provided to the server to protect against tampering/forging.
 
-4. Passwords in the database are stored as hashes to protect them in the case of a stolen database.
+4. How do you ensure that if your database gets stolen passwords aren't exposed?
+    Protecting the confidentiality of the passwords in the database will require the use of hashing combined with salts.
+    Even if the attacker manages to dump the database, the passwords remain cryptographically secure if exposed.
 
-5. To prevent password brute force, there is a login limit of 3 times before a user is locked out. // how long do we lock them out, or do we require a security question to be answered or something like that?
+5. How do you prevent password brute force?
+    In order to prevent password brute force, we will need to significantly slow down the time it will take to do so.
+    Much like ssh_guard, we can implement a time-based lockout system that will block the user's IP for a certain amount of seconds if the attacker exceeds the maximum amount of tries per second.
 
-6. // username enumeration??
+6. How do you prevent username enumeration?
+    To prevent username enumeration, we will not only need to secure the database from SQL injections, but we will also need to NOT disclose whether or not the username is incorrect.
+    In other words, if an attacker guesses the correct username and is met solely with a "wrong password" message, they will know the username is legitimate.
 
-7. If the sessionID is predictable, a session could be easily stolen with something like a brute force attack. To prevent this, // how do we determine session IDs??
+7. What happens if your sessionID is predictable, how do you prevent that?
+    If session IDs are predictable, it will allow the attacker to forge a legitimate session ID that may belong to another user, granting them access to their session.
+    This can be prevented by generating cryptographically secure session IDs - i.e., truly random bit sequences.

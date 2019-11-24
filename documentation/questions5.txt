@@ -1,0 +1,8 @@
+1. How would you fix your code so that these issues were no longer present?
+    Any input into the fields will not only need to be sanitized after being submitted, but will also need to be sanitized on output.
+    Output should also be as least verbose as possible.
+
+2. What are the limitations, if any that, of the SQL Injection issues you’ve included?
+    The SQL injections in this context will only affect the brickflix database, but not any other databases.
+    This is because we have restricted the php DB user to only be allowed to modify the "brickflix" database.
+    Otherwise, the possibilities are, for the most part, limitless.

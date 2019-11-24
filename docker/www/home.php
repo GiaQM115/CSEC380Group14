@@ -22,21 +22,29 @@ if ($auth->isLoggedIn()) {
 ');
     }
 
-    function pageBody()
+    function pageBody($auth)
     {
         printf('
-<h2>What do you want to watch today?</h2>
+<h2>What do you want to watch today, %s?</h2>
 
-<div class="lisDiv">
-        <form action="listVideo.php" id="listForm" method="post">
-            <input name="listVid" id="listVid" placeholder="Leave blank for list of all videos or (<string>*) to search" type="text">
-            <br>
-			<button form="listForm" type="submit">Search</button>
-        </form>
-    </div>
+<div class="searchDiv">
+    <form action="search_video.php" id="searchVideoForm" method="post">
+        <input name="search" id="search" placeholder="Leave blank for list of all videos or (<string>*) to search" type="text">
+        <br>
+        <button form="searchVideoForm" type="submit">Search by video title</button>
+    </form>
+</div>
+
+<div class="searchDiv">
+    <form action="search_user.php" id="searchForm" method="post">
+        <input name="search" id="search" placeholder="Leave blank for list of all users or (<string>*) to search" type="text">
+        <br>
+        <button form="searchForm" type="submit">Search by username</button>
+    </form>
+</div>
 
 <div class="viewerDiv">
-');
+', $auth->getUsername());
         $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
         or die ('Cannot connect to db');
 

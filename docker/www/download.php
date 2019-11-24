@@ -8,12 +8,9 @@ if ($auth->isLoggedIn()) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nameOfFile']) && isset($_POST['urlToUpload'])) {
         $name = $_POST['nameOfFile'];
         $url = $_POST['urlToUpload'];
-        $file_ext = substr($url, -4); // TODO: Implement better file extension check
 
         if (empty($name)) {
             echo "Please enter a file name";
-        } else if ($file_ext !== ".mp4") {
-            echo "The url file extension must be .mp4 in order to be downloaded";
         } else if (file_put_contents('videos/' . $name, file_get_contents($url))) {
             $conn = new mysqli('db', 'php', 'SuperSecretPassword', 'brickflix')
             or die ('Cannot connect to db');
